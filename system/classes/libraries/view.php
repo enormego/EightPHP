@@ -3,12 +3,10 @@
  * Loads and displays Eight view files. Can also handle output of some binary
  * files, such as image, Javascript, and CSS files.
  *
- * @version		$Id: view.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class View_Core {

@@ -4,12 +4,10 @@
  * to be added to 'events'. Events can be run multiple times, and can also
  * process event-specific data. By default, Eight has several system events.
  *
- * @version		$Id: event.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Core
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 final class Event {

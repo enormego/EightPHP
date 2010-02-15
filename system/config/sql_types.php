@@ -5,7 +5,7 @@
  *
  * SQL data types. If there are missing values, please report them:
  *
- * @link  http://trac.eight.twenty08.com/newticket
+ * @link  https://github.com/enormego/EightPHP/issues
  */
 $config = array
 (

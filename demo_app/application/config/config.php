@@ -31,7 +31,7 @@ $config['site_protocol'] = '';
  * this setting must be set to an empty string, or generated URLs will still
  * contain the index_page filename.
  *
- * [ref-url]: http://doc.eight.twenty08.com/routing
+ * [ref-url]: http://enormego.pbworks.com/Eight-URLs
  */
 $config['index_page'] = 'index.php';
 

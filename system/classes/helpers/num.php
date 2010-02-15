@@ -2,12 +2,10 @@
 /**
  * Number helper class.
  *
- * @version		$Id: num.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Helpers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class num_Core {

@@ -2,12 +2,10 @@
 /**
  * Creates a custom exception message.
  *
- * @version		$Id: Eight_Exception_User.php 4679 2009-11-10 01:45:52Z isaiah $
- *
  * @package		System
  * @subpackage	Exceptions
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 

@@ -2,12 +2,10 @@
 /**
  * XML helper class.
  *
- * @version		$Id: xml.php 113 2009-02-19 23:18:53Z saverio $
- *
  * @package		System
  * @subpackage	Helpers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class xml_Core {

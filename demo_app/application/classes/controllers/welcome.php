@@ -5,14 +5,13 @@
  *
  * @package		DemoApplication
  * @subpackage	Controllers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Controller_Welcome extends Controller_Template {
 
 	// Disable this controller when Eight is set to production mode.
-	// See http://docs.eight.twenty08.com/installation/deployment for more details.
 	const ALLOW_PRODUCTION = NO;
 
 	// Set the name of the template to use
@@ -32,11 +31,10 @@ class Controller_Welcome extends Controller_Template {
 		// of data, including objects.
 		$this->template->content->links = array
 		(
-			'Home Page'     => 'http://eight.twenty08.com/',
-			'Documentation' => 'http://docs.eight.twenty08.com/',
-			'Forum'         => 'http://forum.eight.twenty08.com/',
-			'License'       => 'Eight License.html',
-			'Donate'        => 'http://eight.twenty08.com/donate.html',
+			'Home Page'     => 'http://eightphp.com/',
+			'Documentation' => 'http://docs.eightphp.com/',
+			'Issues'        => 'https://github.com/enormego/EightPHP/issues',
+			'License'       => 'http://license.eightphp.com',
 		);
 	}
 

@@ -3,12 +3,10 @@
  * Formation module demo controller. This controller should NOT be used in production.
  * It is for demonstration purposes only!
  *
- * @version		$Id: formationdemo.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	Formation
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 

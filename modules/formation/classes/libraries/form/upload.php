@@ -2,12 +2,10 @@
 /**
  * Formation upload input library.
  *
- * @version		$Id: upload.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	Formation
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Form_Upload_Core extends Form_Input {

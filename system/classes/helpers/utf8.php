@@ -14,8 +14,8 @@
  *
  * @package		System
  * @subpackage	Helpers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  *
  * @author		Harry Fuecks
  * @copyright	(c) 2005 Harry Fuecks

@@ -2,12 +2,10 @@
 /**
  *  Database API driver interface
  *
- * @version		$Id: driver.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 abstract class Database_Driver {

@@ -2,12 +2,10 @@
 /**
  * Eight PHP Error Exceptions
  *
- * @version		$Id: Eight_Exception_PHP.php 4687 2009-11-30 21:59:26Z isaiah $
- *
  * @package		System
  * @subpackage	Exceptions
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 

@@ -5,12 +5,10 @@
  * This controller should NOT be used in production. It is for demonstration
  * purposes only!
  *
- * @version		$Id: examples.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		DemoApplication
  * @subpackage	Controllers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Controller_Examples extends Controller {
@@ -72,7 +70,7 @@ class Controller_Examples extends Controller {
 	 */
 	function rss() {
 		// Parse an external atom feed
-		$feed = feed::parse('http://trac.eight.twenty08.com/timeline?changeset=on&format=rss');
+		$feed = feed::parse('feed:http://github.com/feeds/enormego/commits/EightPHP/master');
 
 		// Show debug info
 		echo Eight::debug($feed);
@@ -382,7 +380,7 @@ class Controller_Examples extends Controller {
 				->condition('year', 2008)
 				->condition('month', 8)
 				->condition('day', 8)
-				->output(html::anchor('http://forum.eight.twenty08.com/comments.php?DiscussionID=275', 'Learning about Eight Calendar')));
+				->output());
 
 		echo $calendar->render();
 	}

@@ -2,12 +2,10 @@
 /**
  * Captcha driver for "black" style.
  *
- * @version		$Id: black.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	Captcha
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Captcha_Driver_Black_Core extends Captcha_Driver {

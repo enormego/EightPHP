@@ -6,13 +6,10 @@
  * call these are used to construct the required name value pairs for the request
  * to each API call.
  *
- * @version		$Id: Paypal.php 1978 2008-03-25 12:05:32GMT by atomless -
- *
- *
  * @package		Modules
  * @subpackage	Payments
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
 */
 class Payment_Driver_Paypal implements Payment_Driver {

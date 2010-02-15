@@ -7,12 +7,10 @@
  * To use it, declare your controller to extend this class:
  * `class Controller_YourController extends Controller_Template`
  *
- * @version		$Id: template.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Controllers
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 abstract class Controller_Template extends Controller_Core {

@@ -2,12 +2,10 @@
 /**
  * Provides specific database items for MySQL.
  *
- * @version		$Id: mysql.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
 */
 class Database_Driver_Mysql extends Database_Driver {
@@ -361,8 +359,8 @@ class Database_Driver_Mysql extends Database_Driver {
 /**
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable {

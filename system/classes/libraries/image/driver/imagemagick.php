@@ -2,12 +2,10 @@
 /**
  * ImageMagick Image Driver.
  *
- * @version		$Id: imagemagick.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries.Image
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Image_Driver_ImageMagick_Core extends Image_Driver {

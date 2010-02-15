@@ -3,12 +3,10 @@
  * Provides specific database items for Sqlite.
  * Connection string should be, eg: "pdosqlite://path/to/database.db"
  *
- * @version		$Id: pdosqlite.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 
@@ -238,8 +236,8 @@ class Database_Driver_Pdosqlite extends Database_Driver {
  *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Countable {

@@ -3,12 +3,10 @@
  * Manipulate images using standard methods such as resize, crop, rotate, etc.
  * This class must be re-initialized for every image you wish to manipulate.
  *
- * @version		$Id: image.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries.Image
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Image_Core {

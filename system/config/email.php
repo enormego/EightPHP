@@ -12,7 +12,5 @@ $config['driver'] = 'native';
 /**
  * Driver configuration options. Each driver has different settings. For more
  * information, see the documentation about [sending email][ref-sne].
- *
- * [ref-sne]: http://docs.eight.twenty08.com/book/email/sending
  */
 $config['options'] = nil;

@@ -2,12 +2,10 @@
 /**
  * Eight event observer. Uses the SPL observer pattern.
  *
- * $Id: Calendar_Event_Observer.php 3917 2009-01-21 03:06:22Z zombor $
- *
  * @package		Modules
  * @subpackage	Calendar
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 abstract class Calendar_Event_Observer implements SplObserver {

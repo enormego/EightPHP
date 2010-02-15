@@ -2,12 +2,10 @@
 /**
  * Calendar creation library.
  *
- * @version		$Id: calendar.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	Calendar
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Calendar_Core extends Calendar_Event_Subject {

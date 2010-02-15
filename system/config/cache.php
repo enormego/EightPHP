@@ -23,13 +23,6 @@
  * :  Average number of cache requests that will processed before all expired
  *    caches are deleted (garbage collection). Setting this to 0 will disable
  *    automatic garbage collection.
- *
- * [ref-apc]: http://docs.eight.twenty08.com/book/cache/drivers/apc
- * [ref-eac]: http://docs.eight.twenty08.com/book/cache/drivers/eaccelerator
- * [ref-fil]: http://docs.eight.twenty08.com/book/cache/drivers/file
- * [ref-mem]: http://docs.eight.twenty08.com/book/cache/drivers/memcache
- * [ref-sql]: http://docs.eight.twenty08.com/book/cache/drivers/sqlite
- * [ref-xca]: http://docs.eight.twenty08.com/book/cache/drivers/xcache
  */
 $config['default'] = array
 (

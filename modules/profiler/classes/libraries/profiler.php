@@ -17,12 +17,10 @@
  * Cookie Data
  * :  All cookies sent for the current request.
  *
- * @version		$Id: profiler.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	Profiler
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Profiler_Core {

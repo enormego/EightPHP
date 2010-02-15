@@ -1,14 +1,12 @@
 <?php
 /**
  * File Auth driver.
- * Note: this Auth driver does not support roles nor auto-login.
- *
- * @version		$Id: file.php 244 2010-02-11 17:14:39Z shaun $
+ * @note		This Auth driver does not support roles nor auto-login.
  *
  * @package		Modules
  * @subpackage	Authentication
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Auth_Driver_File_Core implements Auth_Driver {

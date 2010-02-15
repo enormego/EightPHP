@@ -43,7 +43,7 @@
 
 	<p class="copyright">
 		Rendered in {execution_time} seconds, using {memory_usage} of memory<br />
-		Copyright ©2007–2008 twenty08
+		Copyright &copy;2009-<?=date("Y");?> <a href="http://eightphp.com">EightPHP</a>.
 	</p>
 
 </body>

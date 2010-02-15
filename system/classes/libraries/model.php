@@ -2,12 +2,10 @@
 /**
  * Model base class.
  *
- * @version		$Id: model.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 abstract class Model_Core {

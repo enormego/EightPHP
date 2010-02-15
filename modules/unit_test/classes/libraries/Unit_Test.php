@@ -2,12 +2,10 @@
 /**
  * Unit_Test library.
  *
- * @version		$Id: unit_test.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	UnitTest
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Unit_Test_Core {
@@ -216,30 +214,30 @@ class Unit_Test_Core {
 
 abstract class Unit_Test_Case {
 
-	public function assert_YES($value, $debug = nil) {
+	public function assert_true($value, $debug = nil) {
 		if($value != YES)
-			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_YES', gettype($value), var_export($value, YES)), $debug);
+			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_true', gettype($value), var_export($value, YES)), $debug);
 
 		return $this;
 	}
 
-	public function assert_YES_strict($value, $debug = nil) {
+	public function assert_true_strict($value, $debug = nil) {
 		if($value !== YES)
-			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_YES_strict', gettype($value), var_export($value, YES)), $debug);
+			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_true_strict', gettype($value), var_export($value, YES)), $debug);
 
 		return $this;
 	}
 
-	public function assert_NO($value, $debug = nil) {
+	public function assert_false($value, $debug = nil) {
 		if($value != NO)
-			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_NO', gettype($value), var_export($value, YES)), $debug);
+			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_false', gettype($value), var_export($value, YES)), $debug);
 
 		return $this;
 	}
 
-	public function assert_NO_strict($value, $debug = nil) {
+	public function assert_false_strict($value, $debug = nil) {
 		if($value !== NO)
-			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_NO_strict', gettype($value), var_export($value, YES)), $debug);
+			throw new Eight_Unit_Test_Exception(Eight::lang('unit_test.assert_false_strict', gettype($value), var_export($value, YES)), $debug);
 
 		return $this;
 	}

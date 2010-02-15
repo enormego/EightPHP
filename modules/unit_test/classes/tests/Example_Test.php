@@ -2,12 +2,10 @@
 /**
  * Example Test.
  *
- * @version		$Id: Example_Test.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	UnitTest
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Example_Test extends Unit_Test_Case {
@@ -22,16 +20,16 @@ class Example_Test extends Unit_Test_Case {
 	}
 
 	public function setup_test() {
-		$this->assert_YES_strict($this->setup_has_run);
+		$this->assert_true_strict($this->setup_has_run);
 	}
 
 	public function YES_NO_test() {
 		$var = YES;
 		$this
-			->assert_YES($var)
-			->assert_YES_strict($var)
-			->assert_NO(!$var)
-			->assert_NO_strict(!$var);
+			->assert_true($var)
+			->assert_true_strict($var)
+			->assert_false(!$var)
+			->assert_false_strict(!$var);
 	}
 
 	public function equal_same_test() {
@@ -82,7 +80,7 @@ class Example_Test extends Unit_Test_Case {
 		foreach(array(1, 5, 6, 12, 65, 128, 9562) as $var) {
 			// By supplying $var in the debug parameter,
 			// we can see on which number this test fails.
-			$this->assert_YES($var < 100, $var);
+			$this->assert_true($var < 100, $var);
 		}
 	}
 

@@ -2,12 +2,10 @@
 /**
  * Formation submit input library.
  *
- * @version		$Id: submit.php 13 2008-09-18 20:14:08Z shaun $
- *
  * @package		Modules
  * @subpackage	Formation
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Form_Validatedsubmit_Core extends Form_Input {

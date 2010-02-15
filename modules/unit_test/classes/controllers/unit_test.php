@@ -2,12 +2,10 @@
 /**
  * Unit_Test controller.
  *
- * @version		$Id: unit_test.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		Modules
  * @subpackage	UnitTest
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Controller_Unit_test extends Controller {

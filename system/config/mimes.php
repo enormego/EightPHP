@@ -5,11 +5,11 @@
  * A list of mime types. Our list is generally more complete and accurate than
  * the operating system MIME list.
  *
- * If there are any missing options, please create a ticket on our
+ * If there are any missing options, please create an issue on our
  * [issue tracker][ref-tic]. Be sure to give the filename and expected MIME type,
  * as well as any additional information you can provide.
  *
- * [ref-tic]: http://eight.twenty08.com/trac/newticket
+ * [ref-tic]: https://github.com/enormego/EightPHP/issues
  */
 $config = array
 (

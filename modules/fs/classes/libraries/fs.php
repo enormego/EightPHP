@@ -6,8 +6,8 @@
  *
  * @package		Modules
  * @subpackage	FileSystem
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class FS_Core {

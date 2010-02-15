@@ -2,12 +2,10 @@
 /**
  * XCache-based Cache driver.
  * 
- * @version		$Id: xcache.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries.Cache
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  * @TODO		Check if XCache cleans its own keys.
  */

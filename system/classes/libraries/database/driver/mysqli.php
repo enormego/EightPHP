@@ -2,12 +2,10 @@
 /**
  * Provides specific database items for MySQL.
  *
- * @version		$Id: mysqli.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
 */
 class Database_Driver_Mysqli extends Database_Driver_Mysql {
@@ -131,8 +129,8 @@ class Database_Driver_Mysqli extends Database_Driver_Mysql {
  *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Countable {
@@ -454,8 +452,8 @@ class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Cou
  * 
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Eight_Mysqli_Statement {

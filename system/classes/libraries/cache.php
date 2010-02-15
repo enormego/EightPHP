@@ -4,12 +4,10 @@
  * resources. Caches are identified by a unique string. Tagging of caches is
  * also supported, and caches can be found and deleted by id or tag.
  *
- * @version		$Id: cache.php 244 2010-02-11 17:14:39Z shaun $
- *
  * @package		System
  * @subpackage	Libraries.Cache
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Cache_Core {

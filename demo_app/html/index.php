@@ -3,16 +3,12 @@
  * This file acts as the "front controller" to your application. You can
  * configure your application, modules, and system directories here.
  * PHP error_reporting level may also be changed.
- *
- * @see http://eight.twenty08.com
  */
 
 /**
  * Define the website environment status. When this flag is set to true, some
  * module demonstration controllers will result in 404 errors. For more information
  * about this option, read the documentation about deploying Eight.
- *
- * @see http://docs.eight.twenty08.com/installation/deployment
  */
 define('IN_PRODUCTION', false);
 
@@ -71,7 +67,6 @@ define('EXT', '.php');
 //
 // DO not EDIT BELOW THIS LINE, UNLESS YOU FULLY UNDERSTAND THE IMPLICATIONS.
 // ----------------------------------------------------------------------------
-// $Id: index.php 1 2008-09-18 16:08:15Z shaun $
 //
 
 // Define the front controller name and docroot

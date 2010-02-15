@@ -2,12 +2,10 @@
 /**
  * Provides specific database items for PostgreSQL 8.1+.
  *
- * @version		$Id: pgsql.php 242 2010-02-10 23:06:09Z Shaun $
- *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Database_Driver_Pgsql extends Database_Driver {
@@ -280,8 +278,8 @@ ORDER BY pg_attribute.attnum';
  *
  * @package		System
  * @subpackage	Libraries.Database
- * @author		enormego
- * @copyright	(c) 2009-2010 enormego
+ * @author		EightPHP Development Team
+ * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
 class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable {
