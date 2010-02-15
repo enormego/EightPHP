@@ -27,8 +27,7 @@ class Swift_Authenticator_PLAIN implements Swift_Authenticator
    * @param Swift The instance of Swift this authenticator is used in
    * @return boolean
    */
-  public function isAuthenticated($user, $pass, Swift $swift)
-  {
+  public function isAuthenticated($user, $pass, Swift $swift) {
     try {
       //The authorization string uses ascii null as a separator (See RFC 2554)
       $credentials = base64_encode($user . chr(0) . $user . chr(0) . $pass);
@@ -43,8 +42,7 @@ class Swift_Authenticator_PLAIN implements Swift_Authenticator
    * Return the name of the AUTH extension this is for
    * @return string
    */
-  public function getAuthExtensionName()
-  {
+  public function getAuthExtensionName() {
     return "PLAIN";
   }
 }

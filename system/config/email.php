@@ -1,22 +1,18 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * SwiftMailer driver, used with the email helper.
+ * Swift Mailer driver, used with the email helper. By default, [native][ref-nat],
+ * [sendmail][ref-sdm], and [smtp][ref-smt] drivers are supported.
  *
- * @see http://www.swiftmailer.org/wikidocs/v3/connections/nativemail
- * @see http://www.swiftmailer.org/wikidocs/v3/connections/sendmail
- * @see http://www.swiftmailer.org/wikidocs/v3/connections/smtp
- *
- * Valid drivers are: native, sendmail, smtp
+ * [ref-nat]: http://www.swiftmailer.org/wikidocs/v3/connections/nativemail
+ * [ref-sdm]: http://www.swiftmailer.org/wikidocs/v3/connections/sendmail
+ * [ref-smt]: http://www.swiftmailer.org/wikidocs/v3/connections/smtp
  */
 $config['driver'] = 'native';
 
 /**
- * To use secure connections with SMTP, set "port" to 465 instead of 25.
- * To enable TLS, set "encryption" to "tls".
+ * Driver configuration options. Each driver has different settings. For more
+ * information, see the documentation about [sending email][ref-sne].
  *
- * Driver options:
- * @param   null    native: no options
- * @param   string  sendmail: executable path, with -bs or equivalent attached
- * @param   array   smtp: hostname, (username), (password), (port), (auth), (encryption)
+ * [ref-sne]: http://docs.eight.twenty08.com/book/email/sending
  */
-$config['options'] = NULL;
+$config['options'] = nil;

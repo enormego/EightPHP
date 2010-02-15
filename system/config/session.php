@@ -1,6 +1,7 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 /**
- * @package Session
+ * @package		System
+ * @subpackage	Libraries.Sessions
  *
  * Session driver name.
  */
@@ -9,13 +10,16 @@ $config['driver'] = 'cookie';
 /**
  * Session storage parameter, used by drivers.
  */
-$config['storage'] = '';
+$config['storage'] = array(
+								'group'		=>	'default',
+								'table'		=>	'sessions',
+							);
 
 /**
  * Session name.
  * It must contain only alphanumeric characters and underscores. At least one letter must be present.
  */
-$config['name'] = 'kohanasession';
+$config['name'] = 'eightsession';
 
 /**
  * Session parameters to validate: user_agent, ip_address, expiration.
@@ -25,9 +29,9 @@ $config['validate'] = array('user_agent');
 /**
  * Enable or disable session encryption.
  * Note: this has no effect on the native session driver.
- * Note: the cookie driver always encrypts session data. Set to TRUE for stronger encryption.
+ * Note: the cookie driver always encrypts session data. Set to YES for stronger encryption.
  */
-$config['encryption'] = FALSE;
+$config['encryption'] = NO;
 
 /**
  * Session lifetime. Number of seconds that each session will last.

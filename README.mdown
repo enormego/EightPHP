@@ -1,0 +1,11 @@
+# What is Eight?
+Eight is a PHP5 framework branched from [KohanaPHP](http://kohanaphp.com) that uses the Model View Controller architectural pattern. Kohana aims to be secure, lightweight, and easy to use. Eight takes that one step further by applying it to a real world production environment and making the necessary changes to make it faster to develop with, cleaner and more portable across multiple platforms and web servers (Apache/Lighttpd). Eight is maintained by the developers from [enormego](http://enormego.com) and encourages community contributions.
+
+# What Eight is not
+Eight is a not a rapidly changing framework.  Unlike other frameworks developer, we actually use Eight, so major restructuring is only used when absolutely necessary.  Eight was born due in large because other developers developed their frameworks for the sake of developing a framework, and not actually using it.  This unfortunately leads to to changing code "just because".  We wanted all of our projects to use the latest version of it's framework, without needing massive code overhauls every-time we pulled in a new commit.  With Eight, you're going to get an awesome framework that's actively maintained without needing to worry "are these commits going to make me spend the next week rewriting my app?".
+
+# Documentation
+You can view the online documentation of Eight by at [http://enormego.pbworks.com/FrontPage](http://enormego.pbworks.com/FrontPage).
+
+# License
+You can view the Eight license online at [http://github.com/enormego/EightPHP/blob/master/LICENSE.mdown](http://github.com/enormego/EightPHP/blob/master/LICENSE.mdown).

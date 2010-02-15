@@ -20,8 +20,7 @@ class Swift_Events_ListenerMapper
    * Get the mapped names (Class => Method(s))
    * @return array
    */
-  public static function getMap()
-  {
+  public static function getMap() {
     $map = array(
       "SendListener" => "sendPerformed",
       "BeforeSendListener" => "beforeSendPerformed",
@@ -38,8 +37,7 @@ class Swift_Events_ListenerMapper
    * Get the name of the method which needs running based upon the listener name
    * @return string
    */
-  public static function getNotifyMethod($listener)
-  {
+  public static function getNotifyMethod($listener) {
     $map = self::getMap();
     if (isset($map[$listener])) return $map[$listener];
     else return false;

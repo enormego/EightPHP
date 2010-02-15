@@ -1,11 +1,12 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Cache:SQLite
+ * @package		System
+ * @subpackage	Libraries.Cache
  */
 $config['schema'] =
 'CREATE TABLE caches(
 	id varchar(127) PRIMARY KEY,
-	hash char(40) NOT NULL,
+	hash char(40) NOT nil,
 	tags varchar(255),
 	expiration int,
 	cache blob);';

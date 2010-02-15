@@ -33,10 +33,8 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
   /**
    * Constructor
    */
-  public function __construct($connections=array())
-  {
-    foreach ($connections as $id => $conn)
-    {
+  public function __construct($connections=array()) {
+    foreach ($connections as $id => $conn) {
       $this->addConnection($connections[$id], $id);
     }
   }
@@ -45,11 +43,9 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * @param Swift_Connection An instance of the connection
    * @param string An ID to assign to the connection
    */
-  public function addConnection(Swift_Connection $connection, $id=null)
-  {
+  public function addConnection(Swift_Connection $connection, $id=null) {
     $log = Swift_LogContainer::getLog();
-    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING))
-    {
+    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING)) {
       $log->add("Adding new connection of type '" . get_class($connection) . "' to the multi-redundant connection.");
     }
     if ($id !== null) $this->connections[$id] = $connection;
@@ -60,10 +56,8 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * @return string
    * @throws Swift_ConnectionException Upon failure to read
    */
-  public function read()
-  {
-    if ($this->active === null)
-    {
+  public function read() {
+    if ($this->active === null) {
       throw new Swift_ConnectionException("None of the connections set have been started");
     }
     return $this->connections[$this->active]->read();
@@ -73,10 +67,8 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * @param string The command to send
    * @throws Swift_ConnectionException Upon failure to write
    */
-  public function write($command, $end="\r\n")
-  {
-    if ($this->active === null)
-    {
+  public function write($command, $end="\r\n") {
+    if ($this->active === null) {
       throw new Swift_ConnectionException("None of the connections set have been started");
     }
     return $this->connections[$this->active]->write($command, $end);
@@ -85,23 +77,17 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * Try to start the connection
    * @throws Swift_ConnectionException Upon failure to start
    */
-  public function start()
-  {
+  public function start() {
     $log = Swift_LogContainer::getLog();
     $fail_messages = array();
-    foreach ($this->connections as $id => $conn)
-    {
+    foreach ($this->connections as $id => $conn) {
       try {
         $this->connections[$id]->start();
-        if ($this->connections[$id]->isAlive())
-        {
+        if ($this->connections[$id]->isAlive()) {
           $this->active = $id;
           return true;
-        }
-        else
-        {
-          if ($log->hasLevel(Swift_Log::LOG_EVERYTHING))
-          {
+        } else {
+          if ($log->hasLevel(Swift_Log::LOG_EVERYTHING)) {
             $log->add("Connection (" . $id . ") failed. Will try next connection if available.");
           }
           throw new Swift_ConnectionException("The connection started but reported that it was not active");
@@ -117,8 +103,7 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * Try to close the connection
    * @throws Swift_ConnectionException Upon failure to close
    */
-  public function stop()
-  {
+  public function stop() {
     if ($this->active !== null) $this->connections[$this->active]->stop();
     $this->active = null;
   }
@@ -126,36 +111,31 @@ class Swift_Connection_Multi extends Swift_ConnectionBase
    * Check if the current connection is alive
    * @return boolean
    */
-  public function isAlive()
-  {
+  public function isAlive() {
     return (($this->active !== null) && $this->connections[$this->active]->isAlive());
   }
   /**
    * Call the current connection's postConnect() method
    */
-  public function postConnect(Swift $instance)
-  {
+  public function postConnect(Swift $instance) {
     $this->connections[$this->active]->postConnect($instance);
   }
   /**
    * Call the current connection's setExtension() method
    */
-  public function setExtension($extension, $attributes=array())
-  {
+  public function setExtension($extension, $attributes=array()) {
     $this->connections[$this->active]->setExtension($extension, $attributes);
   }
   /**
    * Call the current connection's hasExtension() method
    */
-  public function hasExtension($name)
-  {
+  public function hasExtension($name) {
     return $this->connections[$this->active]->hasExtension($name);
   }
   /**
    * Call the current connection's getAttributes() method
    */
-  public function getAttributes($name)
-  {
+  public function getAttributes($name) {
     return $this->connections[$this->active]->getAttributes($name);
   }
 }

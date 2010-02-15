@@ -1,0 +1,55 @@
+<?php
+
+$lang = array
+(
+	// Two letter days
+	'su'        => 'dg',
+	'mo'        => 'dl',
+	'tu'        => 'dm',
+	'we'        => 'dc',
+	'th'        => 'dj',
+	'fr'        => 'dv',
+	'sa'        => 'ds',
+	// Short day names
+	'sun'       => 'diu',
+	'mon'       => 'dil',
+	'tue'       => 'dim',
+	'wed'       => 'dic',
+	'thu'       => 'dij',
+	'fri'       => 'div',
+	'sat'       => 'dis',
+	// Long day names
+	'sunday'    => 'diumenge',
+	'monday'    => 'dilluns',
+	'tuesday'   => 'dimarts',
+	'wednesday' => 'dimecres',
+	'thursday'  => 'dijous',
+	'friday'    => 'divendres',
+	'saturday'  => 'dissabte',
+	// Short month names
+	'jan'       => 'gen',
+	'feb'       => 'geb',
+	'mar'       => 'mar',
+	'apr'       => 'abr',
+	'may'       => 'mai',
+	'jun'       => 'jun',
+	'jul'       => 'jul',
+	'aug'       => 'ago',
+	'sep'       => 'set',
+	'oct'       => 'oct',
+	'nov'       => 'nov',
+	'dec'       => 'des',
+	// Long month names
+	'january'   => 'gener',
+	'february'  => 'febrer',
+	'march'     => 'març',
+	'april'     => 'abril',
+	'mayl'      => 'maig',
+	'june'      => 'juny',
+	'july'      => 'juliol',
+	'august'    => 'agost',
+	'september' => 'setembre',
+	'october'   => 'octubre',
+	'november'  => 'novembre',
+	'december'  => 'desembre',
+);

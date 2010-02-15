@@ -1,10 +1,11 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Database
+ * @package		System
+ * @subpackage	Libraries.Database
  *
  * SQL data types. If there are missing values, please report them:
  *
- * @link  http://trac.kohanaphp.com/newticket
+ * @link  http://trac.eight.twenty08.com/newticket
  */
 $config = array
 (
@@ -20,11 +21,11 @@ $config = array
 	'date'         => array('type' => 'string', 'format' => '0000-00-00'),
 	'year'         => array('type' => 'string', 'format' => '0000'),
 	'datetime'     => array('type' => 'string', 'format' => '0000-00-00 00:00:00'),
-	'char'         => array('type' => 'string', 'exact' => TRUE),
-	'binary'       => array('type' => 'string', 'binary' => TRUE, 'exact' => TRUE),
+	'char'         => array('type' => 'string', 'exact' => YES),
+	'binary'       => array('type' => 'string', 'binary' => YES, 'exact' => YES),
 	'varchar'      => array('type' => 'string'),
-	'varbinary'    => array('type' => 'string', 'binary' => TRUE),
-	'blob'         => array('type' => 'string', 'binary' => TRUE),
+	'varbinary'    => array('type' => 'string', 'binary' => YES),
+	'blob'         => array('type' => 'string', 'binary' => YES),
 	'text'         => array('type' => 'string')
 );
 

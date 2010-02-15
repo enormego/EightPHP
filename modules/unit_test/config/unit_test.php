@@ -1,6 +1,10 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Unit_Test
+ * @package		Modules
+ * @subpackage	UnitTest
+ * @author		enormego
+ * @copyright	(c) 2009-2010 enormego
+ * @license		http://license.eightphp.com
  *
  * Default paths to scan for tests.
  */
@@ -10,6 +14,6 @@ $config['paths'] = array
 );
 
 /**
- * Set to TRUE if you want to hide passed tests from the report.
+ * Set to YES if you want to hide passed tests from the report.
  */
-$config['hide_passed'] = FALSE;
+$config['hide_passed'] = NO;

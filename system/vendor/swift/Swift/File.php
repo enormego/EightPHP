@@ -46,8 +46,7 @@ class Swift_File
    * @param string The path the the file
    * @throws Swift_FileException If the file cannot be found
    */
-  public function __construct($path)
-  {
+  public function __construct($path) {
     $this->setPath($path);
     $this->magic_quotes = get_magic_quotes_runtime();
   }
@@ -56,10 +55,8 @@ class Swift_File
    * @param string The path to the file
    * @throws Swift_FileException If the file cannot be found
    */
-  public function setPath($path)
-  {
-    if (!file_exists($path))
-    {
+  public function setPath($path) {
+    if (!file_exists($path)) {
       throw new Swift_FileException("No such file '" . $path ."'");
     }
     $this->handle = null;
@@ -71,22 +68,17 @@ class Swift_File
    * Get the path to the file
    * @return string
    */
-  public function getPath()
-  {
+  public function getPath() {
     return $this->path;
   }
   /**
    * Get the name of the file without it's full path
    * @return string
    */
-  public function getFileName()
-  {
-    if ($this->name !== null)
-    {
+  public function getFileName() {
+    if ($this->name !== null) {
       return $this->name;
-    }
-    else
-    {
+    } else {
       return basename($this->getPath());
     }
   }
@@ -94,12 +86,9 @@ class Swift_File
    * Establish an open file handle on the file if the file is not yet opened
    * @throws Swift_FileException If the file cannot be opened for reading
    */
-  protected function createHandle()
-  {
-    if ($this->handle === null)
-    {
-      if (!$this->handle = fopen($this->path, "rb"))
-      {
+  protected function createHandle() {
+    if ($this->handle === null) {
+      if (!$this->handle = fopen($this->path, "rb")) {
         throw new Swift_FileException("Unable to open file '" . $this->path . " for reading.  Check the file permissions.");
       }
     }
@@ -109,8 +98,7 @@ class Swift_File
    * @return boolean
    * @throws Swift_FileException If the file cannot be read
    */
-  public function EOF()
-  {
+  public function EOF() {
     $this->createHandle();
     return feof($this->handle);
   }
@@ -120,8 +108,7 @@ class Swift_File
    * @return string
    * @throws Swift_FileException If the file cannot be read
    */
-  public function getByte()
-  {
+  public function getByte() {
     $this->createHandle();
     return $this->read(1);
   }
@@ -131,15 +118,12 @@ class Swift_File
    * @return string
    * @throws Swift_FileException If the file cannot be read
    */
-  public function readln()
-  {
+  public function readln() {
     set_magic_quotes_runtime(0);
     $this->createHandle();
-    if (!$this->EOF())
-    {
+    if (!$this->EOF()) {
       $ret = fgets($this->handle);
-    }
-    else $ret = false;
+    } else $ret = false;
     
     set_magic_quotes_runtime($this->magic_quotes);
     
@@ -150,8 +134,7 @@ class Swift_File
    * @return string
    * @throws Swift_FileException If the file cannot be read
    */
-  public function readFull()
-  {
+  public function readFull() {
     $ret = "";
     set_magic_quotes_runtime(0);
     while (false !== $chunk = $this->read(8192, false)) $ret .= $chunk;
@@ -164,15 +147,12 @@ class Swift_File
    * @return string
    * @throws Swift_FileException If the file cannot be read
    */
-  public function read($bytes, $unquote=true)
-  {
+  public function read($bytes, $unquote=true) {
     if ($unquote) set_magic_quotes_runtime(0);
     $this->createHandle();
-    if (!$this->EOF())
-    {
+    if (!$this->EOF()) {
       $ret = fread($this->handle, $bytes);
-    }
-    else $ret = false;
+    } else $ret = false;
     
     if ($unquote) set_magic_quotes_runtime($this->magic_quotes);
     
@@ -182,16 +162,14 @@ class Swift_File
    * Get the size of the file in bytes
    * @return int
    */
-  public function length()
-  {
+  public function length() {
     return filesize($this->path);
   }
   /**
    * Close the open handle on the file
    * @throws Swift_FileException If the file cannot be read
    */
-  public function close()
-  {
+  public function close() {
     $this->createHandle();
     fclose($this->handle);
     $this->handle = null;
@@ -199,8 +177,7 @@ class Swift_File
   /**
    * Reset the file pointer back to zero
    */
-  public function reset()
-  {
+  public function reset() {
     $this->createHandle();
     fseek($this->handle, 0);
   }
@@ -208,8 +185,7 @@ class Swift_File
    * Destructor
    * Closes the file
    */
-  public function __destruct()
-  {
+  public function __destruct() {
     if ($this->handle !== null) $this->close();
   }
 }

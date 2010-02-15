@@ -1,0 +1,514 @@
+<?php
+/**
+ * Form helper class.
+ *
+ * @version		$Id: form.php 242 2010-02-10 23:06:09Z Shaun $
+ *
+ * @package		System
+ * @subpackage	Helpers
+ * @author		enormego
+ * @copyright	(c) 2009-2010 enormego
+ * @license		http://license.eightphp.com
+ */
+class form_Core {
+
+	/**
+	 * Generates an opening HTML form tag.
+	 *
+	 * @param   string  form action attribute
+	 * @param   array   extra attributes
+	 * @param   array   hidden fields to be created immediately after the form tag
+	 * @return  string
+	 */
+	public static function open($action = nil, $attr = array(), $hidden = nil) {
+		// Make sure that the method is always set
+		empty($attr['method']) and $attr['method'] = 'post';
+
+		if($attr['method'] !== 'post' and $attr['method'] !== 'get') {
+			// If the method is invalid, use post
+			$attr['method'] = 'post';
+		}
+
+		if($action === nil) {
+			// Use the current URL as the default action
+			$action = url::site(Router::$complete_uri);
+		} elseif(strpos($action, '://') === NO) {
+			// Make the action URI into a URL
+			$action = url::site($action);
+		}
+
+		// Set action
+		$attr['action'] = $action;
+
+		// Form opening tag
+		$form = '<form'.form::attributes($attr).'>'."\n";
+
+		// Add hidden fields immediate after opening tag
+		empty($hidden) or $form .= form::hidden($hidden);
+
+		return $form;
+	}
+
+	/**
+	 * Generates an opening HTML form tag that can be used for uploading files.
+	 *
+	 * @param   string  form action attribute
+	 * @param   array   extra attributes
+	 * @param   array   hidden fields to be created immediately after the form tag
+	 * @return  string
+	 */
+	public static function open_multipart($action = nil, $attr = array(), $hidden = array()) {
+		// Set multi-part form type
+		$attr['enctype'] = 'multipart/form-data';
+
+		return form::open($action, $attr, $hidden);
+	}
+
+	/**
+	 * Generates a fieldset opening tag.
+	 *
+	 * @param   array   html attributes
+	 * @param   string  a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function open_fieldset($data = nil, $extra = '') {
+		return '<fieldset'.html::attributes((array) $data).' '.$extra.'>'."\n";
+	}
+
+	/**
+	 * Generates a fieldset closing tag.
+	 *
+	 * @return  string
+	 */
+	public static function close_fieldset() {
+		return '</fieldset>'."\n";
+	}
+
+	/**
+	 * Generates a legend tag for use with a fieldset.
+	 *
+	 * @param   string  legend text
+	 * @param   array   HTML attributes
+	 * @param   string  a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function legend($text = '', $data = nil, $extra = '') {
+		return '<legend'.form::attributes((array) $data).' '.$extra.'>'.$text.'</legend>'."\n";
+	}
+
+	/**
+	 * Generates hidden form fields.
+	 * You can pass a simple key/value string or an associative array with multiple values.
+	 *
+	 * @param   string|array  input name (string) or key/value pairs (array)
+	 * @param   string        input value, if using an input name
+	 * @return  string
+	 */
+	public static function hidden($data, $value = '') {
+		if(!is_array($data)) {
+			$data = array
+			(
+				$data => $value
+			);
+		}
+
+		$input = '';
+		foreach($data as $name => $value) {
+			$attr = array
+			(
+				'type'  => 'hidden',
+				'name'  => $name,
+				'value' => $value
+			);
+
+			$input .= form::input($attr)."\n";
+		}
+
+		return $input;
+	}
+
+	/**
+	 * Creates an HTML form input tag. Defaults to a text type.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function input($data, $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		if(isset($data['type'])) {
+			if($data['type'] == 'dropdown' OR $data['type'] == 'select') {
+				// Type is not needed
+				unset($data['type']);
+
+				return form::dropdown($data);
+			} elseif($data['type'] == 'textarea') {
+				// Type is not needed
+				unset($data['type']);
+
+				return form::textarea($data);
+			}
+		}
+
+		// Type and value are required attributes
+		$data += array
+		(
+			'type'  => 'text',
+			'value' => $value,
+			'class'	=>	$data['type'],
+		);
+
+		// For safe form data
+		$data['value'] = html::specialchars($data['value']);
+
+		return '<input'.form::attributes($data).' '.$extra.' />';
+	}
+
+	/**
+	 * Creates a HTML form password input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function password($data, $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		$data['type'] = 'password';
+
+		return form::input($data, $value, $extra);
+	}
+
+	/**
+	 * Creates an HTML form upload input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function upload($data, $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		$data['type'] = 'file';
+
+		return form::input($data, $value, $extra);
+	}
+
+	/**
+	 * Creates an HTML form textarea tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function textarea($data, $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		// Use the value from $data if possible, or use $value
+		$value = isset($data['value']) ? $data['value'] : $value;
+
+		// Value is not part of the attributes
+		unset($data['value']);
+		
+		return '<textarea'.form::attributes($data, 'textarea').' '.$extra.'>'.html::specialchars($value).'</textarea>';
+	}
+
+	/**
+	 * Creates an HTML form select tag, or "dropdown menu".
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   array         select options, when using a name
+	 * @param   string        option key that should be selected by default
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function dropdown($data, $options = nil, $selected = nil, $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		} else {
+			if(isset($data['options'])) {
+				// Use data options
+				$options = $data['options'];
+			}
+
+			if(isset($data['selected'])) {
+				// Use data selected
+				$selected = $data['selected'];
+			}
+
+			if(isset($data['extra'])) {
+				// Use data extra
+				$extra = $data['extra'];
+			}
+		}
+
+		// Selected value should always be a string
+		$selected = (string) $selected;
+
+		$input = '<select'.form::attributes($data, 'select').' '.$extra.'>'."\n";
+		foreach((array) $options as $key => $val) {
+			// Key should always be a string
+			$key = (string) $key;
+
+			if(is_array($val)) {
+				$input .= '<optgroup label="'.$key.'">'."\n";
+				foreach($val as $inner_key => $inner_val) {
+					// Inner key should always be a string
+					$inner_key = (string) $inner_key;
+
+					$sel = ($selected === $inner_key) ? ' selected="selected"' : '';
+					$input .= '<option value="'.$inner_key.'"'.$sel.'>'.$inner_val.'</option>'."\n";
+				}
+				$input .= '</optgroup>'."\n";
+			} else {
+				$sel = ($selected === $key) ? ' selected="selected"' : '';
+				$input .= '<option value="'.$key.'"'.$sel.'>'.$val.'</option>'."\n";
+			}
+		}
+		$input .= '</select>';
+
+		return $input;
+	}
+
+	/**
+	 * Creates an HTML form checkbox input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   boolean       make the checkbox checked by default
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function checkbox($data, $value = '', $checked = NO, $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		$data['type'] = 'checkbox';
+
+		if($checked == YES OR (isset($data['checked']) and $data['checked'] == YES)) {
+			$data['checked'] = 'checked';
+		} else {
+			unset($data['checked']);
+		}
+
+		return form::input($data, $value, $extra);
+	}
+
+	/**
+	 * Creates an HTML form radio input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   boolean       make the radio selected by default
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function radio($data = '', $value = '', $checked = NO, $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		$data['type'] = 'radio';
+		
+		if($checked == YES OR (isset($data['checked']) and $data['checked'] == YES)) {
+			$data['checked'] = 'checked';
+		} else {
+			unset($data['checked']);
+		}
+
+		return form::input($data, $value, $extra);
+	}
+
+	/**
+	 * Creates an HTML form submit input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function submit($data = '', $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		if(empty($data['name'])) {
+			// Remove the name if it is empty
+			unset($data['name']);
+		}
+
+		$data['type'] = 'submit';
+
+		return form::input($data, $value, $extra);
+	}
+	
+	
+	/**
+	 * Creates an HTML form reset input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function reset($data = '', $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		if(empty($data['name'])) {
+			// Remove the name if it is empty
+			unset($data['name']);
+		}
+
+		$data['type'] = 'reset';
+
+		return form::input($data, $value, $extra);
+	}
+	
+
+	/**
+	 * Creates an HTML form button input tag.
+	 *
+	 * @param   string|array  input name or an array of HTML attributes
+	 * @param   string        input value, when using a name
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function button($data = '', $value = '', $extra = '') {
+		if(!is_array($data)) {
+			$data = array('name' => $data);
+		}
+
+		if(empty($data['name'])) {
+			// Remove the name if it is empty
+			unset($data['name']);
+		}
+
+		if(isset($data['value']) and empty($value)) {
+			$value = arr::remove('value', $data);
+		}
+
+		return '<button'.form::attributes($data, 'button').' '.$extra.'>'.$value.'</button>';
+	}
+
+	/**
+	 * Closes an open form tag.
+	 *
+	 * @param   string  string to be attached after the closing tag
+	 * @return  string
+	 */
+	public static function close($extra = '') {
+		return '</form>'."\n".$extra;
+	}
+
+	/**
+	 * Creates an HTML form label tag.
+	 *
+	 * @param   string|array  label "for" name or an array of HTML attributes
+	 * @param   string        label text or HTML
+	 * @param   string        a string to be attached to the end of the attributes
+	 * @return  string
+	 */
+	public static function label($data = '', $text = '', $extra = '') {
+		if(!is_array($data)) {
+			if(strpos($data, '[') !== NO) {
+				$data = preg_replace('/\[.*\]/', '', $data);
+			}
+
+			$data = empty($data) ? array() : array('for' => $data);
+		}
+
+		return '<label'.form::attributes($data).' '.$extra.'>'.$text.'</label>';
+	}
+
+	/**
+	 * Sorts a key/value array of HTML attributes, putting form attributes first,
+	 * and returns an attribute string.
+	 *
+	 * @param   array   HTML attributes array
+	 * @return  string
+	 */
+	public static function attributes($attr, $type = nil) {
+		if(empty($attr))
+			return '';
+
+		if(isset($attr['name']) and empty($attr['id']) and strpos($attr['name'], '[') === NO) {
+			if($type === nil and!empty($attr['type'])) {
+				// Set the type by the attributes
+				$type = $attr['type'];
+			}
+
+			switch ($type) {
+				case 'text':
+				case 'textarea':
+				case 'password':
+				case 'select':
+				case 'checkbox':
+				case 'file':
+				case 'image':
+				case 'button':
+				case 'submit':
+					// Only specific types of inputs use name to id matching
+					$attr['id'] = $attr['name'];
+				break;
+			}
+		}
+
+		$order = array
+		(
+			'action',
+			'method',
+			'type',
+			'id',
+			'name',
+			'value',
+			'src',
+			'size',
+			'maxlength',
+			'rows',
+			'cols',
+			'accept',
+			'tabindex',
+			'accesskey',
+			'align',
+			'alt',
+			'title',
+			'class',
+			'style',
+			'selected',
+			'checked',
+			'readonly',
+			'disabled'
+		);
+
+		$sorted = array();
+		foreach($order as $key) {
+			if(isset($attr[$key])) {
+				// Move the attribute to the sorted array
+				$sorted[$key] = $attr[$key];
+
+				// Remove the attribute from unsorted array
+				unset($attr[$key]);
+			}
+		}
+
+		// Combine the sorted and unsorted attributes and create an HTML string
+		return html::attributes(array_merge($sorted, $attr));
+	}
+
+} // End form

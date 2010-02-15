@@ -28,18 +28,15 @@ class Swift_LogContainer
    * Registers the logger.
    * @param Swift_Log The log
    */
-  public static function setLog(Swift_Log $log)
-  {
+  public static function setLog(Swift_Log $log) {
     self::$log = $log;
   }
   /**
    * Returns the current instance of the log, or lazy-loads the default one.
    * @return Swift_Log
    */
-  public static function getLog()
-  {
-    if (self::$log === null)
-    {
+  public static function getLog() {
+    if (self::$log === null) {
       self::setLog(new Swift_Log_DefaultLog());
     }
     return self::$log;

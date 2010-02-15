@@ -1,4 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
+
 /**
  * Auth library configuration. By default, Auth will use the controller
  * database connection. If Database is not loaded, it will use use the default
@@ -9,9 +10,9 @@
  */
 
 /**
- * Driver to use for authentication. By default, LDAP and ORM are available.
+ * Driver to use for authentication. By default, File and Database are available.
  */
-$config['driver'] = 'ORM';
+$config['driver'] = 'Database';
 
 /**
  * Type of hash to use for passwords. Any algorithm supported by the hash function
@@ -20,7 +21,7 @@ $config['driver'] = 'ORM';
  * @see http://php.net/hash
  * @see http://php.net/hash_algos
  */
-$config['hash_method'] = 'sha1';
+$config['hash_method'] = 'md5';
 
 /**
  * Defines the hash offsets to insert the salt at. The password hash length
@@ -37,7 +38,6 @@ $config['lifetime'] = 1209600;
 /**
  * Usernames (keys) and hashed passwords (values) used by the File driver.
  */
-$config['users'] = array
-(
-	// 'admin' => '4ccd0e25c2a7ffefd4b92ecbbd4781752920145f826a881073',
+$config['users'] = array(
+							// 'admin' => '4ccd0e25c2a7ffefd4b92ecbbd4781752920145f826a881073',
 );

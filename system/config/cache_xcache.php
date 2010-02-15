@@ -1,12 +1,13 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Cache:Xcache
+ * @package		System
+ * @subpackage	Libraries.Cache
  *
  * Xcache administrator username.
  */
-$config['PHP_AUTH_USER'] = 'kohana';
+$config['PHP_AUTH_USER'] = 'eight';
 
 /**
  * Xcache administrator password.
  */
-$config['PHP_AUTH_PW'] = 'kohana';
+$config['PHP_AUTH_PW'] = 'eight';

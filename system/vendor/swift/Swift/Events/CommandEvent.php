@@ -33,8 +33,7 @@ class Swift_Events_CommandEvent extends Swift_Events
    * @param string The command being sent
    * @param int The expected code
    */
-  public function __construct($string, $code=null)
-  {
+  public function __construct($string, $code=null) {
     $this->setString($string);
     $this->setCode($code);
   }
@@ -42,24 +41,21 @@ class Swift_Events_CommandEvent extends Swift_Events
    * Set the command being sent (without CRLF)
    * @param string The command being sent
    */
-  public function setString($string)
-  {
+  public function setString($string) {
     $this->string = (string) $string;
   }
   /**
    * Get the command being sent
    * @return string
    */
-  public function getString()
-  {
+  public function getString() {
     return $this->string;
   }
   /**
    * Set response code which is expected
    * @param int The response code
    */
-  public function setCode($code)
-  {
+  public function setCode($code) {
     if ($code === null) $this->code = null;
     else $this->code = (int) $code;
   }
@@ -67,8 +63,7 @@ class Swift_Events_CommandEvent extends Swift_Events
    * Get the expected response code
    * @return int
    */
-  public function getCode()
-  {
+  public function getCode() {
     return $this->code;
   }
 }

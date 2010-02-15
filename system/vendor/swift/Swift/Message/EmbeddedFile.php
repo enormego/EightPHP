@@ -33,12 +33,10 @@ class Swift_Message_EmbeddedFile extends Swift_Message_Attachment
    * @param string The Content-ID to use, optional
    * @param string The encoding format to use, optional
    */
-  public function __construct($data=null, $name=null, $type="application/octet-stream", $cid=null, $encoding="base64")
-  {
+  public function __construct($data=null, $name=null, $type="application/octet-stream", $cid=null, $encoding="base64") {
     parent::__construct($data, $name, $type, $encoding, "inline");
     
-    if ($cid === null)
-    {
+    if ($cid === null) {
       $cid = self::generateFileName("swift-" . uniqid(time()) . ".");
       $cid = urlencode($cid) . "@" . (!empty($_SERVER["SERVER_NAME"]) ? $_SERVER["SERVER_NAME"] : "swift");
     }
@@ -52,16 +50,14 @@ class Swift_Message_EmbeddedFile extends Swift_Message_Attachment
    * Get the level in the MIME hierarchy at which this section should appear.
    * @return string
    */
-  public function getLevel()
-  {
+  public function getLevel() {
     return Swift_Message_Mime::LEVEL_RELATED;
   }
   /**
    * Set the Content-Id to use
    * @param string The content-id
    */
-  public function setContentId($id)
-  {
+  public function setContentId($id) {
     $id = (string) $id;
     $this->cid = $id;
     $this->headers->set("Content-ID", "<" . $id . ">");
@@ -70,8 +66,7 @@ class Swift_Message_EmbeddedFile extends Swift_Message_Attachment
    * Get the content-id of this file
    * @return string
    */
-  public function getContentId()
-  {
+  public function getContentId() {
     return $this->cid;
   }
 }

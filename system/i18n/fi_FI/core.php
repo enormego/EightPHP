@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
-	'there_can_be_only_one' => 'Yhdellä sivulla voi olla vain yksi Kohana-instanssi.',
+	'there_can_be_only_one' => 'Yhdellä sivulla voi olla vain yksi Eight-instanssi.',
 	'uncaught_exception'    => 'Käsittelemätön virhe %s: %s tiedostossa %s rivillä %s',
 	'invalid_method'        => 'Tuntematon metodi %s kutsuttu %s',
 	'invalid_property'      => 'Ominaisuutta %s ei löydy luokasta %s.',
@@ -11,9 +11,9 @@ $lang = array
 	'invalid_filetype'      => 'Pyydetty tiedostotyyppi, .%s, ei ole sallittu näkymäasetuksissa',
 	'view_set_filename'     => 'Anna näkymän tiedostonimi ennen kuin kutsut render',
 	'no_default_route'      => 'Anna oletusreititys tiedostossa config/routes.php',
-	'no_controller'         => 'Kohana ei pystynyt päätellä kontrolleria käsittelemään pyyntöä: %s',
+	'no_controller'         => 'Eight ei pystynyt päätellä kontrolleria käsittelemään pyyntöä: %s',
 	'page_not_found'        => 'Pyytämääsi sivua, %s, ei löydy.',
-	'stats_footer'          => 'Ladattu {execution_time} sekunnissa, käyttäen {memory_usage} muistia. Loi Kohana v{kohana_version}.',
+	'stats_footer'          => 'Ladattu {execution_time} sekunnissa, käyttäen {memory_usage} muistia. Loi Eight v{eight_version}.',
 	'error_file_line'       => '<tt>%s <strong>[%s]:</strong></tt>',
 	'stack_trace'           => 'Stack Trace',
 	'generic_error'         => 'Pyyntä ei voitu suorittaa',

@@ -33,16 +33,14 @@ class Swift_Cache_JointOutputStream extends Swift_Cache_OutputStream
    * Ctor
    * @param array An array of Swift_Cache_OutputStream instances
    */
-  public function __construct($streams=array())
-  {
+  public function __construct($streams=array()) {
     $this->streams = $streams;
   }
   /**
    * Add a new output stream
    * @param Swift_Cache_OutputStream
    */
-  public function addStream(Swift_Cache_OutputStream $stream)
-  {
+  public function addStream(Swift_Cache_OutputStream $stream) {
     $this->streams[] = $stream;
   }
   /**
@@ -50,22 +48,15 @@ class Swift_Cache_JointOutputStream extends Swift_Cache_OutputStream
    * @param int The number of bytes to read from each stream
    * @return string
    */
-  public function read($size=null)
-  {
+  public function read($size=null) {
     $ret = $this->streams[$this->pointer]->read($size);
-    if ($ret !== false)
-    {
+    if ($ret !== false) {
       return $ret;
-    }
-    else
-    {
-      if (isset($this->streams[($this->pointer+1)]))
-      {
+    } else {
+      if (isset($this->streams[($this->pointer+1)])) {
         $this->pointer++;
         return $this->read($size);
-      }
-      else
-      {
+      } else {
         $this->pointer = 0;
         return false;
       }

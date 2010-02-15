@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
-	'there_can_be_only_one' => 'Il ne peut y avoir qu\'une instance de Kohana par page.',
+	'there_can_be_only_one' => 'Il ne peut y avoir qu\'une instance de Eight par page.',
 	'uncaught_exception'    => 'Uncaught %s: %s dans le fichier %s à la ligne %s',
 	'invalid_method'        => 'La méthode %s appelée dans %s est invalide.',
 	'invalid_property'      => 'La propriété %s n\'existe pas dans la classe %s.',	
@@ -10,9 +10,9 @@ $lang = array
 	'resource_not_found'    => 'La ressource %s, %s, n\'a pas été trouvée.',
 	'invalid_filetype'      => 'Le type de ficher demandé, .%s, n\'est pas autorisé dans le fichier de configuration des vues (view configuration file).',
 	'no_default_route'      => 'Aucune route par défaut n\a été définie. Veuillez la spécifer dans le fichier config/routes.php.',
-	'no_controller'         => 'Kohana n\'a pu déterminer aucun controlleur pour effectuer la requête: %s.',
+	'no_controller'         => 'Eight n\'a pu déterminer aucun controlleur pour effectuer la requête: %s.',
 	'page_not_found'        => 'La page demandée %s n\'a pu être trouvée.',
-	'stats_footer'          => 'Chargé en {execution_time} secondes, {memory_usage} de mémoire utilisée. Généré par Kohana v{kohana_version}.',
+	'stats_footer'          => 'Chargé en {execution_time} secondes, {memory_usage} de mémoire utilisée. Généré par Eight v{eight_version}.',
 	'error_file_line'       => '%s <strong>[%s]:</strong>',
 	'stack_trace'           => 'Stack Trace',
 	'generic_error'         => 'Impossible de terminer la requête.',

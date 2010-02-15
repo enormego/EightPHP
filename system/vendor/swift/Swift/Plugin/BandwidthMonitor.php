@@ -35,8 +35,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Part of the interface which is notified after a command is sent.
    * @param Swift_Events_CommandEvent
    */
-  public function commandSent(Swift_Events_CommandEvent $e)
-  {
+  public function commandSent(Swift_Events_CommandEvent $e) {
     $code = $e->getCode();
     $add = 0;
     if ($code != -1) $add = 2;
@@ -47,8 +46,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Part of the interface which is notified when a response is received
    * @param Swift_Events_ResponseEvent
    */
-  public function responseReceived(Swift_Events_ResponseEvent $e)
-  {
+  public function responseReceived(Swift_Events_ResponseEvent $e) {
     $bytes = strlen($e->getString()) + 2;
     $this->addBytesIn($bytes);
   }
@@ -56,8 +54,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Add some bytes to the running totals for incoming bandwidth
    * @param int Bytes in
    */
-  public function addBytesIn($num)
-  {
+  public function addBytesIn($num) {
     $num = abs((int)$num);
     $this->setBytesIn($this->getBytesIn() + $num);
   }
@@ -65,8 +62,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Add some bytes to the running totals for outgoing bandwidth
    * @param int Bytes out
    */
-  public function addBytesOut($num)
-  {
+  public function addBytesOut($num) {
     $num = abs((int)$num);
     $this->setBytesOut($this->getBytesOut() + $num);
   }
@@ -74,16 +70,14 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Get the total number of bytes received
    * @return int
    */
-  public function getBytesIn()
-  {
+  public function getBytesIn() {
     return $this->in;
   }
   /**
    * Get the total number of bytes sent
    * @return int
    */
-  public function getBytesOut()
-  {
+  public function getBytesOut() {
     return $this->out;
   }
   /**
@@ -91,8 +85,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Can be used to reset the counters at runtime.
    * @param int The bytes in
    */
-  public function setBytesIn($num)
-  {
+  public function setBytesIn($num) {
     $this->in = abs((int)$num);
   }
   /**
@@ -100,8 +93,7 @@ class Swift_Plugin_BandwidthMonitor implements Swift_Events_CommandListener, Swi
    * Can be used to reset the counters at runtime.
    * @param int The bytes out
    */
-  public function setBytesOut($num)
-  {
+  public function setBytesOut($num) {
     $this->out = abs((int)$num);
   }
 }

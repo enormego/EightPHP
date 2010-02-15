@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No se permite acceder directamente a este archivo.');
+<?php
 
 $lang = array
 (
-	'there_can_be_only_one' => 'Solo puede haber una instancia de Kohana por cada página.',
+	'there_can_be_only_one' => 'Solo puede haber una instancia de Eight por cada página.',
 	'uncaught_exception'	=> '%s no capturada: %s en el archivo %s, linea %s',
 	'invalid_method'		=> 'Método inválido %s llamado en %s.',
 	'invalid_property'		=> 'La propiedad %s no existe en la clase %s.',
@@ -11,9 +11,9 @@ $lang = array
 	'invalid_filetype'		=> 'El tipo de archivo solicitado, .%s, no esta permitido en la configuración de tus vistas.',
 	'view_set_filename'		=> 'Tienes que definir el nombre de la vista antes de llamar al metodo render',
 	'no_default_route'		=> 'Por favor, especifica la ruta en config/routes.php.',
-	'no_controller'			=> 'Kohana no pudo determinar un controlador para procesar: %s',
+	'no_controller'			=> 'Eight no pudo determinar un controlador para procesar: %s',
 	'page_not_found'		=> 'La página que solicitase, %s, no se encuentra.',
-	'stats_footer'			=> 'Cargado en {execution_time} segundos, usando {memory_usage} de memoria. Generado con Kohana v{kohana_version}.',
+	'stats_footer'			=> 'Cargado en {execution_time} segundos, usando {memory_usage} de memoria. Generado con Eight v{eight_version}.',
 	'error_file_line'		=> '<tt>%s <strong>[%s]:</strong></tt>',
 	'stack_trace'			=> 'Stack Trace',
 	'generic_error'			=> 'Imposible completar la solicitud',

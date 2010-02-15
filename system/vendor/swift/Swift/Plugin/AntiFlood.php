@@ -40,8 +40,7 @@ class Swift_Plugin_AntiFlood implements Swift_Events_SendListener
    * @param int Number of emails to send before re-connecting
    * @param int The timeout in seconds between connections
    */
-  public function __construct($threshold, $wait=0)
-  {
+  public function __construct($threshold, $wait=0) {
     $this->setThreshold($threshold);
     $this->setWait($wait);
   }
@@ -49,40 +48,35 @@ class Swift_Plugin_AntiFlood implements Swift_Events_SendListener
    * Set the number of emails which must be sent for a reconnection to occur
    * @param int Number of emails
    */
-  public function setThreshold($threshold)
-  {
+  public function setThreshold($threshold) {
     $this->threshold = (int) $threshold;
   }
   /**
    * Get the number of emails which need to be sent for reconnection to occur
    * @return int
    */
-  public function getThreshold()
-  {
+  public function getThreshold() {
     return $this->threshold;
   }
   /**
    * Set the number of seconds the plugin should wait for before reconnecting
    * @param int Time in seconds
    */
-  public function setWait($time)
-  {
+  public function setWait($time) {
     $this->waitFor = (int) $time;
   }
   /**
    * Get the number of seconds the plugin should wait for before re-connecting
    * @return int
    */
-  public function getWait()
-  {
+  public function getWait() {
     return $this->waitFor;
   }
   /**
    * Sleep for a given number of seconds
    * @param int Number of seconds to wait for
    */
-  public function wait($seconds)
-  {
+  public function wait($seconds) {
     if ($seconds) sleep($seconds);
   }
   /**
@@ -91,11 +85,9 @@ class Swift_Plugin_AntiFlood implements Swift_Events_SendListener
    * @param Swift_Events_SendEvent The event information
    * @throws Swift_ConnectionException If the connection cannot be closed/re-opened
    */
-  public function sendPerformed(Swift_Events_SendEvent $e)
-  {
+  public function sendPerformed(Swift_Events_SendEvent $e) {
     $this->count++;
-    if ($this->count >= $this->getThreshold())
-    {
+    if ($this->count >= $this->getThreshold()) {
       $e->getSwift()->disconnect();
       $this->wait($this->getWait());
       $e->getSwift()->connect();

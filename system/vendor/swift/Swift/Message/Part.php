@@ -26,8 +26,7 @@ class Swift_Message_Part extends Swift_Message_Mime
    * @param string The encoding format used
    * @param string The charset used
    */
-  public function __construct($data=null, $type="text/plain", $encoding=null, $charset=null)
-  {
+  public function __construct($data=null, $type="text/plain", $encoding=null, $charset=null) {
     parent::__construct();
     
     $this->setContentType($type);
@@ -35,11 +34,9 @@ class Swift_Message_Part extends Swift_Message_Mime
     $this->setCharset($charset);
     $this->setFlowed(false);
     
-    if ($data !== null)
-    {
+    if ($data !== null) {
       $this->setData($data);
-      if ($charset === null)
-      {
+      if ($charset === null) {
         Swift_ClassLoader::load("Swift_Message_Encoder");
         if (is_string($data) && Swift_Message_Encoder::instance()->isUTF8($data)) $this->setCharset("utf-8");
         else $this->setCharset("iso-8859-1"); //The likely encoding
@@ -50,32 +47,28 @@ class Swift_Message_Part extends Swift_Message_Mime
    * Get the level in the MIME hierarchy at which this section should appear.
    * @return string
    */
-  public function getLevel()
-  {
+  public function getLevel() {
     return Swift_Message_Mime::LEVEL_ALTERNATIVE;
   }
   /**
    * Alias for setData()
    * @param mixed Body
    */
-  public function setBody($body)
-  {
+  public function setBody($body) {
     $this->setData($body);
   }
   /**
    * Alias for getData()
    * @return mixed The document body
    */
-  public function getBody()
-  {
+  public function getBody() {
     return $this->getData();
   }
   /**
    * Set the charset of the document
    * @param string The charset used
    */
-  public function setCharset($charset)
-  {
+  public function setCharset($charset) {
     $this->headers->setAttribute("Content-Type", "charset", $charset);
     if (($this->getEncoding() == "7bit") && (strtolower($charset) == "utf-8" || strtolower($charset) == "utf8")) $this->setEncoding("8bit");
   }
@@ -84,14 +77,10 @@ class Swift_Message_Part extends Swift_Message_Mime
    * Returns null if none is set
    * @return string
    */
-  public function getCharset()
-  {
-    if ($this->headers->hasAttribute("Content-Type", "charset"))
-    {
+  public function getCharset() {
+    if ($this->headers->hasAttribute("Content-Type", "charset")) {
       return $this->headers->getAttribute("Content-Type", "charset");
-    }
-    else
-    {
+    } else {
       return null;
     }
   }
@@ -99,8 +88,7 @@ class Swift_Message_Part extends Swift_Message_Mime
    * Set the "format" attribute to flowed
    * @param boolean On or Off
    */
-  public function setFlowed($flowed=true)
-  {
+  public function setFlowed($flowed=true) {
     $value = null;
     if ($flowed) $value = "flowed";
     $this->headers->setAttribute("Content-Type", "format", $value);
@@ -108,25 +96,17 @@ class Swift_Message_Part extends Swift_Message_Mime
   /**
    * Pre-compilation logic
    */
-  public function preBuild()
-  {
+  public function preBuild() {
     if (!($enc = $this->getEncoding())) $this->setEncoding("8bit");
     $data = $this->getData();
-    if ($this->getCharset() === null && !$this->numChildren())
-    {
-      if (is_string($data) && Swift_Message_Encoder::instance()->isUTF8($data))
-      {
+    if ($this->getCharset() === null && !$this->numChildren()) {
+      if (is_string($data) && Swift_Message_Encoder::instance()->isUTF8($data)) {
         $this->setCharset("utf-8");
-      }
-      elseif (is_string($data) && Swift_Message_Encoder::instance()->is7BitAscii($data))
-      {
+      } elseif (is_string($data) && Swift_Message_Encoder::instance()->is7BitAscii($data)) {
         $this->setCharset("us-ascii");
         if (!$enc) $this->setEncoding("7bit");
-      }
-      else $this->setCharset("iso-8859-1");
-    }
-    elseif ($this->numChildren())
-    {
+      } else $this->setCharset("iso-8859-1");
+    } elseif ($this->numChildren()) {
       $this->setCharset(null);
       $this->setEncoding("7bit");
     }

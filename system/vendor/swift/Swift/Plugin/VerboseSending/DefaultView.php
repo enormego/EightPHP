@@ -31,8 +31,7 @@ class Swift_Plugin_VerboseSending_DefaultView extends Swift_Plugin_VerboseSendin
    * @param string The email address that was tried
    * @param boolean True if the message was successfully sent
    */
-  public function paintResult($address, $result)
-  {
+  public function paintResult($address, $result) {
     $this->count++;
     $color = $result ? "#51c45f" : "#d67d71";
     $result_text = $result ? "PASS" : "FAIL";

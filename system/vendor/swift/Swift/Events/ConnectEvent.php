@@ -27,16 +27,14 @@ class Swift_Events_ConnectEvent extends Swift_Events
    * Constructor
    * @param Swift_Connection The new connection
    */
-  public function __construct(Swift_Connection $connection)
-  {
+  public function __construct(Swift_Connection $connection) {
     $this->connection = $connection;
   }
   /**
    * Get the connection object
    * @return Swift_Connection
    */
-  public function getConnection()
-  {
+  public function getConnection() {
     return $this->connection;
   }
 }

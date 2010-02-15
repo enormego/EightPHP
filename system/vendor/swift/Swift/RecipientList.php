@@ -49,27 +49,19 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param string The name
    * @param string The field (to, cc or bcc)
    */
-  public function add($address, $name="", $where="to")
-  {
-    if ($address instanceof Swift_Address)
-    {
+  public function add($address, $name="", $where="to") {
+    if ($address instanceof Swift_Address) {
       $address_str = trim(strtolower($address->getAddress()));
-    }
-    
-    elseif (is_array($address))
-    {
+    } elseif (is_array($address)) {
       foreach ($address as $a) $this->add($a, $name, $where);
       return;
-    }
-    else
-    {
+    } else {
       $address_str = (string) $address;
       $address_str = trim(strtolower($address_str));
       $address = new Swift_Address($address_str, $name);
     }
     
-    if (in_array($where, array("to", "cc", "bcc")))
-    {
+    if (in_array($where, array("to", "cc", "bcc"))) {
       $container =& $this->$where;
       $container[$address_str] = $address;
     }
@@ -79,16 +71,12 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param string The address
    * @param string The field (to, cc or bcc)
    */
-  public function remove($address, $where="to")
-  {
-    if ($address instanceof Swift_Address)
-    {
+  public function remove($address, $where="to") {
+    if ($address instanceof Swift_Address) {
       $key = trim(strtolower($address->getAddress()));
-    }
-    else $key = trim(strtolower((string) $address));
+    } else $key = trim(strtolower((string) $address));
     
-    if (in_array($where, array("to", "cc", "bcc")))
-    {
+    if (in_array($where, array("to", "cc", "bcc"))) {
       if (array_key_exists($key, $this->$where)) unset($this->{$where}[$key]);
     }
   }
@@ -97,14 +85,10 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param string The field name (to, cc or bcc)
    * @return Swift_Iterator
    */
-  public function getIterator($where)
-  {
-    if (!empty($this->iterators[$where]))
-    {
+  public function getIterator($where) {
+    if (!empty($this->iterators[$where])) {
       return $this->iterators[$where];
-    }
-    elseif (in_array($where, array("to", "cc", "bcc")))
-    {
+    } elseif (in_array($where, array("to", "cc", "bcc"))) {
       $it = new Swift_Iterator_Array($this->$where);
       return $it;
     }
@@ -113,10 +97,8 @@ class Swift_RecipientList extends Swift_AddressContainer
    * Override the loading of the default iterator (Swift_ArrayIterator) and use the one given here.
    * @param Swift_Iterator The iterator to use.  It must be populated already.
    */
-  public function setIterator(Swift_Iterator $it, $where)
-  {
-    if (in_array($where, array("to", "cc", "bcc")))
-    {
+  public function setIterator(Swift_Iterator $it, $where) {
+    if (in_array($where, array("to", "cc", "bcc"))) {
       $this->iterators[$where] = $it;
     }
   }
@@ -125,8 +107,7 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param mixed The address to add.  Can be a string or Swift_Address
    * @param string The personal name, optional
    */
-  public function addTo($address, $name=null)
-  {
+  public function addTo($address, $name=null) {
     $this->add($address, $name, "to");
   }
   /**
@@ -134,23 +115,20 @@ class Swift_RecipientList extends Swift_AddressContainer
    * The array contains Swift_Address objects
    * @return array
    */
-  public function getTo()
-  {
+  public function getTo() {
     return $this->to;
   }
   /**
    * Remove a To: recipient from the list
    * @param mixed The address to remove.  Can be Swift_Address or a string
    */
-  public function removeTo($address)
-  {
+  public function removeTo($address) {
     $this->remove($address, "to");
   }
   /**
    * Empty all To: addresses
    */
-  public function flushTo()
-  {
+  public function flushTo() {
     $this->to = null;
     $this->to = array();
   }
@@ -159,8 +137,7 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param mixed The address to add.  Can be a string or Swift_Address
    * @param string The personal name, optional
    */
-  public function addCc($address, $name=null)
-  {
+  public function addCc($address, $name=null) {
     $this->add($address, $name, "cc");
   }
   /**
@@ -168,23 +145,20 @@ class Swift_RecipientList extends Swift_AddressContainer
    * The array contains Swift_Address objects
    * @return array
    */
-  public function getCc()
-  {
+  public function getCc() {
     return $this->cc;
   }
   /**
    * Remove a Cc: recipient from the list
    * @param mixed The address to remove.  Can be Swift_Address or a string
    */
-  public function removeCc($address)
-  {
+  public function removeCc($address) {
     $this->remove($address, "cc");
   }
   /**
    * Empty all Cc: addresses
    */
-  public function flushCc()
-  {
+  public function flushCc() {
     $this->cc = null;
     $this->cc = array();
   }
@@ -193,8 +167,7 @@ class Swift_RecipientList extends Swift_AddressContainer
    * @param mixed The address to add.  Can be a string or Swift_Address
    * @param string The personal name, optional
    */
-  public function addBcc($address, $name=null)
-  {
+  public function addBcc($address, $name=null) {
     $this->add($address, $name, "bcc");
   }
   /**
@@ -202,31 +175,27 @@ class Swift_RecipientList extends Swift_AddressContainer
    * The array contains Swift_Address objects
    * @return array
    */
-  public function getBcc()
-  {
+  public function getBcc() {
     return $this->bcc;
   }
   /**
    * Remove a Bcc: recipient from the list
    * @param mixed The address to remove.  Can be Swift_Address or a string
    */
-  public function removeBcc($address)
-  {
+  public function removeBcc($address) {
     $this->remove($address, "bcc");
   }
   /**
    * Empty all Bcc: addresses
    */
-  public function flushBcc()
-  {
+  public function flushBcc() {
     $this->bcc = null;
     $this->bcc = array();
   }
   /**
    * Empty the entire list
    */
-  public function flush()
-  {
+  public function flush() {
     $this->flushTo();
     $this->flushCc();
     $this->flushBcc();

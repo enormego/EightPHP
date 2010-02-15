@@ -39,8 +39,7 @@ class Swift_Iterator_Array implements Swift_Iterator
    * Ctor.
    * @param array The array to iterate over.
    */
-  public function __construct($input)
-  {
+  public function __construct($input) {
 	  $input = (array) $input;
     $this->keys = array_keys($input);
     $this->values = array_values($input);
@@ -49,26 +48,22 @@ class Swift_Iterator_Array implements Swift_Iterator
    * Returns the original array.
    * @return array
    */
-  public function getArray()
-  {
+  public function getArray() {
     return array_combine($this->keys, $this->values);
   }
   /**
    * Returns true if there is a value after the current one.
    * @return boolean
    */
-  public function hasNext()
-  {
+  public function hasNext() {
     return array_key_exists($this->pos + 1, $this->keys);
   }
   /**
    * Moves to the next array element if possible.
    * @return boolean
    */
-  public function next()
-  {
-    if ($this->hasNext())
-    {
+  public function next() {
+    if ($this->hasNext()) {
       ++$this->pos;
       return true;
     }
@@ -80,10 +75,8 @@ class Swift_Iterator_Array implements Swift_Iterator
    * @param int Numeric position
    * @return boolean
    */
-  public function seekTo($pos)
-  {
-    if (array_key_exists($pos, $this->keys))
-    {
+  public function seekTo($pos) {
+    if (array_key_exists($pos, $this->keys)) {
       $this->pos = $pos;
       return true;
     }
@@ -94,8 +87,7 @@ class Swift_Iterator_Array implements Swift_Iterator
    * Returns the value at the current position, or NULL otherwise.
    * @return mixed.
    */
-  public function getValue()
-  {
+  public function getValue() {
     if (array_key_exists($this->pos, $this->values))
       return $this->values[$this->pos];
     else return null;
@@ -104,8 +96,7 @@ class Swift_Iterator_Array implements Swift_Iterator
    * Gets the current numeric position within the array.
    * @return int
    */
-  public function getPosition()
-  {
+  public function getPosition() {
     return $this->pos;
   }
 }

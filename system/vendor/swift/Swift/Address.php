@@ -35,8 +35,7 @@ class Swift_Address extends Swift_AddressContainer
    * @param string The address portion
    * @param string The personal name, optional
    */
-  public function __construct($address, $name=null)
-  {
+  public function __construct($address, $name=null) {
     $this->setAddress($address);
     if ($name !== null) $this->setName($name);
   }
@@ -44,24 +43,21 @@ class Swift_Address extends Swift_AddressContainer
    * Set the email address
    * @param string
    */
-  public function setAddress($address)
-  {
+  public function setAddress($address) {
     $this->address = trim((string)$address);
   }
   /**
    * Get the address portion
    * @return string
    */
-  public function getAddress()
-  {
+  public function getAddress() {
     return $this->address;
   }
   /**
    * Set the personal name
    * @param string
    */
-  public function setName($name)
-  {
+  public function setName($name) {
     if ($name !== null) $this->name = (string) $name;
     else $this->name = null;
   }
@@ -69,8 +65,7 @@ class Swift_Address extends Swift_AddressContainer
    * Get personal name portion
    * @return string
    */
-  public function getName()
-  {
+  public function getName() {
     return $this->name;
   }
   /**
@@ -78,27 +73,20 @@ class Swift_Address extends Swift_AddressContainer
    * @param boolean If the string will be sent to a SMTP server as an envelope
    * @return string
    */
-  public function build($smtp=false)
-  {
-    if ($smtp)
-    {
+  public function build($smtp=false) {
+    if ($smtp) {
       return "<" . $this->address . ">";
-    }
-    else
-    {
-      if (($this->name !== null))
-      {
+    } else {
+      if (($this->name !== null)) {
         return $this->name . " <" . $this->address . ">";
-      }
-      else return $this->address;
+      } else return $this->address;
     }
   }
   /**
    * PHP's casting conversion
    * @return string
    */
-  public function __toString()
-  {
+  public function __toString() {
     return $this->build(true);
   }
 }

@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
@@ -11,9 +11,9 @@ $lang = array
 	'invalid_filetype'      => 'Żądany typ pliku, .%s, w konfiguracji widoków nie jest podany jako dozwolony.',
 	'view_set_filename'     => 'Musisz podać plik widoku przed wywołaniem funkcji render',
 	'no_default_route'      => 'Proszę ustawić domyślny adres wywołania w config/routes.php.',
-	'no_controller'         => 'Kohana nie była w stanie określić kontrolera obsługującego wywołanie: %s',
+	'no_controller'         => 'Eight nie była w stanie określić kontrolera obsługującego wywołanie: %s',
 	'page_not_found'        => 'Wywołana strona, %s, nie może zostać znaleziona.',
-	'stats_footer'          => 'Czas wywołania: {execution_time} sekund, użyto {memory_usage} MB pamięci. Wygenerowano przez Kohana v{kohana_version}.',
+	'stats_footer'          => 'Czas wywołania: {execution_time} sekund, użyto {memory_usage} MB pamięci. Wygenerowano przez Eight v{eight_version}.',
 	'error_file_line'       => '<tt>%s <strong>[%s]:</strong></tt>',
 	'stack_trace'           => 'Zrzut stosu (Stack Trace)',
 	'generic_error'         => 'Nie można zakończyć żądania',

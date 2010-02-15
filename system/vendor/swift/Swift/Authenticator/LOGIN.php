@@ -26,8 +26,7 @@ class Swift_Authenticator_LOGIN implements Swift_Authenticator
    * @param Swift The instance of Swift this authenticator is used in
    * @return boolean
    */
-  public function isAuthenticated($user, $pass, Swift $swift)
-  {
+  public function isAuthenticated($user, $pass, Swift $swift) {
     try {
       $swift->command("AUTH LOGIN", 334);
       $swift->command(base64_encode($user), 334);
@@ -42,8 +41,7 @@ class Swift_Authenticator_LOGIN implements Swift_Authenticator
    * Return the name of the AUTH extension this is for
    * @return string
    */
-  public function getAuthExtensionName()
-  {
+  public function getAuthExtensionName() {
     return "LOGIN";
   }
 }

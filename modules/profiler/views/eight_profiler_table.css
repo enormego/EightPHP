@@ -1,0 +1,60 @@
+#eight-profiler .eight-profiler-table {
+	font-size: 1.0em;
+	color: #4D6171;
+	max-width: 90%;
+	margin-bottom: 10px;
+}
+
+#eight-profiler .eight-profiler-table td {
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #E5EFF8;
+	padding: 3px;
+	vertical-align: top;
+	white-space: normal !important;
+	word-wrap: break-word !important;
+}
+
+#eight-profiler .eight-profiler-table .kp-title td {
+	font-weight: bold;
+	background-color: inherit;
+}
+
+#eight-profiler .eight-profiler-table .kp-altrow td {
+	background-color: rgb(240,240,240);
+	white-space: normal !important;
+	word-wrap: break-word !important;
+}
+
+#eight-profiler .eight-profiler-table .kp-totalrow td {
+	background-color: #FAFAFA;
+	border-top: 1px solid #D2DCE5;
+	font-weight: bold;
+}
+
+#eight-profiler .eight-profiler-table .kp-column {
+	width: 100px;
+	border-left: 1px solid #E5EFF8;
+	text-align: center;
+}
+
+#eight-profiler .eight-profiler-table .kp-data, #eight-profiler .eight-profiler-table .kp-name {
+	background-color: #FAFAFB;
+	vertical-align: top;
+}
+
+#eight-profiler .eight-profiler-table .kp-name {
+	width: 200px;
+	border-right: 1px solid #E5EFF8;
+}
+
+#eight-profiler .eight-profiler-table .kp-altrow .kp-data, #eight-profiler .eight-profiler-table .kp-altrow .kp-name {
+	background-color: rgb(240,240,240);
+}
+
+#eight-profiler .eight-profiler-table tr.kp-hover {
+	background-color: #aed6fc;
+}
+
+#eight-profiler .eight-profiler-table tr.kp-hover td {
+	background-color: transparent;
+}

@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
@@ -12,5 +12,4 @@ $lang = array
 	'no_database'  => 'Baza danych nie jest załadowana',
 	'cookie_data'  => 'Dane Ciasteczka',
 	'no_cookie'    => 'Brak Ciasteczka',
-
 );

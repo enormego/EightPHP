@@ -103,8 +103,7 @@ class EasySwift
    * @param Swift_Connection The connection to use
    * @param string The domain name of this server (not the SMTP server)
    */
-  public function __construct(Swift_Connection $connection, $domain=null)
-  {
+  public function __construct(Swift_Connection $connection, $domain=null) {
     try {
       $this->swift = new Swift($connection, $domain, Swift::ENABLE_LOGGING);
       Swift_ClassLoader::load("Swift_Plugin_EasySwiftResponseTracker");
@@ -120,31 +119,27 @@ class EasySwift
    * Set an error message
    * @param string Error message
    */
-  public function setError($msg)
-  {
+  public function setError($msg) {
     $this->errors[] = ($this->lastError = $msg);
   }
   /**
    * Get the full list of errors
    * @return array
    */
-  public function getErrors()
-  {
+  public function getErrors() {
     return $this->errors;
   }
   /**
    * Get the last error that occured
    * @return string
    */
-  public function getLastError()
-  {
+  public function getLastError() {
     return $this->lastError;
   }
   /**
    * Clear the current list of errors
    */
-  public function flushErrors()
-  {
+  public function flushErrors() {
     $this->errors = null;
     $this->errors = array();
   }
@@ -153,16 +148,14 @@ class EasySwift
    * This in ON by deault.  It removes the message and all parts after sending.
    * @param boolean
    */
-  public function autoFlush($flush=true)
-  {
+  public function autoFlush($flush=true) {
     $this->autoFlush = $flush;
   }
   /**
    * Set the maximum size of the log
    * @param int
    */
-  public function setMaxLogSize($size)
-  {
+  public function setMaxLogSize($size) {
     $log = Swift_LogContainer::getLog();
     $log->setMaxSize($size);
   }
@@ -170,8 +163,7 @@ class EasySwift
    * Turn logging on or off (saves memory)
    * @param boolean
    */
-  public function useLogging($use=true)
-  {
+  public function useLogging($use=true) {
     $log = Swift_LogContainer::getLog();
     if ($use) $log->setLogLevel(Swift_Log::LOG_NETWORK);
     else $log->setLogLevel(Swift_Log::LOG_NOTHING);
@@ -180,16 +172,14 @@ class EasySwift
    * Enable line resizing (on 1000 by default)
    * @param int The number of characters allowed on a line
    */
-  public function useAutoLineResizing($size=1000)
-  {
+  public function useAutoLineResizing($size=1000) {
     $this->message->setLineWrap($size);
   }
   /**
    * Dump the log contents
    * @deprecated
    */
-  public function getTransactions()
-  {
+  public function getTransactions() {
     return $this->dumpLog();
   }
   /**
@@ -197,8 +187,7 @@ class EasySwift
    * The log contains some &lt; and &gt; characters so you may need to view source
    * Note that this method dumps data to the browser, it does NOT return anything.
    */
-  public function dumpLog()
-  {
+  public function dumpLog() {
     $log = Swift_LogContainer::getLog();
     $log->dump();
   }
@@ -206,15 +195,13 @@ class EasySwift
    * This method should be called if you do not wish to send messages in batch mode (i.e. if all recipients should see each others' addresses)
    * @param boolean If this mode should be used
    */
-  public function useExactCopy($bool=true)
-  {
+  public function useExactCopy($bool=true) {
     $this->exactCopy = $bool;
   }
   /**
    * Reset the current message and start a fresh one
    */
-  public function newMessage($msg=false)
-  {
+  public function newMessage($msg=false) {
     if (!$msg) $msg = new Swift_Message();
     $this->message = $msg;
     $this->partIds = array();
@@ -224,11 +211,9 @@ class EasySwift
    * Clear out all message parts
    * @return boolean
    */
-  public function flushParts()
-  {
+  public function flushParts() {
     $success = true;
-    foreach ($this->partIds as $id)
-    {
+    foreach ($this->partIds as $id) {
       try {
         $this->message->detach($id);
       } catch (Swift_Message_MimeException $e) {
@@ -243,11 +228,9 @@ class EasySwift
    * Clear out all attachments
    * @return boolean
    */
-  public function flushAttachments()
-  {
+  public function flushAttachments() {
     $success = true;
-    foreach ($this->attachmentIds as $id)
-    {
+    foreach ($this->attachmentIds as $id) {
       try {
         $this->message->detach($id);
       } catch (Swift_Message_MimeException $e) {
@@ -262,15 +245,13 @@ class EasySwift
    * Clear out all message headers
    * @deprecated
    */
-  public function flushHeaders()
-  {
+  public function flushHeaders() {
     $this->newMessage();
   }
   /**
    * Reset the current list of recipients and start a new one
    */
-  public function newRecipientList($list=false)
-  {
+  public function newRecipientList($list=false) {
     if (!$list) $list = new Swift_RecipientList();
     $this->recipients = $list;
   }
@@ -279,25 +260,21 @@ class EasySwift
    * This facade stops processing if so
    * @return boolean
    */
-  public function hasFailed()
-  {
+  public function hasFailed() {
     return $this->failed;
   }
   /**
    * Check if the current connection is open or not
    * @return boolean
    */
-  public function isConnected()
-  {
+  public function isConnected() {
     return (($this->swift !== null) && $this->swift->connection->isAlive());
   }
   /**
    * Connect to the MTA if not already connected
    */
-  public function connect()
-  {
-    if (!$this->isConnected())
-    {
+  public function connect() {
+    if (!$this->isConnected()) {
       try {
         $this->swift->connect();
         return true;
@@ -311,18 +288,15 @@ class EasySwift
   /**
    * Perform the SMTP greeting process (don't do this unless you understand why you're doing it)
    */
-  public function handshake()
-  {
+  public function handshake() {
     $this->swift->handshake();
   }
   /**
    * Close the connection to the MTA
    * @return boolean
    */
-  public function close()
-  {
-    if ($this->isConnected())
-    {
+  public function close() {
+    if ($this->isConnected()) {
       try {
         $this->swift->disconnect();
         return true;
@@ -337,8 +311,7 @@ class EasySwift
    * @param string The command to send (leave of CRLF)
    * @return string
    */
-  public function command($command)
-  {
+  public function command($command) {
     if (substr($command, -2) == "\r\n") $command = substr($command, 0, -2);
     
     try {
@@ -355,8 +328,7 @@ class EasySwift
    * @param string The ID to identify the plugin by if needed
    * @return string The ID of the plugin
    */
-  public function loadPlugin(Swift_Events_Listener $plugin, $name=null)
-  {
+  public function loadPlugin(Swift_Events_Listener $plugin, $name=null) {
     $this->pluginCount++;
     if (!$name) $name = "p" . $this->pluginCount;
     $this->swift->attachPlugin($plugin, $name);
@@ -367,8 +339,7 @@ class EasySwift
    * @param string the ID of the plugin
    * @return Swift_Events_Listener
    */
-  public function getPlugin($name)
-  {
+  public function getPlugin($name) {
     try {
       $plugin = $this->swift->getPlugin($name);
       return $plugin;
@@ -381,8 +352,7 @@ class EasySwift
    * @param string The ID of the plugin
    * @return boolean
    */
-  public function removePlugin($name)
-  {
+  public function removePlugin($name) {
     try {
       $this->swift->removePlugin($name);
       return true;
@@ -396,13 +366,10 @@ class EasySwift
    * @param Swift_Authenticator The authentication mechanism to load
    * @throws Exception If the wrong connection is used
    */
-  public function loadAuthenticator(Swift_Authenticator $auth)
-  {
-    if (method_exists($this->swift->connection, "attachAuthenticator"))
-    {
+  public function loadAuthenticator(Swift_Authenticator $auth) {
+    if (method_exists($this->swift->connection, "attachAuthenticator")) {
       $this->swift->connection->attachAuthenticator($auth);
-    }
-    else throw new Exception("SMTP authentication cannot be used with connection class '" . get_class($this->connection) . "'. Swift_Connection_SMTP is needed");
+    } else throw new Exception("SMTP authentication cannot be used with connection class '" . get_class($this->connection) . "'. Swift_Connection_SMTP is needed");
   }
   /**
    * Authenticate with SMTP authentication
@@ -411,10 +378,8 @@ class EasySwift
    * @return boolean
    * @throws Exception If the wrong connection is used
    */
-  public function authenticate($username, $password)
-  {
-    if (method_exists($this->swift->connection, "runAuthenticators"))
-    {
+  public function authenticate($username, $password) {
+    if (method_exists($this->swift->connection, "runAuthenticators")) {
       try {
         $this->swift->connection->runAuthenticators($username, $password, $this->swift);
         return true;
@@ -422,32 +387,26 @@ class EasySwift
         $this->setError("Authentication failed:<br />" . $e->getMessage());
         return false;
       }
-    }
-    else throw new Exception("SMTP authentication cannot be used with connection class '" . get_class($this->connection) . "'. Swift_Connection_SMTP is needed");
+    } else throw new Exception("SMTP authentication cannot be used with connection class '" . get_class($this->connection) . "'. Swift_Connection_SMTP is needed");
   }
   /**
    * Turn a string representation of an email address into a Swift_Address object
    * @paramm string The email address
    * @return Swift_Address
    */
-  public function stringToAddress($string)
-  {
+  public function stringToAddress($string) {
     $name = null;
     $address = null;
     // Foo Bar <foo@bar>
     // or: "Foo Bar" <foo@bar>
     // or: <foo@bar>
     Swift_ClassLoader::load("Swift_Message_Encoder");
-    if (preg_match("/^\\s*(\"?)(.*?)\\1 *<(" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . ")>\\s*\$/", $string, $matches))
-    {
+    if (preg_match("/^\\s*(\"?)(.*?)\\1 *<(" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . ")>\\s*\$/", $string, $matches)) {
       if (!empty($matches[2])) $name = $matches[2];
       $address = $matches[3];
-    }
-    elseif (preg_match("/^\\s*" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\\s*\$/", $string))
-    {
+    } elseif (preg_match("/^\\s*" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\\s*\$/", $string)) {
       $address = trim($string);
-    }
-    else return false;
+    } else return false;
     
     $swift_address = new Swift_Address($address, $name);
     return $swift_address;
@@ -457,10 +416,8 @@ class EasySwift
    * The encoding can be one of Q (quoted-printable) or B (base64)
    * @param string The encoding to use
    */
-  public function setHeaderEncoding($mode="B")
-  {
-    switch (strtoupper($mode))
-    {
+  public function setHeaderEncoding($mode="B") {
+    switch (strtoupper($mode)) {
       case "Q": case "QP": case "QUOTED-PRINTABLE":
         $this->message->headers->setEncoding("Q");
         break;
@@ -472,16 +429,14 @@ class EasySwift
    * Set the return path address (where bounces go to)
    * @param mixed The address as a string or Swift_Address
    */
-  public function setReturnPath($address)
-  {
+  public function setReturnPath($address) {
     return $this->message->setReturnPath($address);
   }
   /**
    * Request for a read recipient to be sent to the reply-to address
    * @param boolean
    */
-  public function requestReadReceipt($request=true)
-  {
+  public function requestReadReceipt($request=true) {
     //$this->message->requestReadReceipt(true);
   }
   /**
@@ -489,16 +444,14 @@ class EasySwift
    * This is an integer between 1 (high) and 5 (low)
    * @param int The level of priority to use
    */
-  public function setPriority($priority)
-  {
+  public function setPriority($priority) {
     $this->message->setPriority($priority);
   }
   /**
    * Get the return-path address as a string
    * @return string
    */
-  public function getReturnPath()
-  {
+  public function getReturnPath() {
     try {
       return $this->message->getReturnPath();
     } catch (Swift_Message_MimeException $e) {
@@ -509,16 +462,14 @@ class EasySwift
    * Set the reply-to header
    * @param mixed The address replies come to. String, or Swift_Address, or an array of either.
    */
-  public function setReplyTo($address)
-  {
+  public function setReplyTo($address) {
     return $this->message->setReplyTo($address);
   }
   /**
    * Get the reply-to address(es) as an array of strings
    * @return array
    */
-  public function getReplyTo()
-  {
+  public function getReplyTo() {
     try {
       return $this->message->getReplyTo();
     } catch (Swift_Message_MimeException $e) {
@@ -530,8 +481,7 @@ class EasySwift
    * @param mixed To address(es)
    * @return boolean
    */
-  public function addTo($address)
-  {
+  public function addTo($address) {
     return $this->addRecipients($address, "To");
   }
   /**
@@ -539,15 +489,13 @@ class EasySwift
    * This currently returns an array of Swift_Address objects and may be simplified to an array of strings in later versions
    * @return array
    */
-  public function getToAddresses()
-  {
+  public function getToAddresses() {
     return $this->recipients->getTo();
   }
   /**
    * Clear out all To: recipients
    */
-  public function flushTo()
-  {
+  public function flushTo() {
     $this->recipients->flushTo();
   }
   /**
@@ -555,8 +503,7 @@ class EasySwift
    * @param mixed Cc address(es)
    * @return boolean
    */
-  public function addCc($address)
-  {
+  public function addCc($address) {
     return $this->addRecipients($address, "Cc");
   }
   /**
@@ -564,15 +511,13 @@ class EasySwift
    * This currently returns an array of Swift_Address objects and may be simplified to an array of strings in later versions
    * @return array
    */
-  public function getCcAddresses()
-  {
+  public function getCcAddresses() {
     return $this->recipients->getCc();
   }
   /**
    * Clear out all Cc: recipients
    */
-  public function flushCc()
-  {
+  public function flushCc() {
     $this->recipients->flushCc();
   }
   /**
@@ -580,8 +525,7 @@ class EasySwift
    * @param mixed Bcc address(es)
    * @return boolean
    */
-  public function addBcc($address)
-  {
+  public function addBcc($address) {
     return $this->addRecipients($address, "Bcc");
   }
   /**
@@ -589,15 +533,13 @@ class EasySwift
    * This currently returns an array of Swift_Address objects and may be simplified to an array of strings in later versions
    * @return array
    */
-  public function getBccAddresses()
-  {
+  public function getBccAddresses() {
     return $this->recipients->getBcc();
   }
   /**
    * Clear out all Bcc: recipients
    */
-  public function flushBcc()
-  {
+  public function flushBcc() {
     $this->recipients->flushBcc();
   }
   /**
@@ -606,36 +548,27 @@ class EasySwift
    * @param string Recipient type (To, Cc, Bcc)
    * @return boolean
    */
-  protected function addRecipients($address, $type)
-  {
+  protected function addRecipients($address, $type) {
     if (!in_array($type, array("To", "Cc", "Bcc"))) return false;
     $method = "add" . $type;
     
-    if ($address instanceof Swift_Address)
-    {
+    if ($address instanceof Swift_Address) {
       $this->recipients->$method($address);
       return true;
-    }
-    else
-    {
+    } else {
       $added = 0;
-      foreach ((array)$address as $addr)
-      {
-        if (is_array($addr))
-        {
+      foreach ((array)$address as $addr) {
+        if (is_array($addr)) {
           $addr = array_values($addr);
-          if (count($addr) >= 2)
-          {
+          if (count($addr) >= 2) {
             $this->recipients->$method($addr[0], $addr[1]);
             $added++;
             continue;
-          }
-          elseif (count($addr) == 1) $addr = $addr[0];
+          } elseif (count($addr) == 1) $addr = $addr[0];
           else continue;
         }
         
-        if (is_string($addr))
-        {
+        if (is_string($addr)) {
           $addr = $this->stringToAddress($addr);
           $this->recipients->$method($addr);
           $added++;
@@ -647,8 +580,7 @@ class EasySwift
   /**
    * Flush message, recipients and headers
    */
-  public function flush()
-  {
+  public function flush() {
     $this->newMessage();
     $this->newRecipientList();
   }
@@ -656,8 +588,7 @@ class EasySwift
    * Get a list of any addresses which have failed since instantiation
    * @return array
    */
-  public function getFailedRecipients()
-  {
+  public function getFailedRecipients() {
     $log = Swift_LogContainer::getLog();
     return $log->getFailedRecipients();
   }
@@ -665,16 +596,14 @@ class EasySwift
    * Set the multipart MIME warning message (only seen by old clients)
    * @param string The message to show
    */
-  public function setMimeWarning($text)
-  {
+  public function setMimeWarning($text) {
     $this->message->setMimeWarning($text);
   }
   /**
    * Get the currently set MIME warning (seen by old clients)
    * @return string
    */
-  public function getMimeWarning()
-  {
+  public function getMimeWarning() {
     return $this->message->getMimeWarning();
   }
   /**
@@ -682,8 +611,7 @@ class EasySwift
    * @param string The charset (e.g. utf-8, iso-8859-1 etc)
    * @return boolean
    */
-  public function setCharset($charset)
-  {
+  public function setCharset($charset) {
     try {
       $this->message->setCharset($charset);
       return true;
@@ -696,8 +624,7 @@ class EasySwift
    * Get the charset of the charset to use in the message
    * @return string
    */
-  public function getCharset()
-  {
+  public function getCharset() {
     return $this->message->getCharset();
   }
   /**
@@ -707,19 +634,15 @@ class EasySwift
    * @param string The encoding used (default is to let Swift decide)
    * @param string The charset to use (default is to let swift decide)
    */
-  public function addPart($body, $type="text/plain", $encoding=null, $charset=null)
-  {
-    if ($body instanceof Swift_Message_Mime)
-    {
+  public function addPart($body, $type="text/plain", $encoding=null, $charset=null) {
+    if ($body instanceof Swift_Message_Mime) {
       try {
         $this->partIds[] = $this->message->attach($body);
       } catch (Swift_Message_MimeException $e) {
         $this->setError("A MIME part failed to attach:<br />" . $e->getMessage());
         return false;
       }
-    }
-    else
-    {
+    } else {
       try {
         $this->partIds[] = $this->message->attach(new Swift_Message_Part($body, $type, $encoding, $charset));
       } catch (Swift_Message_MimeException $e) {
@@ -736,19 +659,15 @@ class EasySwift
    * @param string The encoding used (default is base64)
    * @return boolean
    */
-  public function addAttachment($data, $filename=null, $type="application/octet-stream", $encoding=null)
-  {
-    if ($data instanceof Swift_Message_Mime)
-    {
+  public function addAttachment($data, $filename=null, $type="application/octet-stream", $encoding=null) {
+    if ($data instanceof Swift_Message_Mime) {
       try {
         $this->attachmentIds[] = $this->message->attach($data);
       } catch (Swift_Message_MimeException $e) {
         $this->setError("An attachment failed to attach:<br />" . $e->getMessage());
         return false;
       }
-    }
-    else
-    {
+    } else {
       try {
         $this->attachmentIds[] = $this->message->attach(new Swift_Message_Attachment($data, $filename, $type, $encoding));
       } catch (Swift_Message_MimeException $e) {
@@ -767,17 +686,13 @@ class EasySwift
    * @param mixed The path to the image, a Swift_Message_Image object or a Swift_File object
    * @return string
    */
-  public function addImage($input)
-  {
+  public function addImage($input) {
     $ret = false;
-    if ($input instanceof Swift_Message_Image)
-    {
+    if ($input instanceof Swift_Message_Image) {
       $ret = $this->message->attach($input);
       $this->attachmentIds[] = $ret;
       return $ret;
-    }
-    elseif ($input instanceof Swift_File)
-    {
+    } elseif ($input instanceof Swift_File) {
       try {
         $ret = $this->message->attach(new Swift_Message_Image($input));
         $this->attachmentIds[] = $ret;
@@ -789,9 +704,7 @@ class EasySwift
         $this->setError("An attachment failed to attach:<br />" . $e->getMessage());
         return false;
       }
-    }
-    else
-    {
+    } else {
       try {
         $ret = $this->message->attach(new Swift_Message_Image(new Swift_File($input)));
         $this->attachmentIds[] = $ret;
@@ -813,17 +726,13 @@ class EasySwift
    * @param string the Content-ID to use, optional
    * @return string
    */
-  public function embedFile($data, $type="application/octet-stream", $filename=null, $cid=null)
-  {
+  public function embedFile($data, $type="application/octet-stream", $filename=null, $cid=null) {
     $ret = false;
-    if ($data instanceof Swift_Message_EmbeddedFile)
-    {
+    if ($data instanceof Swift_Message_EmbeddedFile) {
       $ret = $this->message->attach($data);
       $this->attachmentIds[] = $ret;
       return $ret;
-    }
-    elseif ($data instanceof Swift_File)
-    {
+    } elseif ($data instanceof Swift_File) {
       try {
         $ret = $this->message->attach(new Swift_Message_EmbeddedFile($data, $filename, $type, $cid));
         $this->attachmentIds[] = $ret;
@@ -835,9 +744,7 @@ class EasySwift
         $this->setError("An attachment failed to attach:<br />" . $e->getMessage());
         return false;
       }
-    }
-    else
-    {
+    } else {
       try {
         $ret = $this->message->attach(new Swift_Message_EmbeddedFile($data, $filename, $type, $cid));
         $this->attachmentIds[] = $ret;
@@ -856,12 +763,10 @@ class EasySwift
    * @param string The message headers to append, separated by CRLF
    * @deprecated
    */
-  public function addHeaders($string)
-  {
+  public function addHeaders($string) {
     //Split at the line ending only if it's not followed by LWSP (as in, a full header)
     $headers = preg_split("~\r?\n(?![ \t])~", $string);
-    foreach ($headers as $header)
-    {
+    foreach ($headers as $header) {
       if (empty($header)) continue;
       //Get the bit before the colon
       $header_name = substr($header, 0, ($c_pos = strpos($header, ": ")));
@@ -873,11 +778,9 @@ class EasySwift
       $header_value = $attribute_pairs[0];
       $this->message->headers->set($header_name, $header_value);
       unset($attribute_pairs[0]);
-      foreach ($attribute_pairs as $pair)
-      {
+      foreach ($attribute_pairs as $pair) {
         //Now try finding the attribute name, and it's value (removing quotes)
-        if (preg_match("~^(.*?)=(\"?)(.*?)\\2\\s*\$~", $pair, $matches))
-        {
+        if (preg_match("~^(.*?)=(\"?)(.*?)\\2\\s*\$~", $pair, $matches)) {
           try {
             $this->message->headers->setAttribute($header_name, $matches[1], $matches[3]);
           } catch (Swift_Message_MimeException $e) {
@@ -894,8 +797,7 @@ class EasySwift
    * @param string The value of the header (without attributes)
    * @see {addHeaderAttribute}
    */
-  public function setHeader($name, $value)
-  {
+  public function setHeader($name, $value) {
     $this->message->headers->set($name, $value);
   }
   /**
@@ -905,8 +807,7 @@ class EasySwift
    * @param string The name of the attribute
    * @param string The value of the attribute
    */
-  public function setHeaderAttribute($name, $attribute, $value)
-  {
+  public function setHeaderAttribute($name, $attribute, $value) {
     if ($this->message->headers->has($name))
       $this->message->headers->setAttribute($name, $attribute, $value);
   }
@@ -919,8 +820,7 @@ class EasySwift
    * @param string The message body, optional
    * @return int
    */
-  public function send($recipients, $from, $subject, $body=null)
-  {
+  public function send($recipients, $from, $subject, $body=null) {
     $this->addTo($recipients);
     
     $sender = false;
@@ -931,12 +831,9 @@ class EasySwift
     $this->message->setSubject($subject);
     if ($body) $this->message->setBody($body);
     try {
-      if (!$this->exactCopy && !$this->recipients->getCc() && !$this->recipients->getBcc())
-      {
+      if (!$this->exactCopy && !$this->recipients->getCc() && !$this->recipients->getBcc()) {
         $sent = $this->swift->batchSend($this->message, $this->recipients, $sender);
-      }
-      else
-      {
+      } else {
         $sent = $this->swift->send($this->message, $this->recipients, $sender);
       }
       if ($this->autoFlush) $this->flush();

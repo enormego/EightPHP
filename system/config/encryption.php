@@ -1,6 +1,7 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Encrypt
+ * @package		System
+ * @subpackage	Libraries
  *
  * Encrypt configuration is defined in groups which allows you to easily switch
  * between different encryption settings for different uses.
@@ -25,7 +26,7 @@
  */
 $config['default'] = array
 (
-	'key'    => 'K0H@NA+PHP_7hE-SW!FtFraM3w0R|<',
+	'key'    => '@@81GH7FR@W0RK@@_7hE-SW!FtFraM3w0R|<',
 	'mode'   => MCRYPT_MODE_NOFB,
 	'cipher' => MCRYPT_RIJNDAEL_128
 );

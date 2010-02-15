@@ -1,6 +1,10 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Payment
+ * @package		Modules
+ * @subpackage	Payments
+ * @author		enormego
+ * @copyright	(c) 2009-2010 enormego
+ * @license		http://license.eightphp.com
  *
  * Settings related to the Payment library.
  * This file has settings for each driver.

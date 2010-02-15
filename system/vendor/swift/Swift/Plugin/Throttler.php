@@ -45,8 +45,7 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Part of the interface which is notified after a command is sent.
    * @param Swift_Events_CommandEvent
    */
-  public function commandSent(Swift_Events_CommandEvent $e)
-  {
+  public function commandSent(Swift_Events_CommandEvent $e) {
     parent::commandSent($e);
     if (null === $rate = $this->getBytesPerMinute()) return;
     
@@ -55,8 +54,7 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
     $bytes_per_sec = $rate / 60;
     $seconds_allowed_so_far = ceil($bytes_sent / $bytes_per_sec);
     $overrun = $seconds_allowed_so_far - $duration;
-    if ($overrun > 0)
-    {
+    if ($overrun > 0) {
       $this->wait($overrun);
     }
   }
@@ -64,8 +62,7 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Part of the interface which is notified when a message has been sent.
    * @param Swift_Events_SendEvent
    */
-  public function sendPerformed(Swift_Events_SendEvent $e)
-  {
+  public function sendPerformed(Swift_Events_SendEvent $e) {
     $this->setSent($this->getSent() + 1);
     if (null === $rate = $this->getEmailsPerMinute()) return;
     
@@ -74,8 +71,7 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
     $emails_per_sec = $rate / 60;
     $seconds_allowed_so_far = ceil($emails_sent / $emails_per_sec);
     $overrun = $seconds_allowed_so_far - $duration;
-    if ($overrun > 0)
-    {
+    if ($overrun > 0) {
       $this->wait($overrun);
     }
   }
@@ -83,23 +79,20 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Wait for $seconds before continuing
    * @param int The number of seconds to wait
    */
-  public function wait($secs)
-  {
+  public function wait($secs) {
     sleep($secs);
   }
   /**
    * Set the time if it's not already set
    */
-  protected function setTime()
-  {
+  protected function setTime() {
     if ($this->time === null) $this->time = time();
   }
   /**
    * Get the time taken thus far (full seconds).
    * @return int
    */
-  public function getTimeLapse()
-  {
+  public function getTimeLapse() {
     $this->setTime();
     return time() - $this->time;
   }
@@ -107,26 +100,22 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Set the number of emails sent
    * @param int Emails sent so far
    */
-  public function setSent($num)
-  {
+  public function setSent($num) {
     $this->sent = (int)$num;
   }
   /**
    * Get the number of emails sent
    * @return int
    */
-  public function getSent()
-  {
+  public function getSent() {
     return $this->sent;
   }
   /**
    * Set the throttling rate as bytes per minute
    * @param int The maximum number of outgoing bytes in 60 seconds.
    */
-  public function setBytesPerMinute($bpm)
-  {
-    if ($bpm === null)
-    {
+  public function setBytesPerMinute($bpm) {
+    if ($bpm === null) {
       $this->bpm = null;
       return;
     }
@@ -138,18 +127,15 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Reurns NULL if not used.
    * @return int
    */
-  public function getBytesPerMinute()
-  {
+  public function getBytesPerMinute() {
     return $this->bpm;
   }
   /**
    * Set the rate as emails-per-minute.
    * @param int The max number of emails to send in a minute.
    */
-  public function setEmailsPerMinute($epm)
-  {
-    if ($epm === null)
-    {
+  public function setEmailsPerMinute($epm) {
+    if ($epm === null) {
       $this->epm = null;
       return;
     }
@@ -161,8 +147,7 @@ class Swift_Plugin_Throttler extends Swift_Plugin_BandwidthMonitor implements Sw
    * Returns null if not used.
    * @return int
    */
-  public function getEmailsPerMinute()
-  {
+  public function getEmailsPerMinute() {
     return $this->epm;
   }
 }

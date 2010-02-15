@@ -45,24 +45,21 @@ class Swift_Plugin_ConnectionRotator implements Swift_Events_SendListener, Swift
    * Constructor
    * @param int The number of emails to send before rotating
    */
-  public function __construct($threshold=1)
-  {
+  public function __construct($threshold=1) {
     $this->setThreshold($threshold);
   }
   /**
    * Set the number of emails to send before a connection rotation is tried
    * @param int Number of emails
    */
-  public function setThreshold($threshold)
-  {
+  public function setThreshold($threshold) {
     $this->threshold = (int) $threshold;
   }
   /**
    * Get the number of emails which must be sent before a rotation occurs
    * @return int
    */
-  public function getThreshold()
-  {
+  public function getThreshold() {
     return $this->threshold;
   }
   /**
@@ -71,22 +68,17 @@ class Swift_Plugin_ConnectionRotator implements Swift_Events_SendListener, Swift
    * @param Swift_Events_SendEvent The event information
    * @throws Swift_ConnectionException If the connection cannot be rotated
    */
-  public function sendPerformed(Swift_Events_SendEvent $e)
-  {
-    if (!method_exists($e->getSwift()->connection, "nextConnection"))
-    {
+  public function sendPerformed(Swift_Events_SendEvent $e) {
+    if (!method_exists($e->getSwift()->connection, "nextConnection")) {
       throw new Swift_ConnectionException("The ConnectionRotator plugin cannot be used with connections other than Swift_Connection_Rotator.");
     }
-    if (!$this->called)
-    {
+    if (!$this->called) {
       $this->used[] = $e->getSwift()->connection->getActive();
     }
     $this->count++;
-    if ($this->count >= $this->getThreshold())
-    {
+    if ($this->count >= $this->getThreshold()) {
       $e->getSwift()->connection->nextConnection();
-      if (!in_array(($id = $e->getSwift()->connection->getActive()), $this->used))
-      {
+      if (!in_array(($id = $e->getSwift()->connection->getActive()), $this->used)) {
         $e->getSwift()->connect();
         $this->used[] = $id;
       }
@@ -98,12 +90,10 @@ class Swift_Plugin_ConnectionRotator implements Swift_Events_SendListener, Swift
    * Disconnect all the other connections
    * @param Swift_Events_DisconnectEvent The event info
    */
-  public function disconnectPerformed(Swift_Events_DisconnectEvent $e)
-  {
+  public function disconnectPerformed(Swift_Events_DisconnectEvent $e) {
     $active = $e->getConnection()->getActive();
     $e->getConnection()->nextConnection();
-    while ($e->getConnection()->getActive() != $active)
-    {
+    while ($e->getConnection()->getActive() != $active) {
       $e->getSwift()->command("QUIT", 221);
       $e->getConnection()->stop();
       $e->getConnection()->nextConnection();

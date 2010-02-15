@@ -11,6 +11,7 @@
 
 require_once dirname(__FILE__) . "/../ClassLoader.php";
 Swift_ClassLoader::load("Swift_Events_BeforeSendListener");
+Swift_ClassLoader::load("Swift_Events_SendListener");
 Swift_ClassLoader::load("Swift_Plugin_Decorator_Replacements");
 
 /**
@@ -20,7 +21,7 @@ Swift_ClassLoader::load("Swift_Plugin_Decorator_Replacements");
  * @subpackage Decorator
  * @author Chris Corbyn <chris@w3style.co.uk>
  */
-class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
+class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener, Swift_Events_SendListener
 {
   /**
    * The replacements object.
@@ -47,32 +48,28 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * Ctor.
    * @param mixed Replacements as a 2-d array or Swift_Plugin_Decorator_Replacements instance.
    */
-  public function __construct($replacements=null)
-  {
+  public function __construct($replacements=null) {
     $this->setReplacements($replacements);
   }
   /**
    * Enable of disable the ability to replace values in the headers
    * @param boolean
    */
-  public function setPermittedInHeaders($bool)
-  {
+  public function setPermittedInHeaders($bool) {
     $this->permittedInHeaders = (bool) $bool;
   }
   /**
    * Check if replacements in headers are allowed.
    * @return boolean
    */
-  public function getPermittedInHeaders()
-  {
+  public function getPermittedInHeaders() {
     return $this->permittedInHeaders;
   }
   /**
    * Add a mime type to the list of permitted type to replace values in the body.
    * @param string The mime type (e.g. text/plain)
    */
-  public function addPermittedType($type)
-  {
+  public function addPermittedType($type) {
     $type = strtolower($type);
     $this->permittedTypes[$type] = 1;
   }
@@ -80,16 +77,14 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * Remove the ability to replace values in the body of the given mime type
    * @param string The mime type
    */
-  public function removePermittedType($type)
-  {
+  public function removePermittedType($type) {
     unset($this->permittedTypes[$type]);
   }
   /**
    * Get the list of mime types for which the body can be changed.
    * @return array
    */
-  public function getPermittedTypes()
-  {
+  public function getPermittedTypes() {
     return array_keys($this->permittedTypes);
   }
   /**
@@ -97,8 +92,7 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * @param string The mime type
    * @return boolean
    */
-  public function isPermittedType($type)
-  {
+  public function isPermittedType($type) {
     return array_key_exists(strtolower($type), $this->permittedTypes);
   }
   /**
@@ -106,11 +100,8 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * We perform operations on the message here.
    * @param Swift_Events_SendEvent The event object for sending a message
    */
-  public function beforeSendPerformed(Swift_Events_SendEvent $e)
-  {
+  public function beforeSendPerformed(Swift_Events_SendEvent $e) {
     $message = $e->getMessage();
-    $this->recursiveRestore($message, $this->store); //3.3.3 bugfix
-    
     $recipients = $e->getRecipients();
     $to = array_keys($recipients->getTo());
     if (count($to) > 0) $to = $to[0];
@@ -131,27 +122,20 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * @param array The list of replacements
    * @param array The array to cache original values into where needed
    */
-  protected function recursiveReplace(Swift_Message_Mime $mime, $replacements, &$store)
-  {
+  protected function recursiveReplace(Swift_Message_Mime $mime, $replacements, &$store) {
     //Check headers
-    if ($this->getPermittedInHeaders())
-    {
-      foreach ($mime->headers->getList() as $name => $value)
-      {
-        if (is_string($value) && ($replaced = $this->replace($replacements, $value)) != $value)
-        {
+    if ($this->getPermittedInHeaders()) {
+      foreach ($mime->headers->getList() as $name => $value) {
+        if (is_string($value) && ($replaced = $this->replace($replacements, $value)) != $value) {
           $mime->headers->set($name, $replaced);
           $store["headers"][$name] = array();
           $store["headers"][$name]["value"] = $value;
           $store["headers"][$name]["attributes"] = array();
         }
-        foreach ($mime->headers->listAttributes($name) as $att_name => $att_value)
-        {
+        foreach ($mime->headers->listAttributes($name) as $att_name => $att_value) {
           if (is_string($att_value)
-            && ($att_replaced = $this->replace($replacements, $att_value)) != $att_value)
-          {
-            if (!isset($store["headers"][$name]))
-            {
+            && ($att_replaced = $this->replace($replacements, $att_value)) != $att_value) {
+            if (!isset($store["headers"][$name])) {
               $store["headers"][$name] = array("value" => false, "attributes" => array());
             }
             $mime->headers->setAttribute($name, $att_name, $att_replaced);
@@ -163,14 +147,12 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
     //Check body
     $body = $mime->getData();
     if ($this->isPermittedType($mime->getContentType())
-      && is_string($body) && ($replaced = $this->replace($replacements, $body)) != $body)
-    {
+      && is_string($body) && ($replaced = $this->replace($replacements, $body)) != $body) {
       $mime->setData($replaced);
       $store["body"] = $body;
     }
     //Check sub-parts
-    foreach ($mime->listChildren() as $id)
-    {
+    foreach ($mime->listChildren() as $id) {
       $store["children"][$id] = array(
         "headers" => array(),
         "body" => false,
@@ -186,39 +168,38 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * @param string The string to replace
    * @return string
    */
-  protected function replace($replacements, $value)
-  {
+  protected function replace($replacements, $value) {
     return str_replace(array_keys($replacements), array_values($replacements), $value);
+  }
+  /**
+   * Called just after Swift sends a message.
+   * We restore the message here.
+   * @param Swift_Events_SendEvent The event object for sending a message
+   */
+  public function sendPerformed(Swift_Events_SendEvent $e) {
+    $message = $e->getMessage();
+    $this->recursiveRestore($message, $this->store);
+    $this->store = null;
   }
   /**
    * Put the original values back in the message after it was modified before sending.
    * @param Swift_Message_Mime The message (or part)
    * @param array The location of the stored values
    */
-  protected function recursiveRestore(Swift_Message_Mime $mime, &$store)
-  {
-    if (empty($store)) //3.3.3 bugfix
-    {
-      return;
-    }
-    
+  protected function recursiveRestore(Swift_Message_Mime $mime, &$store) {
     //Restore headers
-    foreach ($store["headers"] as $name => $array)
-    {
+    foreach ($store["headers"] as $name => $array) {
       if ($array["value"] !== false) $mime->headers->set($name, $array["value"]);
-      foreach ($array["attributes"] as $att_name => $att_value)
-      {
+      foreach ($array["attributes"] as $att_name => $att_value) {
         $mime->headers->setAttribute($name, $att_name, $att_value);
       }
     }
     //Restore body
-    if ($store["body"] !== false)
-    {
+    if ($store["body"] !== false) {
       $mime->setData($store["body"]);
     }
     //Restore children
-    foreach ($store["children"] as $id => $child_store)
-    {
+    foreach ($store["children"] as $id => $child_store) {
       $child = $mime->getChild($id);
       $this->recursiveRestore($child, $child_store);
     }
@@ -227,23 +208,15 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * Set the replacements as a 2-d array or an instance of Swift_Plugin_Decorator_Replacements.
    * @param mixed Array or Swift_Plugin_Decorator_Replacements
    */
-  public function setReplacements($replacements)
-  {
-    if ($replacements === null)
-    {
+  public function setReplacements($replacements) {
+    if ($replacements === null) {
       $r = array();
       $this->replacements = new Swift_Plugin_Decorator_Replacements($r);
-    }
-    elseif (is_array($replacements))
-    {
+    } elseif (is_array($replacements)) {
       $this->replacements = new Swift_Plugin_Decorator_Replacements($replacements);
-    }
-    elseif ($replacements instanceof Swift_Plugin_Decorator_Replacements)
-    {
+    } elseif ($replacements instanceof Swift_Plugin_Decorator_Replacements) {
       $this->replacements = $replacements;
-    }
-    else
-    {
+    } else {
       throw new Exception(
         "Decorator replacements must be array or instance of Swift_Plugin_Decorator_Replacements.");
     }
@@ -252,8 +225,7 @@ class Swift_Plugin_Decorator implements Swift_Events_BeforeSendListener
    * Get the replacements object.
    * @return Swift_Plugin_Decorator_Replacements
    */
-  public function getReplacements()
-  {
+  public function getReplacements() {
     return $this->replacements;
   }
 }

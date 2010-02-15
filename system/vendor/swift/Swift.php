@@ -78,15 +78,13 @@ class Swift
    * @param int Optional flags
    * @throws Swift_ConnectionException If a connection cannot be established or the connection is behaving incorrectly
    */
-  public function __construct(Swift_Connection $conn, $domain=false, $options=null)
-  {
+  public function __construct(Swift_Connection $conn, $domain=false, $options=null) {
     $this->initializeEventListenerContainer();
     $this->setOptions($options);
     
     $log = Swift_LogContainer::getLog();
     
-    if ($this->hasOption(self::ENABLE_LOGGING) && !$log->isEnabled())
-    {
+    if ($this->hasOption(self::ENABLE_LOGGING) && !$log->isEnabled()) {
       $log->setLogLevel(Swift_Log::LOG_NETWORK);
     }
     
@@ -95,8 +93,7 @@ class Swift
     $this->setDomain($domain);
     $this->connection = $conn;
     
-    if ($conn && !$this->hasOption(self::NO_START))
-    {
+    if ($conn && !$this->hasOption(self::NO_START)) {
       if ($log->hasLevel(Swift_Log::LOG_EVERYTHING)) $log->add("Trying to connect...", Swift_Log::NORMAL);
       $this->connect();
     }
@@ -104,11 +101,9 @@ class Swift
   /**
    * Populate the listeners array with the defined listeners ready for plugins
    */
-  protected function initializeEventListenerContainer()
-  {
+  protected function initializeEventListenerContainer() {
     Swift_ClassLoader::load("Swift_Events_ListenerMapper");
-    foreach (Swift_Events_ListenerMapper::getMap() as $interface => $method)
-    {
+    foreach (Swift_Events_ListenerMapper::getMap() as $interface => $method) {
       if (!isset($this->listeners[$interface]))
         $this->listeners[$interface] = array();
     }
@@ -118,10 +113,8 @@ class Swift
    * Plugins must implement one or more event listeners
    * @param Swift_Events_Listener The plugin to load
    */
-  public function attachPlugin(Swift_Events_Listener $plugin, $id)
-  {
-    foreach (array_keys($this->listeners) as $key)
-    {
+  public function attachPlugin(Swift_Events_Listener $plugin, $id) {
+    foreach (array_keys($this->listeners) as $key) {
       $listener = "Swift_Events_" . $key;
       Swift_ClassLoader::load($listener);
       if ($plugin instanceof $listener) $this->listeners[$key][$id] = $plugin;
@@ -132,10 +125,8 @@ class Swift
    * @param string The id of the plugin
    * @return Swift_Event_Listener
    */
-  public function getPlugin($id)
-  {
-    foreach ($this->listeners as $type => $arr)
-    {
+  public function getPlugin($id) {
+    foreach ($this->listeners as $type => $arr) {
       if (isset($arr[$id])) return $this->listeners[$type][$id];
     }
     return null; //If none found
@@ -144,12 +135,9 @@ class Swift
    * Remove a plugin attached under the ID of $id
    * @param string The ID of the plugin
    */
-  public function removePlugin($id)
-  {
-    foreach ($this->listeners as $type => $arr)
-    {
-      if (isset($arr[$id]))
-      {
+  public function removePlugin($id) {
+    foreach ($this->listeners as $type => $arr) {
+      if (isset($arr[$id])) {
         $this->listeners[$type][$id] = null;
         unset($this->listeners[$type][$id]);
       }
@@ -160,26 +148,21 @@ class Swift
    * @param Swift_Events The event to send
    * @param string The type of event
    */
-  public function notifyListeners($e, $type)
-  {
+  public function notifyListeners($e, $type) {
     Swift_ClassLoader::load("Swift_Events_ListenerMapper");
-    if (!empty($this->listeners[$type]) && $notifyMethod = Swift_Events_ListenerMapper::getNotifyMethod($type))
-    {
+    if (!empty($this->listeners[$type]) && $notifyMethod = Swift_Events_ListenerMapper::getNotifyMethod($type)) {
       $e->setSwift($this);
-      foreach ($this->listeners[$type] as $k => $listener)
-      {
+      foreach ($this->listeners[$type] as $k => $listener) {
         $listener->$notifyMethod($e);
       }
-    }
-    else $e = null;
+    } else $e = null;
   }
   /**
    * Check if an option flag has been set
    * @param string Option name
    * @return boolean
    */
-  public function hasOption($option)
-  {
+  public function hasOption($option) {
     return ($this->options & $option);
   }
   /**
@@ -187,36 +170,31 @@ class Swift
    * E.g. $obj->setOptions(Swift::NO_START | Swift::NO_HANDSHAKE)
    * @param int The bits to set
    */
-  public function setOptions($options)
-  {
+  public function setOptions($options) {
     $this->options = (int) $options;
   }
   /**
    * Get the current options set (as bits)
    * @return int
    */
-  public function getOptions()
-  {
+  public function getOptions() {
     return (int) $this->options;
   }
   /**
    * Set the FQDN of this server as it will identify itself
    * @param string The FQDN of the server
    */
-  public function setDomain($name)
-  {
+  public function setDomain($name) {
     $this->domain = (string) $name;
   }
   /**
    * Attempt to establish a connection with the service
    * @throws Swift_ConnectionException If the connection cannot be established or behaves oddly
    */
-  public function connect()
-  {
+  public function connect() {
     $this->connection->start();
     $greeting = $this->command("", 220);
-    if (!$this->hasOption(self::NO_HANDSHAKE))
-    {
+    if (!$this->hasOption(self::NO_HANDSHAKE)) {
       $this->handshake($greeting);
     }
     Swift_ClassLoader::load("Swift_Events_ConnectEvent");
@@ -226,8 +204,7 @@ class Swift
    * Disconnect from the MTA
    * @throws Swift_ConnectionException If the connection will not stop
    */
-  public function disconnect()
-  {
+  public function disconnect() {
     $this->command("QUIT");
     $this->connection->stop();
     Swift_ClassLoader::load("Swift_Events_DisconnectEvent");
@@ -239,11 +216,9 @@ class Swift
    * @param int The 3 digit response code wanted
    * @throws Swift_BadResponseException If the code does not match
    */
-  protected function assertCorrectResponse(Swift_Events_ResponseEvent $response, $codes)
-  {
+  protected function assertCorrectResponse(Swift_Events_ResponseEvent $response, $codes) {
     $codes = (array)$codes;
-    if (!in_array($response->getCode(), $codes))
-    {
+    if (!in_array($response->getCode(), $codes)) {
       $log = Swift_LogContainer::getLog();
       $error = "Expected response code(s) [" . implode(", ", $codes) . "] but got response [" . $response->getString() . "]";
       if ($log->hasLevel(Swift_Log::LOG_ERRORS)) $log->add($error, Swift_Log::ERROR);
@@ -255,8 +230,7 @@ class Swift
    * @param Swift_Events_ResponseEvent The initial service line respoonse
    * @throws Swift_ConnectionException If conversation is not going very well
    */
-  protected function handshake(Swift_Events_ResponseEvent $greeting)
-  {
+  protected function handshake(Swift_Events_ResponseEvent $greeting) {
     if ($this->connection->getRequiresEHLO() || strpos($greeting->getString(), "ESMTP"))
       $this->setConnectionExtensions($this->command("EHLO " . $this->domain, 250));
     else $this->command("HELO " . $this->domain, 250);
@@ -267,12 +241,10 @@ class Swift
    * Set the extensions which the service reports in the connection object
    * @param Swift_Events_ResponseEvent The list of extensions as reported by the service
    */
-  protected function setConnectionExtensions(Swift_Events_ResponseEvent $list)
-  {
+  protected function setConnectionExtensions(Swift_Events_ResponseEvent $list) {
     $le = (strpos($list->getString(), "\r\n") !== false) ? "\r\n" : "\n";
     $list = explode($le, $list->getString());
-    for ($i = 1, $len = count($list); $i < $len; $i++)
-    {
+    for ($i = 1, $len = count($list); $i < $len; $i++) {
       $extension = substr($list[$i], 4);
       $attributes = split("[ =]", $extension);
       $this->connection->setExtension($attributes[0], (isset($attributes[1]) ? array_slice($attributes, 1) : array()));
@@ -285,12 +257,10 @@ class Swift
    * @return Swift_Events_ResponseEvent The server's response (could be multiple lines)
    * @throws Swift_ConnectionException If a code was expected but does not match the one returned
    */
-  public function command($command, $code=null)
-  {
+  public function command($command, $code=null) {
     $log = Swift_LogContainer::getLog();
     Swift_ClassLoader::load("Swift_Events_CommandEvent");
-    if ($command !== "")
-    {
+    if ($command !== "") {
       $command_event = new Swift_Events_CommandEvent($command, $code);
       $command = null; //For memory reasons
       $this->notifyListeners($command_event, "BeforeCommandListener");
@@ -314,8 +284,7 @@ class Swift
    * Reset a conversation which has gone badly
    * @throws Swift_ConnectionException If the service refuses to reset
    */
-  public function reset()
-  {
+  public function reset() {
     $this->command("RSET", 250);
   }
   /**
@@ -326,35 +295,28 @@ class Swift
    * @return int The number of successful recipients
    * @throws Swift_ConnectionException If sending fails for any reason.
    */
-  public function send(Swift_Message $message, $recipients, $from)
-  {
+  public function send(Swift_Message $message, $recipients, $from) {
     Swift_ClassLoader::load("Swift_Message_Encoder");
-    if (is_string($recipients) && preg_match("/^" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\$/", $recipients))
-    {
+    if (is_string($recipients) && preg_match("/^" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\$/", $recipients)) {
       $recipients = new Swift_Address($recipients);
-    }
-    elseif (!($recipients instanceof Swift_AddressContainer))
+    } elseif (!($recipients instanceof Swift_AddressContainer))
       throw new Exception("The recipients parameter must either be a valid string email address, ".
       "an instance of Swift_RecipientList or an instance of Swift_Address.");
       
-    if (is_string($from) && preg_match("/^" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\$/", $from))
-    {
+    if (is_string($from) && preg_match("/^" . Swift_Message_Encoder::CHEAP_ADDRESS_RE . "\$/", $from)) {
       $from = new Swift_Address($from);
-    }
-    elseif (!($from instanceof Swift_Address))
+    } elseif (!($from instanceof Swift_Address))
       throw new Exception("The sender parameter must either be a valid string email address or ".
       "an instance of Swift_Address.");
     
     $log = Swift_LogContainer::getLog();
     
-    if (!$message->getEncoding() && !$this->connection->hasExtension("8BITMIME"))
-    {
+    if (!$message->getEncoding() && !$this->connection->hasExtension("8BITMIME")) {
       $message->setEncoding("QP", true, true);
     }
     
     $list = $recipients;
-    if ($recipients instanceof Swift_Address)
-    {
+    if ($recipients instanceof Swift_Address) {
       $list = new Swift_RecipientList();
       $list->addTo($recipients);
     }
@@ -377,8 +339,7 @@ class Swift
     $tmp_sent = 0;
     
     $it = $list->getIterator("to");
-    while ($it->hasNext())
-    {
+    while ($it->hasNext()) {
       $it->next();
       $address = $it->getValue();
       $to[] = $address->build();
@@ -392,8 +353,7 @@ class Swift
       }
     }
     $it = $list->getIterator("cc");
-    while ($it->hasNext())
-    {
+    while ($it->hasNext()) {
       $it->next();
       $address = $it->getValue();
       $cc[] = $address->build();
@@ -407,8 +367,7 @@ class Swift
       }
     }
     
-    if ($failed == (count($to) + count($cc)))
-    {
+    if ($failed == (count($to) + count($cc))) {
       $this->reset();
       $this->notifyListeners($send_event, "SendListener");
       return 0;
@@ -433,8 +392,7 @@ class Swift
     $tmp_sent = 0;
     $has_bcc = $message->getBcc();
     $it = $list->getIterator("bcc");
-    while ($it->hasNext())
-    {
+    while ($it->hasNext()) {
       $it->next();
       $address = $it->getValue();
       if (!$has_bcc) $message->setBcc($address->build());
@@ -481,8 +439,7 @@ class Swift
    * @param Swift_Address The address the mail is from (sender)
    * @return int The number of successful recipients
    */
-  public function batchSend(Swift_Message $message, Swift_RecipientList $to, $from)
-  {
+  public function batchSend(Swift_Message $message, Swift_RecipientList $to, $from) {
     $batch = new Swift_BatchMailer($this);
     return $batch->send($message, $to, $from);
   }

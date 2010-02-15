@@ -34,8 +34,7 @@ class Swift_Cache_Memory extends Swift_Cache
    * @param string The cache key
    * @param string The data to write
    */
-  public function write($key, $data)
-  {
+  public function write($key, $data) {
     if (!isset($this->store[$key])) $this->store[$key] = $data;
     else $this->store[$key] .= $data;
   }
@@ -43,8 +42,7 @@ class Swift_Cache_Memory extends Swift_Cache
    * Clear the cached data (unset)
    * @param string The cache key
    */
-  public function clear($key)
-  {
+  public function clear($key) {
     $this->store[$key] = null;
     unset($this->store[$key]);
   }
@@ -53,8 +51,7 @@ class Swift_Cache_Memory extends Swift_Cache
    * @param string The cache key
    * @return boolean
    */
-  public function has($key)
-  {
+  public function has($key) {
     return array_key_exists($key, $this->store);
   }
   /**
@@ -63,12 +60,10 @@ class Swift_Cache_Memory extends Swift_Cache
    * @param string The cache key
    * @return string
    */
-  public function read($key, $size=null)
-  {
+  public function read($key, $size=null) {
     if (!$this->has($key)) return false;
     
-    if ($this->requested == $key)
-    {
+    if ($this->requested == $key) {
       $this->requested = null;
       return false;
     }

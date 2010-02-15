@@ -26,16 +26,14 @@ abstract class Swift_Events
    * Provide a reference to te currently running Swift this event was generated from
    * @param Swift
    */
-  public function setSwift(Swift $swift)
-  {
+  public function setSwift(Swift $swift) {
     $this->swift = $swift;
   }
   /**
    * Get the current instance of swift
    * @return Swift
    */
-  public function getSwift()
-  {
+  public function getSwift() {
     return $this->swift;
   }
 }

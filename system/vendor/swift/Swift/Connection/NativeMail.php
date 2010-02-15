@@ -40,16 +40,14 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * Ctor.
    * @param string The 5th parameter in mail() as a sprintf() formatted string where %s is the sender address. This only comes into effect if safe_mode is OFF.
    */
-  public function __construct($additional_params="-oi -f %s")
-  {
+  public function __construct($additional_params="-oi -f %s") {
     $this->setAdditionalMailParams($additional_params);
   }
   /**
    * Sets the MailSend plugin in Swift once Swift has connected
    * @param Swift The current instance of Swift
    */
-  public function postConnect(Swift $instance)
-  {
+  public function postConnect(Swift $instance) {
     $this->plugin = new Swift_Plugin_MailSend($this->getAdditionalMailParams());
     $instance->attachPlugin($this->plugin, "_MAIL_SEND");
   }
@@ -57,11 +55,9 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * Set the 5th parameter in mail() as a sprintf() formatted string. Only used if safe_mode is off.
    * @param string
    */
-  public function setAdditionalMailParams($params)
-  {
+  public function setAdditionalMailParams($params) {
     $this->pluginParams = $params;
-    if ($this->plugin !== null)
-    {
+    if ($this->plugin !== null) {
       $this->plugin->setAdditionalParams($params);
     }
   }
@@ -69,8 +65,7 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * Get the 5th parameter in mail() as a sprintf() formatted string.
    * @return string
    */
-  public function getAdditionalMailParams()
-  {
+  public function getAdditionalMailParams() {
     return $this->pluginParams;
   }
   /**
@@ -78,16 +73,14 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * @return string
    * @throws Swift_ConnectionException Upon failure to read
    */
-  public function read()
-  {
+  public function read() {
     return $this->response;
   }
   /**
    * Set the response this stub will return
    * @param string The response to send
    */
-  public function setResponse($int)
-  {
+  public function setResponse($int) {
     $this->response = $int . " Stubbed";
   }
   /**
@@ -95,12 +88,10 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * @param string The command to send
    * @throws Swift_ConnectionException Upon failure to write
    */
-  public function write($command, $end="\r\n")
-  {
+  public function write($command, $end="\r\n") {
     $command = strtoupper($command);
     if (strpos($command, " ")) $command = substr($command, 0, strpos($command, " "));
-    switch ($command)
-    {
+    switch ($command) {
       case "DATA":
         $this->setResponse(354);
         break;
@@ -113,24 +104,21 @@ class Swift_Connection_NativeMail extends Swift_ConnectionBase
    * Try to start the connection
    * @throws Swift_ConnectionException Upon failure to start
    */
-  public function start()
-  {
+  public function start() {
     $this->response = "220 Stubbed";
   }
   /**
    * Try to close the connection
    * @throws Swift_ConnectionException Upon failure to close
    */
-  public function stop()
-  {
+  public function stop() {
     $this->response = "220 Stubbed";
   }
   /**
    * Check if the process is still alive
    * @return boolean
    */
-  public function isAlive()
-  {
+  public function isAlive() {
     return function_exists("mail");
   }
 }

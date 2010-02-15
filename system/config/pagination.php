@@ -1,6 +1,7 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 /**
- * @package  Pagination
+ * @package		System
+ * @subpackage	Libraries
  *
  * Pagination configuration is defined in groups which allows you to easily switch
  * between different pagination settings for different website sections.
@@ -21,5 +22,5 @@ $config['default'] = array
 	'uri_segment'    => 3,
 	'query_string'   => '',
 	'items_per_page' => 20,
-	'auto_hide'      => FALSE,
+	'auto_hide'      => NO,
 );

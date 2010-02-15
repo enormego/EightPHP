@@ -1,0 +1,138 @@
+body {
+	background: #eee;
+}
+
+#eight_error {
+	background: #fff;
+	border: 1px solid #ddd;
+	font-family: sans-serif;
+	color: #111;
+	font-size: 14px;
+	line-height: 130%;
+}
+
+#eight_error h1, #eight_error h2 {
+	margin: 0;
+	padding: 1em;
+	font-size: 1em;
+	font-weight: normal;
+	background: #ffbcbd;
+	color: #000000;
+}
+
+#eight_error h1 a, #eight_error h2 a {
+	color: #000;
+}
+
+#eight_error h1 span.type {
+	display: block;
+	font-weight: bold;
+}
+
+#eight_error h1 span.message {
+	display: block;
+	background: #ffdfdf;
+	border: 1px solid #dfa4a5;
+	padding: 5px;
+	margin-top: 5px;
+	font: 12px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+#eight_error h2 {
+	background: #ffbcbd;
+	border-top: 1px dotted;
+}
+
+#eight_error h3 {
+	margin: 0;
+	padding: 0.4em 0 0;
+	font-size: 1em;
+	font-weight: normal;
+}
+
+#eight_error p {
+	margin: 0;
+	padding: 0.2em 0;
+}
+
+#eight_error a {
+	color: #3a1b1b;
+}
+
+#eight_error pre {
+	overflow: auto;
+	white-space: pre;
+	font: 12px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace;
+}
+
+#eight_error span.code {
+	font: 85% Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace;
+}
+
+#eight_error table {
+	width: 100%;
+	display: block;
+	margin: 0 0 0.4em;
+	padding: 0;
+	border-collapse: collapse;
+	background: #fff;
+}
+
+#eight_error table td {
+	border: solid 1px #ddd;
+	text-align: left;
+	vertical-align: top;
+	padding: 0.4em;
+}
+
+#eight_error div.content {
+	padding: 0.4em 1em 1em;
+	overflow: hidden;
+	border-top: 1px dotted;
+}
+
+#eight_error pre.source {
+	margin: 0 0 1em;
+	padding: 0.4em;
+	background: #fff;
+	border: dotted 1px #b7c680;
+	line-height: 1.2em;
+}
+
+#eight_error pre.source span.line {
+	display: block;
+}
+
+#eight_error pre.source span.highlight {
+	background: #f0eb96;
+}
+
+#eight_error pre.source span.line span.number {
+	color: #666;
+}
+
+#eight_error ol.trace {
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#eight_error ol.trace li {
+	margin: 0;
+	padding: 5px 0 5px;
+	border-top: 1px dotted #ffe5e5;
+}
+
+#eight_error table td code,
+#eight_error table td pre {
+	font: 11px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace !important;
+}
+
+
+#eight_error span.key_file {
+	background-color: #fff5f5;
+	padding: 4px 0;
+}
+

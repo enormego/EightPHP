@@ -27,8 +27,7 @@ class Swift_ClassLoader
    * Load a new class into memory
    * @param string The name of the class, case SenSItivE
    */
-  public static function load($name)
-  {
+  public static function load($name) {
     if (in_array($name, self::$located) || class_exists($name, false) || interface_exists($name, false))
       return;
     

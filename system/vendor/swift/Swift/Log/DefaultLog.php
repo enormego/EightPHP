@@ -30,8 +30,7 @@ class Swift_Log_DefaultLog extends Swift_Log
    * @param string The text for this entry
    * @param string The label for the type of entry
    */
-  public function add($text, $type = self::NORMAL)
-  {
+  public function add($text, $type = self::NORMAL) {
     $this->entries[] = $type . " " . $text;
     if ($this->getMaxSize() > 0) $this->entries = array_slice($this->entries, (-1 * $this->getMaxSize()));
   }
@@ -39,8 +38,7 @@ class Swift_Log_DefaultLog extends Swift_Log
    * Dump the contents of the log to the browser.
    * @param boolean True if the string should be returned rather than output.
    */
-  public function dump($return_only=false)
-  {
+  public function dump($return_only=false) {
     $ret = implode("\n", $this->entries);
     if (!$return_only) echo $ret;
     else return $ret;
@@ -48,8 +46,7 @@ class Swift_Log_DefaultLog extends Swift_Log
   /**
    * Empty the log
    */
-  public function clear()
-  {
+  public function clear() {
     $this->failedRecipients = null;
     $this->failedRecipients = array();
     $this->entries = null;

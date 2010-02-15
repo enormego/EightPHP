@@ -1,1 +1,0 @@
-<p><?=$location->title;?>, <br /><?=$location->description;?></p>

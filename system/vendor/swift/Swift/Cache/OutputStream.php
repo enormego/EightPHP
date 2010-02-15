@@ -31,8 +31,7 @@ class Swift_Cache_OutputStream
    * @param Swift_Cache The cache to read from
    * @param string The key for the cached data
    */
-  public function __construct(Swift_Cache $cache, $key)
-  {
+  public function __construct(Swift_Cache $cache, $key) {
     $this->cache = $cache;
     $this->key = $key;
   }
@@ -42,16 +41,14 @@ class Swift_Cache_OutputStream
    * @param int The number of bytes to read (could be ignored)
    * @return string The read bytes
    */
-  public function read($size=null)
-  {
+  public function read($size=null) {
     return $this->cache->read($this->key, $size);
   }
   /**
    * Read the entire cached data as one string
    * @return string
    */
-  public function readFull()
-  {
+  public function readFull() {
     $ret = "";
     while (false !== $bytes = $this->read())
       $ret .= $bytes;

@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
-	'there_can_be_only_one' => 'Er kan maar één instantie van Kohana zijn per pagina oproep.',
+	'there_can_be_only_one' => 'Er kan maar één instantie van Eight zijn per pagina oproep.',
 	'uncaught_exception'    => 'Uncaught %s: %s in bestand %s op lijn %s',
 	'invalid_method'        => 'Ongeldige method %s opgeroepen in %s.',
 	'invalid_property'      => 'De %s property bestaat niet in de %s class.',
@@ -11,9 +11,9 @@ $lang = array
 	'invalid_filetype'      => 'Het opgevraagde bestandstype, .%s, wordt niet toegestaan door het view configuratiebestand.',
 	'view_set_filename'     => 'Je moet de view bestandsnaam opgeven voordat je render aanroept.',
 	'no_default_route'      => 'Zet een default route in config/routes.php.',
-	'no_controller'         => 'Kohana kon geen controller aanduiden om deze pagina te verwerken: %s',
+	'no_controller'         => 'Eight kon geen controller aanduiden om deze pagina te verwerken: %s',
 	'page_not_found'        => 'De opgevraagde pagina, %s, kon niet gevonden worden.',
-	'stats_footer'          => 'Geladen in {execution_time} seconden, met een geheugengebruik van {memory_usage}. Aangedreven door Kohana v{kohana_version}.',
+	'stats_footer'          => 'Geladen in {execution_time} seconden, met een geheugengebruik van {memory_usage}. Aangedreven door Eight v{eight_version}.',
 	'error_file_line'       => '<tt>%s <strong>[%s]:</strong></tt>',
 	'stack_trace'           => 'Stack Trace',
 	'generic_error'         => 'Oproep kon niet afgewerkt worden',

@@ -1,8 +1,9 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
 	'undefined_group'       => 'The %s group is not defined in your configuration.',
+	'unknown_database'      => 'The %s database does not exist.',
 	'error'                 => 'There was an SQL error: %s',
 	'connection'            => 'There was an error connecting to the database: %s',
 	'invalid_dsn'           => 'The DSN you supplied is not valid: %s',

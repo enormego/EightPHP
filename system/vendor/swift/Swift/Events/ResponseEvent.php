@@ -31,8 +31,7 @@ class Swift_Events_ResponseEvent extends Swift_Events
    * Constructor
    * @param string The received response
    */
-  public function __construct($string)
-  {
+  public function __construct($string) {
     $this->setString($string);
     $this->setCode(substr($string, 0, 3));
   }
@@ -40,32 +39,28 @@ class Swift_Events_ResponseEvent extends Swift_Events
    * Set the response received
    * @param string The response
    */
-  public function setString($string)
-  {
+  public function setString($string) {
     $this->string = (string) $string;
   }
   /**
    * Get the received response
    * @return string
    */
-  public function getString()
-  {
+  public function getString() {
     return $this->string;
   }
   /**
    * Set response code
    * @param int The response code
    */
-  public function setCode($code)
-  {
+  public function setCode($code) {
     $this->code = (int) $code;
   }
   /**
    * Get the response code
    * @return int
    */
-  public function getCode()
-  {
+  public function getCode() {
     return $this->code;
   }
 }

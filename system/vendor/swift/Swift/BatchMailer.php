@@ -46,64 +46,56 @@ class Swift_BatchMailer
    * Constructor.
    * @param Swift The current instance of Swift
    */
-  public function __construct(Swift $swift)
-  {
+  public function __construct(Swift $swift) {
     $this->setSwift($swift);
   }
   /**
    * Set the current Swift instance.
    * @param Swift The instance
    */
-  public function setSwift(Swift $swift)
-  {
+  public function setSwift(Swift $swift) {
     $this->swift = $swift;
   }
   /**
    * Get the Swift instance which is running.
    * @return Swift
    */
-  public function getSwift()
-  {
+  public function getSwift() {
     return $this->swift;
   }
   /**
    * Set the maximum number of times a single address is allowed to be retried.
    * @param int The maximum number of tries.
    */
-  public function setMaxTries($max)
-  {
+  public function setMaxTries($max) {
     $this->maxTries = abs($max);
   }
   /**
    * Get the number of times a single address will be attempted in a batch.
    * @return int
    */
-  public function getMaxTries()
-  {
+  public function getMaxTries() {
     return $this->maxTries;
   }
   /**
    * Set the amount of time to sleep for if an error occurs.
    * @param int Number of seconds
    */
-  public function setSleepTime($secs)
-  {
+  public function setSleepTime($secs) {
     $this->sleepTime = abs($secs);
   }
   /**
    * Get the amount of time to sleep for on errors.
    * @return int
    */
-  public function getSleepTime()
-  {
+  public function getSleepTime() {
     return $this->sleepTime;
   }
   /**
    * Log a failed recipient.
    * @param string The email address.
    */
-  public function addFailedRecipient($address)
-  {
+  public function addFailedRecipient($address) {
     $this->failed[] = $address;
     $this->failed = array_unique($this->failed);
   }
@@ -111,15 +103,13 @@ class Swift_BatchMailer
    * Get all recipients which failed in this batch.
    * @return array
    */
-  public function getFailedRecipients()
-  {
+  public function getFailedRecipients() {
     return $this->failed;
   }
   /**
    * Clear out the list of failed recipients.
    */
-  public function flushFailedRecipients()
-  {
+  public function flushFailedRecipients() {
     $this->failed = null;
     $this->failed = array();
   }
@@ -127,23 +117,20 @@ class Swift_BatchMailer
    * Set the maximum number of times an error can be thrown in succession and still be hidden.
    * @param int
    */
-  public function setMaxSuccessiveFailures($fails)
-  {
+  public function setMaxSuccessiveFailures($fails) {
     $this->maxFails = abs($fails);
   }
   /**
    * Get the maximum number of times an error can be thrown and still be hidden.
    * @return int
    */
-  public function getMaxSuccessiveFailures()
-  {
+  public function getMaxSuccessiveFailures() {
     return $this->maxFails;
   }
   /**
    * Restarts Swift forcibly.
    */
-  protected function forceRestartSwift()
-  {
+  protected function forceRestartSwift() {
     //Pre-empting problems trying to issue "QUIT" to a dead connection
     $this->swift->connection->stop();
     $this->swift->connection->start();
@@ -155,8 +142,7 @@ class Swift_BatchMailer
    * Takes a temporary copy of original message headers in case an error occurs and they need restoring.
    * @param Swift_Message The message object
    */
-  protected function copyMessageHeaders(&$message)
-  {
+  protected function copyMessageHeaders(&$message) {
     $this->headers["To"] = $message->headers->has("To") ?
       $message->headers->get("To") : null;
     $this->headers["Reply-To"] = $message->headers->has("Reply-To") ?
@@ -170,10 +156,8 @@ class Swift_BatchMailer
    * Restore message headers to original values in the event of a failure.
    * @param Swift_Message The message
    */
-  protected function restoreMessageHeaders(&$message)
-  {
-    foreach ($this->headers as $name => $value)
-    {
+  protected function restoreMessageHeaders(&$message) {
+    foreach ($this->headers as $name => $value) {
       $message->headers->set($name, $value);
     }
   }
@@ -185,20 +169,17 @@ class Swift_BatchMailer
    * @param Swift_Address The sender's address
    * @return int The number sent to
    */
-  public function send(Swift_Message $message, Swift_RecipientList $recipients, $sender)
-  {
+  public function send(Swift_Message $message, Swift_RecipientList $recipients, $sender) {
     $sent = 0;
     $successive_fails = 0;
     
     $it = $recipients->getIterator("to");
-    while ($it->hasNext())
-    {
+    while ($it->hasNext()) {
       $it->next();
       $recipient = $it->getValue();
       $tried = 0;
       $loop = true;
-      while ($loop && $tried < $this->getMaxTries())
-      {
+      while ($loop && $tried < $this->getMaxTries()) {
         try {
           $tried++;
           $loop = false;
@@ -210,8 +191,7 @@ class Swift_BatchMailer
           $successive_fails++;
           $this->restoreMessageHeaders($message);
           if (($max = $this->getMaxSuccessiveFailures())
-            && $successive_fails > $max)
-          {
+            && $successive_fails > $max) {
             throw new Exception(
               "Too many successive failures. BatchMailer is configured to allow no more than " . $max .
               " successive failures.");

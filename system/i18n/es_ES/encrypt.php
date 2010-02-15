@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct script access.'); 
+<?php
 
 $lang = array
 (
-	'undefined_group'   => 'El grupo %s no esta definidp en la configuración.',
+	'undefined_group'   => 'El grupo %s no está definido en la configuración.',
 	'requires_mcrypt'   => 'Para usar la librería de Encriptación, mcrypt debe estar habilitado.',
 	'no_encryption_key' => 'Para usar la librería de Encriptación, tienes que especificar una llave de encriptación en tu archivo de configuración.',
 );

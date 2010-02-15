@@ -1,6 +1,7 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Image
+ * @package		System
+ * @subpackage	Libraries.Image
  *
  * Driver name. Default: GD
  */

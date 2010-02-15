@@ -46,8 +46,7 @@ abstract class Swift_Cache
    * @param string The cache key to fetch the stream for
    * @return Swift_Cache_OutputStream
    */
-  public function getOutputStream($key)
-  {
+  public function getOutputStream($key) {
     Swift_ClassLoader::load("Swift_Cache_OutputStream");
     $os = new Swift_Cache_OutputStream($this, $key);
     return $os;

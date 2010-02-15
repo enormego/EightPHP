@@ -27,8 +27,7 @@ class Swift_Authenticator_CRAMMD5 implements Swift_Authenticator
    * @param Swift The instance of Swift this authenticator is used in
    * @return boolean
    */
-  public function isAuthenticated($user, $pass, Swift $swift)
-  {
+  public function isAuthenticated($user, $pass, Swift $swift) {
     try {
       $encoded_challenge = substr($swift->command("AUTH CRAM-MD5", 334)->getString(), 4);
       $challenge = base64_decode($encoded_challenge);
@@ -44,8 +43,7 @@ class Swift_Authenticator_CRAMMD5 implements Swift_Authenticator
    * Return the name of the AUTH extension this is for
    * @return string
    */
-  public function getAuthExtensionName()
-  {
+  public function getAuthExtensionName() {
     return "CRAM-MD5";
   }
   /**
@@ -54,8 +52,7 @@ class Swift_Authenticator_CRAMMD5 implements Swift_Authenticator
    * @param string The challenge to use to make the hash
    * @return string
    */
-  public static function generateCRAMMD5Hash($password, $challenge)
-  {
+  public static function generateCRAMMD5Hash($password, $challenge) {
     if (strlen($password) > 64)
       $password = pack('H32', md5($password));
 

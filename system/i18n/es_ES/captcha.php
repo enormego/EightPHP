@@ -1,9 +1,9 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 $lang = array
 (
 	'file_not_found'	=> 'El archivo especificado, %s, no ha sido encontrado. Por favor, verifica que el fichero existe utilizando file_exists() antes de intentar utilizarlo.',
-	'requires_GD2'		=> 'La libreria Captcha requiere GD2 con soporte FreeType. Lea lo siguiente http://php.net/gd_info para ampliar la informacion.',
+	'requires_GD2'		=> 'La librería Captcha requiere GD2 con soporte FreeType. Lea lo siguiente http://php.net/gd_info para ampliar la información.',
 	
 	// Words of varying length for the Captcha_Word_Driver to pick from
 	// Note: use only alphanumeric characters
@@ -25,8 +25,8 @@ $lang = array
 	(
 		array('¿Odias el spam? (si o no)', 'si'),
 		array('¿Eres un robot? (si o no)', 'no'),
-		array('El fuego es... (caliente o frio)', 'caliente'),
-		array('La estación que viene despues del otoño es...', 'invierno'),
+		array('El fuego es... (caliente o frío)', 'caliente'),
+		array('La estación que viene después del otoño es...', 'invierno'),
 		array('¿Qué día de la semana es hoy?', strftime('%A')),
 		array('¿En qué mes del año estamos?', strftime('%B')),
 	),

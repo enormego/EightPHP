@@ -100,22 +100,18 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param string The extension (sans the dot).
    * @return string
    */
-  public function getType($ext)
-  {
+  public function getType($ext) {
     $ext = strtolower($ext);
-    if (isset($this->mimeTypes[$ext]))
-    {
+    if (isset($this->mimeTypes[$ext])) {
       return $this->mimeTypes[$ext];
-    }
-    else return null;
+    } else return null;
   }
   /**
    * Add a new MIME type defintion (or overwrite an existing one).
    * @param string The extension (sans the dot)
    * @param string The MIME type (e.g. image/jpeg)
    */
-  public function addType($ext, $type)
-  {
+  public function addType($ext, $type) {
     $this->mimeTypes[strtolower($ext)] = strtolower($type);
   }
   /**
@@ -127,16 +123,14 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * This pattern should contain the full URL in backreference index 3.
    * @param string sprintf() format string containing a PCRE regexp.
    */
-  public function setLocalFilePatternFormat($format)
-  {
+  public function setLocalFilePatternFormat($format) {
     $this->localFilePatternFormat = $format;
   }
   /**
    * Gets the sprintf() format string for the PCRE pattern to scan for remote files.
    * @return string
    */
-  public function getLocalFilePatternFormat()
-  {
+  public function getLocalFilePatternFormat() {
     return $this->localFilePatternFormat;
   }
   /**
@@ -149,16 +143,14 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * This pattern should contain the full URL in backreference index 3.
    * @param string sprintf() format string containing a PCRE regexp.
    */
-  public function setRemoteFilePatternFormat($format)
-  {
+  public function setRemoteFilePatternFormat($format) {
     $this->remoteFilePatternFormat = $format;
   }
   /**
    * Gets the sprintf() format string for the PCRE pattern to scan for remote files.
    * @return string
    */
-  public function getRemoteFilePatternFormat()
-  {
+  public function getRemoteFilePatternFormat() {
     return $this->remoteFilePatternFormat;
   }
   /**
@@ -166,8 +158,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * Protocols should not include the "://" portion.  This method expects alphanumeric characters only.
    * @param string The protocol name (e.g. http or ftp)
    */
-  public function addProtocol($prot)
-  {
+  public function addProtocol($prot) {
     $prot = strtolower($prot);
     $this->protocols[$prot] = $prot;
   }
@@ -175,16 +166,14 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * Remove a protocol from the list of allowed protocols once added.
    * @param string The name of the protocol (e.g. http)
    */
-  public function removeProtocol($prot)
-  {
+  public function removeProtocol($prot) {
     unset($this->protocols[strtolower($prot)]);
   }
   /**
    * Get a list of all registered protocols.
    * @return array
    */
-  public function getProtocols()
-  {
+  public function getProtocols() {
     return array_values($this->protocols);
   }
   /**
@@ -194,14 +183,12 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param string The name of attributes to look for (e.g. src).  You can pass an array if there are multiple possibilities.
    * @param array A list of extensions to allow (sans dot). If there's only one you can just pass a string.
    */
-  public function setTagDefinition($tag, $attributes, $extensions)
-  {
+  public function setTagDefinition($tag, $attributes, $extensions) {
     $tag = strtolower($tag);
     $attributes = (array)$attributes;
     $extensions = (array)$extensions;
     
-    if (empty($tag) || empty($attributes) || empty($extensions))
-    {
+    if (empty($tag) || empty($attributes) || empty($extensions)) {
       return null;
     }
     
@@ -212,8 +199,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * Remove a tag definition for remote files.
    * @param string The name of the tag
    */
-  public function removeTagDefinition($tag)
-  {
+  public function removeTagDefinition($tag) {
     unset($this->definitions[strtolower($tag)]);
   }
   /**
@@ -223,8 +209,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param string The name of the tag
    * @return array
    */
-  public function getTagDefinition($tag)
-  {
+  public function getTagDefinition($tag) {
     $tag = strtolower($tag);
     if (isset($this->definitions[$tag])) return $this->definitions[$tag];
     else return null;
@@ -234,34 +219,28 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param string The name of the tag
    * @return string
    */
-  public function getRemoteFilePattern($tag_name)
-  {
+  public function getRemoteFilePattern($tag_name) {
     $tag_name = strtolower($tag_name);
     $pattern_format = $this->getRemoteFilePatternFormat();
-    if ($def = $this->getTagDefinition($tag_name))
-    {
+    if ($def = $this->getTagDefinition($tag_name)) {
       $pattern = sprintf($pattern_format, $tag_name, implode("|", $def["attributes"]),
         implode("|", $this->getProtocols()), implode("|", $def["extensions"]));
       return $pattern;
-    }
-    else return null;
+    } else return null;
   }
   /**
    * Get the PCRE pattern for a local file based on the tag name.
    * @param string The name of the tag
    * @return string
    */
-  public function getLocalFilePattern($tag_name)
-  {
+  public function getLocalFilePattern($tag_name) {
     $tag_name = strtolower($tag_name);
     $pattern_format = $this->getLocalFilePatternFormat();
-    if ($def = $this->getTagDefinition($tag_name))
-    {
+    if ($def = $this->getTagDefinition($tag_name)) {
       $pattern = sprintf($pattern_format, $tag_name, implode("|", $def["attributes"]),
         implode("|", $def["extensions"]));
       return $pattern;
-    }
-    else return null;
+    } else return null;
   }
   /**
    * Register a file which has been downloaded so it doesn't need to be downloaded twice.
@@ -269,8 +248,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param string The ID as attached in the message
    * @param Swift_Message_EmbeddedFile The file object itself
    */
-  public function registerFile($url, $cid, $file)
-  {
+  public function registerFile($url, $cid, $file) {
     $url = strtolower($url);
     if (!isset($this->registeredFiles[$url])) $this->registeredFiles[$url] = array("cids" => array(), "obj" => null);
     $this->registeredFiles[$url]["cids"][] = $cid;
@@ -280,32 +258,28 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * Turn on or off remote file embedding.
    * @param boolean
    */
-  public function setEmbedRemoteFiles($set)
-  {
+  public function setEmbedRemoteFiles($set) {
     $this->embedRemoteFiles = (bool)$set;
   }
   /**
    * Returns true if remote files can be embedded, or false if not.
    * @return boolean
    */
-  public function getEmbedRemoteFiles()
-  {
+  public function getEmbedRemoteFiles() {
     return $this->embedRemoteFiles;
   }
   /**
    * Turn on or off local file embedding.
    * @param boolean
    */
-  public function setEmbedLocalFiles($set)
-  {
+  public function setEmbedLocalFiles($set) {
     $this->embedLocalFiles = (bool)$set;
   }
   /**
    * Returns true if local files can be embedded, or false if not.
    * @return boolean
    */
-  public function getEmbedLocalFiles()
-  {
+  public function getEmbedLocalFiles() {
     return $this->embedLocalFiles;
   }
   /**
@@ -314,20 +288,16 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param array Backreferences from preg_replace()
    * @return string The tag with it's URL replaced with a CID
    */
-  protected function embedRemoteFile($matches)
-  {
+  protected function embedRemoteFile($matches) {
     $url = preg_replace("~^([^#]+)#.*\$~s", "\$1", $matches[3]);
     $bits = parse_url($url);
     $ext = preg_replace("~^.*?\\.([^\\.]+)\$~s", "\$1", $bits["path"]);
     
     $lower_url = strtolower($url);
-    if (array_key_exists($lower_url, $this->registeredFiles))
-    {
+    if (array_key_exists($lower_url, $this->registeredFiles)) {
       $registered = $this->registeredFiles[$lower_url];
-      foreach ($registered["cids"] as $cid)
-      {
-        if ($this->message->hasChild($cid))
-        {
+      foreach ($registered["cids"] as $cid) {
+        if ($this->message->hasChild($cid)) {
           return $matches[1] . $cid . $matches[4];
         }
       }
@@ -340,8 +310,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
     set_magic_quotes_runtime(0);
     $filedata = @file_get_contents($url);
     set_magic_quotes_runtime($magic_quotes);
-    if (!$filedata)
-    {
+    if (!$filedata) {
       return $matches[1] . $matches[3] . $matches[4];
     }
     $filename = preg_replace("~^.*/([^/]+)\$~s", "\$1", $url);
@@ -356,23 +325,18 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * @param array Backreferences from preg_replace()
    * @return string The tag with it's path replaced with a CID
    */
-  protected function embedLocalFile($matches)
-  {
+  protected function embedLocalFile($matches) {
     $path = realpath($matches[3]);
-    if (!$path)
-    {
+    if (!$path) {
       return $matches[1] . $matches[3] . $matches[4];
     }
     $ext = preg_replace("~^.*?\\.([^\\.]+)\$~s", "\$1", $path);
     
     $lower_path = strtolower($path);
-    if (array_key_exists($lower_path, $this->registeredFiles))
-    {
+    if (array_key_exists($lower_path, $this->registeredFiles)) {
       $registered = $this->registeredFiles[$lower_path];
-      foreach ($registered["cids"] as $cid)
-      {
-        if ($this->message->hasChild($cid))
-        {
+      foreach ($registered["cids"] as $cid) {
+        if ($this->message->hasChild($cid)) {
           return $matches[1] . $cid . $matches[4];
         }
       }
@@ -390,8 +354,7 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
   /**
    * Empty out the cache of registered files.
    */
-  public function clearCache()
-  {
+  public function clearCache() {
     $this->registeredFiles = null;
     $this->registeredFiles = array();
   }
@@ -400,26 +363,21 @@ class Swift_Plugin_FileEmbedder implements Swift_Events_BeforeSendListener
    * Runs just before Swift sends a message.  Here is where we do all the replacements.
    * @param Swift_Events_SendEvent
    */
-  public function beforeSendPerformed(Swift_Events_SendEvent $e)
-  {
+  public function beforeSendPerformed(Swift_Events_SendEvent $e) {
     $this->message = $e->getMessage();
     
-    foreach ($this->message->listChildren() as $id)
-    {
+    foreach ($this->message->listChildren() as $id) {
       $part = $this->message->getChild($id);
       $body = $part->getData();
       if (!is_string($body) || substr(strtolower($part->getContentType()), 0, 5) != "text/") continue;
       
-      foreach ($this->definitions as $tag_name => $def)
-      {
-        if ($this->getEmbedRemoteFiles())
-        {
+      foreach ($this->definitions as $tag_name => $def) {
+        if ($this->getEmbedRemoteFiles()) {
           $re = $this->getRemoteFilePattern($tag_name);
           $body = preg_replace_callback($re, array($this, "embedRemoteFile"), $body);
         }
         
-        if ($this->getEmbedLocalFiles())
-        {
+        if ($this->getEmbedLocalFiles()) {
           $re = $this->getLocalFilePattern($tag_name);
           $body = preg_replace_callback($re, array($this, "embedLocalFile"), $body);
         }

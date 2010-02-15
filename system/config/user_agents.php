@@ -1,6 +1,6 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 /**
- * @package  Core
+ * @package		System
  *
  * This file contains four arrays of user agent data.  It is used by the
  * User Agent library to help identify browser, platform, robot, and

@@ -85,16 +85,14 @@ abstract class Swift_Log
   /**
    * Check if logging is enabled.
    */
-  public function isEnabled()
-  {
+  public function isEnabled() {
     return ($this->logLevel > self::LOG_NOTHING);
   }
   /**
    * Add a failed recipient to the list
    * @param string The address of the recipient
    */
-  public function addFailedRecipient($address)
-  {
+  public function addFailedRecipient($address) {
     $this->failedRecipients[$address] = null;
     $this->add("Recipient '" . $address . "' rejected by connection.", self::ERROR);
   }
@@ -102,32 +100,28 @@ abstract class Swift_Log
    * Get the list of failed recipients
    * @return array
    */
-  public function getFailedRecipients()
-  {
+  public function getFailedRecipients() {
     return array_keys($this->failedRecipients);
   }
   /**
    * Set the maximum size of this log (zero is no limit)
    * @param int The maximum entries
    */
-  public function setMaxSize($size)
-  {
+  public function setMaxSize($size) {
     $this->maxSize = (int) $size;
   }
   /**
    * Get the current maximum allowed log size
    * @return int
    */
-  public function getMaxSize()
-  {
+  public function getMaxSize() {
     return $this->maxSize;
   }
   /**
    * Set the log level to one of the constants provided.
    * @param int Level
    */
-  public function setLogLevel($level)
-  {
+  public function setLogLevel($level) {
     $level = (int)$level;
     $this->add("Log level changed to " . $level, self::NORMAL);
     $this->logLevel = $level;
@@ -136,8 +130,7 @@ abstract class Swift_Log
    * Get the current log level.
    * @return int
    */
-  public function getLogLevel()
-  {
+  public function getLogLevel() {
     return $this->logLevel;
   }
   /**
@@ -145,8 +138,7 @@ abstract class Swift_Log
    * @param int Level
    * @return boolean
    */
-  public function hasLevel($level)
-  {
+  public function hasLevel($level) {
     return ($this->logLevel >= ((int)$level));
   }
 }

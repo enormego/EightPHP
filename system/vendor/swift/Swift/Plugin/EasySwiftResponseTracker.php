@@ -30,16 +30,14 @@ class Swift_Plugin_EasySwiftResponseTracker implements Swift_Events_ResponseList
    * Constructor
    * @param EasySwift The instance of EasySwift to run against
    */
-  public function __construct($obj)
-  {
+  public function __construct($obj) {
     $this->target = $obj;
   }
   /**
    * Response listener method
    * @param Swift_Events_ResponseEvent The event occured in Swift
    */
-  public function responseReceived(Swift_Events_ResponseEvent $e)
-  {
+  public function responseReceived(Swift_Events_ResponseEvent $e) {
     $this->target->lastResponse = $e->getString();
     $this->target->responseCode = $e->getCode();
   }

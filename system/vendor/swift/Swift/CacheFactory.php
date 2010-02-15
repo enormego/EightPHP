@@ -28,8 +28,7 @@ class Swift_CacheFactory
    * This also includes the file
    * @param string The class name
    */
-  public static function setClassName($name)
-  {
+  public static function setClassName($name) {
     Swift_ClassLoader::load($name);
     self::$className = $name;
   }
@@ -37,8 +36,7 @@ class Swift_CacheFactory
    * Return a new instance of the cache object
    * @return Swift_Cache
    */
-  public static function getCache()
-  {
+  public static function getCache() {
     $className = self::$className;
     Swift_ClassLoader::load($className);
     $instance = new $className();

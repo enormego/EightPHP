@@ -75,31 +75,25 @@ class Swift_Message_Headers
    * @param string The line ending sequence
    * @return boolean
    */
-  public function setLE($le)
-  {
-    if (in_array($le, array("\r", "\n", "\r\n")))
-    {
+  public function setLE($le) {
+    if (in_array($le, array("\r", "\n", "\r\n"))) {
       foreach (array_keys($this->cached) as $k) $this->cached[$k] = null;
       $this->LE = $le;
       return true;
-    }
-    else return false;
+    } else return false;
   }
   /**
    * Get the line ending sequence
    * @return string
    */
-  public function getLE()
-  {
+  public function getLE() {
     return $this->LE;
   }
   /**
    * Reset the cache state in these headers
    */
-  public function uncacheAll()
-  {
-    foreach (array_keys($this->cached) as $k)
-    {
+  public function uncacheAll() {
+    foreach (array_keys($this->cached) as $k) {
       $this->cached[$k] = null;
     }
   }
@@ -108,31 +102,23 @@ class Swift_Message_Headers
    * @param string The header name, for example "From" or "Subject"
    * @param string The value to be inserted into the header.  This is safe from header injection.
    */
-  public function set($name, $value)
-  {
+  public function set($name, $value) {
     $lname = strtolower($name);
-    if (!isset($this->lowerHeaders[$lname]))
-    {
+    if (!isset($this->lowerHeaders[$lname])) {
       $this->headers[$name] = null;
       $this->lowerHeaders[$lname] =& $this->headers[$name];
     }
     $this->cached[$lname] = null;
     Swift_ClassLoader::load("Swift_Message_Encoder");
-    if (is_array($value))
-    {
-      foreach ($value as $v)
-      {
-        if (!$this->getCharset() && Swift_Message_Encoder::instance()->isUTF8($v))
-        {
+    if (is_array($value)) {
+      foreach ($value as $v) {
+        if (!$this->getCharset() && Swift_Message_Encoder::instance()->isUTF8($v)) {
           $this->setCharset("utf-8");
           break;
         }
       }
-    }
-    elseif ($value !== null)
-    {
-      if (!$this->getCharset() && Swift_Message_Encoder::instance()->isUTF8($value))
-      {
+    } elseif ($value !== null) {
+      if (!$this->getCharset() && Swift_Message_Encoder::instance()->isUTF8($value)) {
         $this->setCharset("utf-8");
       }
     }
@@ -146,11 +132,9 @@ class Swift_Message_Headers
    * @throws Swift_Message_MimeException If no such header exists
    * @see hasHeader
    */
-  public function get($name)
-  {
+  public function get($name) {
     $lname = strtolower($name);
-    if ($this->has($name))
-    {
+    if ($this->has($name)) {
       return $this->lowerHeaders[$lname];
     }
   }
@@ -158,11 +142,9 @@ class Swift_Message_Headers
    * Remove a header from the list
    * @param string The name of the header
    */
-  public function remove($name)
-  {
+  public function remove($name) {
     $lname = strtolower($name);
-    if ($this->has($name))
-    {
+    if ($this->has($name)) {
       unset($this->headers[$name]);
       unset($this->lowerHeaders[$lname]);
       unset($this->cached[$lname]);
@@ -173,8 +155,7 @@ class Swift_Message_Headers
    * Just fetch the array containing the headers
    * @return array
    */
-  public function getList()
-  {
+  public function getList() {
     return $this->headers;
   }
   /**
@@ -182,8 +163,7 @@ class Swift_Message_Headers
    * @param string The name of the header, for example "From" or "Subject"
    * @return boolean
    */
-  public function has($name)
-  {
+  public function has($name) {
     $lname = strtolower($name);
     return (array_key_exists($lname, $this->lowerHeaders) && $this->lowerHeaders[$lname] !== null);
   }
@@ -191,32 +171,28 @@ class Swift_Message_Headers
    * Set the language used in the headers to $lang (e.g. en-us, en-gb, sv etc)
    * @param string The language to use
    */
-  public function setLanguage($lang)
-  {
+  public function setLanguage($lang) {
     $this->language = (string) $lang;
   }
   /**
    * Get the language used in the headers to $lang (e.g. en-us, en-gb, sv etc)
    * @return string
    */
-  public function getLanguage()
-  {
+  public function getLanguage() {
     return $this->language;
   }
   /**
    * Set the charset used in the headers
    * @param string The charset name
    */
-  public function setCharset($charset)
-  {
+  public function setCharset($charset) {
     $this->charset = (string) $charset;
   }
   /**
    * Get the current charset used
    * @return string
    */
-  public function getCharset()
-  {
+  public function getCharset() {
     return $this->charset;
   }
   /**
@@ -232,10 +208,8 @@ class Swift_Message_Headers
    * @param string The encoding format to use
    * @return boolean
    */
-  public function setEncoding($encoding)
-  {
-    switch (strtolower($encoding))
-    {
+  public function setEncoding($encoding) {
+    switch (strtolower($encoding)) {
       case "qp": case "q": case "quoted-printable":
       $this->encoding = "Q";
       return true;
@@ -249,16 +223,14 @@ class Swift_Message_Headers
    * Get the encoding format used in this document
    * @return string
    */
-  public function getEncoding()
-  {
+  public function getEncoding() {
     return $this->encoding;
   }
   /**
    * Turn on or off forced header encoding
    * @param boolean On/Off
    */
-  public function forceEncoding($force=true)
-  {
+  public function forceEncoding($force=true) {
     $this->forceEncoding = (boolean) $force;
   }
   /**
@@ -269,19 +241,15 @@ class Swift_Message_Headers
    * @param string The value to set
    * @throws Swift_Message_MimeException If no such header exists
    */
-  public function setAttribute($header, $name, $value)
-  {
+  public function setAttribute($header, $name, $value) {
     $name = strtolower($name);
     $lheader = strtolower($header);
     $this->cached[$lheader] = null;
-    if (!$this->has($header))
-    {
+    if (!$this->has($header)) {
       throw new Swift_Message_MimeException(
       "Cannot set attribute '" . $name . "' for header '" . $header . "' as the header does not exist. " .
       "Consider using Swift_Message_Headers-&gt;has() to check.");
-    }
-    else
-    {
+    } else {
       Swift_ClassLoader::load("Swift_Message_Encoder");
       if (!$this->getCharset() && Swift_Message_Encoder::instance()->isUTF8($value)) $this->setCharset("utf-8");
       if (!isset($this->attributes[$lheader])) $this->attributes[$lheader] = array();
@@ -295,16 +263,12 @@ class Swift_Message_Headers
    * @param string The name of the attribute
    * @return boolean
    */
-  public function hasAttribute($header, $name)
-  {
+  public function hasAttribute($header, $name) {
     $name = strtolower($name);
     $lheader = strtolower($header);
-    if (!$this->has($header))
-    {
+    if (!$this->has($header)) {
       return false;
-    }
-    else
-    {
+    } else {
       return (isset($this->attributes[$lheader]) && isset($this->attributes[$lheader][$name]) && ($this->attributes[$lheader][$name] !== null));
     }
   }
@@ -315,10 +279,8 @@ class Swift_Message_Headers
    * @return string
    * @throws Swift_Message_MimeException If no header is set
    */
-  public function getAttribute($header, $name)
-  {
-    if (!$this->has($header))
-    {
+  public function getAttribute($header, $name) {
+    if (!$this->has($header)) {
       throw new Swift_Message_MimeException(
       "Cannot locate attribute '" . $name . "' for header '" . $header . "' as the header does not exist. " .
       "Consider using Swift_Message_Headers-&gt;has() to check.");
@@ -327,8 +289,7 @@ class Swift_Message_Headers
     $name = strtolower($name);
     $lheader = strtolower($header);
     
-    if ($this->hasAttribute($header, $name))
-    {
+    if ($this->hasAttribute($header, $name)) {
       return $this->attributes[$lheader][$name];
     }
   }
@@ -337,12 +298,10 @@ class Swift_Message_Headers
    * @param string The name of the header to remove the attribute from
    * @param string The name of the attribute to remove
    */
-  public function removeAttribute($header, $name)
-  {
+  public function removeAttribute($header, $name) {
     $name = strtolower($name);
     $lheader = strtolower($header);
-    if ($this->has($header))
-    {
+    if ($this->has($header)) {
       unset($this->attributes[$lheader][$name]);
     }
   }
@@ -351,14 +310,11 @@ class Swift_Message_Headers
    * @param string The name of the header
    * @return array
    */
-  public function listAttributes($header)
-  {
+  public function listAttributes($header) {
     $header = strtolower($header);
-    if (array_key_exists($header, $this->attributes))
-    {
+    if (array_key_exists($header, $this->attributes)) {
       return $this->attributes[$header];
-    }
-    else return array();
+    } else return array();
   }
   /**
    * Get the header in it's compliant, encoded form
@@ -366,8 +322,7 @@ class Swift_Message_Headers
    * @return string
    * @throws Swift_Message_MimeException If the header doesn't exist
    */
-  public function getEncoded($name)
-  {
+  public function getEncoded($name) {
     if (!$this->getCharset()) $this->setCharset("iso-8859-1");
     Swift_ClassLoader::load("Swift_Message_Encoder");
     //I'll try as best I can to walk through this...
@@ -384,20 +339,16 @@ class Swift_Message_Headers
     
     //Look at each value in this header
     // There will only be 1 value if it was a string to begin with, and usually only address lists will be multiple
-    foreach ($encoded_value as $key => $row)
-    {
+    foreach ($encoded_value as $key => $row) {
       $spec = ""; //The bit which specifies the encoding of the header (if any)
       $end = ""; //The end delimiter for an encoded header
       
       //If the header is 7-bit printable it's at no risk of injection
-      if (Swift_Message_Encoder::instance()->isHeaderSafe($row) && !$this->forceEncoding)
-      {
+      if (Swift_Message_Encoder::instance()->isHeaderSafe($row) && !$this->forceEncoding) {
         //Keeps the total line length at less than 76 chars, taking into account the Header name length
         $encoded_value[$key] = Swift_Message_Encoder::instance()->header7BitEncode(
           $row, 72, ($key > 0 ? 0 : (75-(strlen($name)+5))), $this->LE);
-      }
-      elseif ($this->encoding == "Q") //QP encode required
-      {
+      } elseif ($this->encoding == "Q") { //  otherwise, it's a modifier 
         $spec = "=?" . $this->getCharset() . "?Q?"; //e.g. =?iso-8859-1?Q?
         $end = "?=";
         //Calculate the length of, for example: "From: =?iso-8859-1?Q??="
@@ -407,9 +358,7 @@ class Swift_Message_Headers
         $encoded_value[$key] = str_replace(" ", "_", Swift_Message_Encoder::instance()->QPEncode(
           $row, (75-(strlen($spec)+6)), ($key > 0 ? 0 : (75-$used_length)), true, $this->LE));
         
-      }
-      elseif ($this->encoding == "B") //Need to Base64 encode
-      {
+      } elseif ($this->encoding == "B") { // Need to Base64 encode 
         //See the comments in the elseif() above since the logic is the same (refactor?)
         $spec = "=?" . $this->getCharset() . "?B?";
         $end = "?=";
@@ -418,8 +367,7 @@ class Swift_Message_Headers
           $row, (75-(strlen($spec)+5)), ($key > 0 ? 0 : (76-($used_length+3))), true, $this->LE);
       }
       
-      if (false !== $p = strpos($encoded_value[$key], $this->LE))
-      {
+      if (false !== $p = strpos($encoded_value[$key], $this->LE)) {
         $cb = 'str_replace("' . $this->LE . '", "", "<$1>");';
         $encoded_value[$key] = preg_replace("/<([^>]+)>/e", $cb, $encoded_value[$key]);
       }
@@ -427,39 +375,30 @@ class Swift_Message_Headers
       //Turn our header into an array of lines ready for wrapping around the encoding specification
       $lines = explode($this->LE, $encoded_value[$key]);
       
-      for ($i = 0, $len = count($lines); $i < $len; $i++)
-      {
+      for ($i = 0, $len = count($lines); $i < $len; $i++) {
         //Don't allow commas in address fields without quotes unless they're encoded
-        if (empty($spec) && $is_email && (false !== $p = strpos($lines[$i], ",")))
-        {
+        if (empty($spec) && $is_email && (false !== $p = strpos($lines[$i], ","))) {
           $s = strpos($lines[$i], " <");
           $e = strpos($lines[$i], ">");
-          if ($s < $e)
-          {
+          if ($s < $e) {
             $addr = substr($lines[$i], $s);
             $lines[$i] = "\"" . substr($lines[$i], 0, $s) . "\"" . $addr;
-          }
-          else
-          {
+          } else {
             $lines[$i] = "\"" . $lines[$i] . "\"";
           }
         }
         
         if ($this->encoding == "Q") $lines[$i] = rtrim($lines[$i], "=");
         
-        if ($lines[$i] == "" && $i > 0)
-        {
+        if ($lines[$i] == "" && $i > 0) {
           unset($lines[$i]); //Empty line, we'd rather not have these in the headers thank you!
           continue;
         }
-        if ($i > 0)
-        {
+        if ($i > 0) {
           //Don't stick the specification part around the line if it's an address
           if (substr($lines[$i], 0, 1) == '<' && substr($lines[$i], -1) == '>') $lines[$i] = " " . $lines[$i];
           else $lines[$i] = " " . $spec . $lines[$i] . $end;
-        }
-        else
-        {
+        } else {
           if (substr($lines[$i], 0, 1) != '<' || substr($lines[$i], -1) != '>') $lines[$i] = $spec . $lines[$i] . $end;
         }
       }
@@ -486,15 +425,13 @@ class Swift_Message_Headers
    * @return string
    * @throws Swift_Message_MimeException If no such header exists or there are no attributes
    */
-  protected function buildAttributes($header_line, $header_name)
-  {
+  protected function buildAttributes($header_line, $header_name) {
     Swift_ClassLoader::load("Swift_Message_Encoder");
     $lines = explode($this->LE, $header_line);
     $used_len = strlen($lines[count($lines)-1]);
     $lines= null;
     $ret = "";
-    foreach ($this->attributes[$header_name] as $attribute => $att_value)
-    {
+    foreach ($this->attributes[$header_name] as $attribute => $att_value) {
       if ($att_value === null) continue;
       // 70 to account for LWSP, CRLF, quotes and a semi-colon
       // + length of attribute
@@ -502,34 +439,27 @@ class Swift_Message_Headers
       $avail_len = 70 - (strlen($attribute) + 4);
       $encoded = Swift_Message_Encoder::instance()->rfc2047Encode($att_value, $this->charset, $this->language, $avail_len, $this->LE);
       $lines = explode($this->LE, $encoded);
-      foreach ($lines as $i => $line)
-      {
+      foreach ($lines as $i => $line) {
         //Add quotes if needed (RFC 2045)
         if (preg_match("~[\\s\";,<>\\(\\)@:\\\\/\\[\\]\\?=]~", $line)) $lines[$i] = '"' . $line . '"';
       }
       $encoded = implode($this->LE, $lines);
       
       //If we can fit this entire attribute onto the same line as the header then do it!
-      if ((strlen($encoded) + $used_len + strlen($attribute) + 4) < 74)
-      {
+      if ((strlen($encoded) + $used_len + strlen($attribute) + 4) < 74) {
         if (strpos($encoded, "'") !== false) $attribute .= "*";
         $append = "; " . $attribute . "=" . $encoded;
         $ret .= $append;
         $used_len += strlen($append);
-      }
-      else //... otherwise list of underneath
-      {
+      } else { // ... otherwise list of underneath 
         $ret .= ";";
-        if (count($lines) > 1)
-        {
+        if (count($lines) > 1) {
           $loop = false;
           $add_asterisk = false;
-          foreach ($lines as $i => $line)
-          {
+          foreach ($lines as $i => $line) {
             $att_copy = $attribute; //Because it's multi-line it needs asterisks with decimal indices
             $att_copy .= "*" . $i;
-            if ($add_asterisk || strpos($encoded, "'") !== false)
-            {
+            if ($add_asterisk || strpos($encoded, "'") !== false) {
               $att_copy .= "*"; //And if it's got a ' then it needs another asterisk
               $add_asterisk = true;
             }
@@ -540,9 +470,7 @@ class Swift_Message_Headers
             $used_len = strlen($append)+1;
             $loop = true;
           }
-        }
-        else
-        {
+        } else {
           if (strpos($encoded, "'") !== false) $attribute .= "*";
           $append = $this->LE . " " . $attribute . "=" . $encoded;
           $used_len = strlen($append)+1;
@@ -560,11 +488,9 @@ class Swift_Message_Headers
    * This is RFC 2822 compliant
    * @return string
    */
-  public function build()
-  {
+  public function build() {
     $ret = "";
-    foreach ($this->headers as $name => $value) //Look at each header
-    {
+    foreach ($this->headers as $name => $value) { // Look at each header 
       if ($value === null) continue;
       $ret .= ltrim($name, ".") . ": " . $this->getEncoded($name) . $this->LE;
     }

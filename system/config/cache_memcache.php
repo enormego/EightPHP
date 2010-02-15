@@ -1,6 +1,7 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
- * @package  Cache:Memcache
+ * @package		System
+ * @subpackage	Libraries.Cache
  *
  * memcache server configuration.
  */
@@ -10,11 +11,11 @@ $config['servers'] = array
 	(
 		'host' => '127.0.0.1',
 		'port' => 11211,
-		'persistent' => FALSE,
+		'persistent' => NO,
 	)
 );
 
 /**
  * Enable cache data compression.
  */
-$config['compression'] = FALSE;
+$config['compression'] = NO;

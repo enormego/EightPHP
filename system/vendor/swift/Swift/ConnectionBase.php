@@ -37,12 +37,10 @@ abstract class Swift_ConnectionBase implements Swift_Connection
    * @param string Extension name
    * @param array Attributes of the extension
    */
-  public function setExtension($name, $options=array())
-  {
+  public function setExtension($name, $options=array()) {
     $this->extensions[$name] = $options;
     $log = Swift_LogContainer::getLog();
-    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING))
-    {
+    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING)) {
       $log->add("SMTP extension '" . $name . "' reported with attributes [" . implode(", ", $options) . "].");
     }
   }
@@ -51,8 +49,7 @@ abstract class Swift_ConnectionBase implements Swift_Connection
    * @param string The name of the extension
    * @return boolean
    */
-  public function hasExtension($name)
-  {
+  public function hasExtension($name) {
     return array_key_exists($name, $this->extensions);
   }
   /**
@@ -65,14 +62,10 @@ abstract class Swift_ConnectionBase implements Swift_Connection
    * @return array The list of attributes
    * @throws Swift_ConnectionException If the extension cannot be found
    */
-  public function getAttributes($extension)
-  {
-    if ($this->hasExtension($extension))
-    {
+  public function getAttributes($extension) {
+    if ($this->hasExtension($extension)) {
       return $this->extensions[$extension];
-    }
-    else
-    {
+    } else {
       throw new Swift_ConnectionException(
       "Unable to locate any attributes for the extension '" . $extension . "' since the extension cannot be found. " .
       "Consider using hasExtension() to check.");
@@ -82,20 +75,17 @@ abstract class Swift_ConnectionBase implements Swift_Connection
    * Returns TRUE if the connection needs a EHLO greeting.
    * @return boolean
    */
-  public function getRequiresEHLO()
-  {
+  public function getRequiresEHLO() {
     return $this->isESMTP;
   }
   /**
    * Set TRUE if the connection needs a EHLO greeting.
    * @param boolean
    */
-  public function setRequiresEHLO($set)
-  {
+  public function setRequiresEHLO($set) {
     $this->isESMTP = (bool) $set;
     $log = Swift_LogContainer::getLog();
-    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING))
-    {
+    if ($log->hasLevel(Swift_Log::LOG_EVERYTHING)) {
       $log->add("Forcing ESMTP mode.  HELO is EHLO.");
     }
   }

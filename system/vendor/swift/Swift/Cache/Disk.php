@@ -37,16 +37,14 @@ class Swift_Cache_Disk extends Swift_Cache
   /**
    * Ctor
    */
-  public function __construct()
-  {
+  public function __construct() {
     $this->prefix = md5(uniqid(microtime(), true));
   }
   /**
    * Set the save path of the disk - this is a global setting and called statically!
    * @param string The path to a writable directory
    */
-  public static function setSavePath($path="/tmp")
-  {
+  public static function setSavePath($path="/tmp") {
     self::$save_path = realpath($path);
   }
   /**
@@ -54,11 +52,9 @@ class Swift_Cache_Disk extends Swift_Cache
    * @param string The cache key
    * @param string The data to write
    */
-  public function write($key, $data)
-  {
+  public function write($key, $data) {
     $handle = fopen(self::$save_path . "/" . $this->prefix . $key, "ab");
-    if (false === fwrite($handle, $data))
-    {
+    if (false === fwrite($handle, $data)) {
       Swift_ClassLoader::load("Swift_FileException");
       throw new Swift_FileException("Disk Caching failed.  Tried to write to file at [" .
         self::$save_path . "/" . $this->prefix . $key . "] but failed.  Check the permissions, or don't use disk caching.");
@@ -69,8 +65,7 @@ class Swift_Cache_Disk extends Swift_Cache
    * Clear the cached data (unlink)
    * @param string The cache key
    */
-  public function clear($key)
-  {
+  public function clear($key) {
     @unlink(self::$save_path . "/" . $this->prefix . $key);
   }
   /**
@@ -78,8 +73,7 @@ class Swift_Cache_Disk extends Swift_Cache
    * @param string The cache key
    * @return boolean
    */
-  public function has($key)
-  {
+  public function has($key) {
     return file_exists(self::$save_path . "/" . $this->prefix . $key);
   }
   /**
@@ -88,28 +82,22 @@ class Swift_Cache_Disk extends Swift_Cache
    * @param int The number of bytes to read
    * @return string
    */
-  public function read($key, $size=null)
-  {
+  public function read($key, $size=null) {
     if ($size === null) $size = 8190;
     if (!$this->has($key)) return false;
     
-    if (!isset($this->open[$key]))
-    {
+    if (!isset($this->open[$key])) {
       $this->open[$key] = fopen(self::$save_path . "/" . $this->prefix . $key, "rb");
     }
-    if (feof($this->open[$key]))
-    {
+    if (feof($this->open[$key])) {
       fclose($this->open[$key]);
       unset($this->open[$key]);
       return false;
     }
     $ret = fread($this->open[$key], $size);
-    if ($ret !== false)
-    {
+    if ($ret !== false) {
       return $ret;
-    }
-    else
-    {
+    } else {
       fclose($this->open[$key]);
       unset($this->open[$key]);
       return false;
@@ -119,11 +107,9 @@ class Swift_Cache_Disk extends Swift_Cache
    * Dtor.
    * Clear out cached data at end of script execution or cache destruction
    */
-  public function __destruct()
-  {
+  public function __destruct() {
     $list = glob(self::$save_path . "/" . $this->prefix . "*");
-    foreach ((array)$list as $f)
-    {
+    foreach ((array)$list as $f) {
       @unlink($f);
     }
   }

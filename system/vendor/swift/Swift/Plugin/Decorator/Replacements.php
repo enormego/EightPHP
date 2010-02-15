@@ -29,8 +29,7 @@ class Swift_Plugin_Decorator_Replacements
    * Ctor.
    * @param array The replacements as a 2-d array, optional
    */
-  public function __construct($replacements = array())
-  {
+  public function __construct($replacements = array()) {
     $this->setReplacements($replacements);
   }
   /**
@@ -38,8 +37,7 @@ class Swift_Plugin_Decorator_Replacements
    * @param string The e-mail address
    * @param array The replacements as (search => replacement) form.
    */
-  public function addReplacements($address, $replacements)
-  {
+  public function addReplacements($address, $replacements) {
     $this->replacements[strtolower($address)] = (array)$replacements;
   }
   /**
@@ -47,16 +45,14 @@ class Swift_Plugin_Decorator_Replacements
    * The array is formed thus (address => (search => replace), address => (search => replace))
    * @param array,array The replacements.
    */
-  public function setReplacements($replacements)
-  {
+  public function setReplacements($replacements) {
     $this->replacements = array_change_key_case((array) $replacements, CASE_LOWER);
   }
   /**
    * Get the entire list of replacements as a 2-d array
    * @return array,array
    */
-  public function getReplacements()
-  {
+  public function getReplacements() {
     return $this->replacements;
   }
   /**
@@ -65,13 +61,10 @@ class Swift_Plugin_Decorator_Replacements
    * @param string The address to get replacements for
    * @return array
    */
-  public function getReplacementsFor($address)
-  {
+  public function getReplacementsFor($address) {
     $address = strtolower($address);
-    if (array_key_exists($address, $this->replacements))
-    {
+    if (array_key_exists($address, $this->replacements)) {
       return (array)$this->replacements[$address];
-    }
-    else return array();
+    } else return array();
   }
 }
