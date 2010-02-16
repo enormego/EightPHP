@@ -9,11 +9,36 @@
  * @license		http://license.eightphp.com
  */
 class remote_Core {
-	public static $proxy_host;
-	public static $proxy_port;
-	public static $proxy_user;
-	public static $proxy_pass;
+	/**
+	 * Host for the proxy
+	 */
+	public static $proxy_host = NULL;
+
+	/**
+	 * Port for the proxy
+	 */
+	public static $proxy_port = NULL;
+
+	/**
+	 * Username for proxy, optional
+	 */
+	public static $proxy_user = NULL;
+
+	/**
+	 * Password for proxy, optional
+	 */
+	public static $proxy_pass = NULL;
 	
+	/**
+	 * Setup helper to use proxies, currently only works with get and post
+	 * @see remote_Core::get()
+	 * @see remote_Core::post()
+	 *
+	 * @param   string	Host for the proxy
+	 * @param   string	Port for the proxy
+	 * @param   string	Username for proxy, optional
+	 * @param   string	Password for proxy, optional
+	 */
 	public static function set_proxy($host, $port, $user=NULL, $pass=NULL) {
 		self::$proxy_host = $host;
 		self::$proxy_port = $port;
@@ -21,10 +46,19 @@ class remote_Core {
 		self::$proxy_pass = $pass;
 	}
 	
+	/**
+	 * Clears all proxy settings
+	 */
 	public static function clear_proxy() {
 		self::$proxy_host = self::$proxy_port = self::$proxy_user = self::$proxy_pass = NULL;
 	}
 	
+	/**
+	 * Uses sockets to check the status of a url.
+	 *
+	 * @param   string	url to post to
+	 * @return  mixed	NO if URL is down or invalid, otherwise returns status code.
+	 */
 	public static function status($url) {
 		if(!valid::url($url, 'http'))
 			return NO;
@@ -74,7 +108,7 @@ class remote_Core {
 	}
 	
 	/**
-	 * Uses cURL to retreive the given URL // Check Revision 72 for the native file_get_contents version
+	 * Uses cURL to retrieve the given URL
 	 *
 	 * @param   string	url to grab
 	 * @param   int		timeout period
@@ -132,7 +166,6 @@ class remote_Core {
 	 * 
 	 * @param	resources	curl handle
 	 */
-	
 	protected function populate_proxy($ch) {
 		if(!str::e(self::$proxy_host) && self::$proxy_port > 0) {
 			curl_setopt($ch, CURLOPT_PROXY, self::$proxy_host.':'.self::$proxy_port); 
