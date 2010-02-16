@@ -222,8 +222,6 @@ final class Eight {
 	 *
 	 * This method does not need to be called during normal system execution,
 	 * however in some advanced situations it can be helpful.
-	 *
-	 * @return  void
 	 */
 	public static function cleanup() {
 		static $run;
@@ -351,11 +349,6 @@ final class Eight {
 
 			// Add SYSPATH as the last path
 			self::$include_paths[] = SYSPATH;
-
-			// New PHP include paths
-			// $new_paths = array_diff(self::$include_paths, explode(PATH_SEPARATOR, $php_paths));
-
-			// set_include_path($php_paths.PATH_SEPARATOR.implode(PATH_SEPARATOR, $new_paths));
 		}
 
 		return self::$include_paths;
@@ -675,8 +668,6 @@ final class Eight {
 
 	/**
 	 * Triggers the shutdown of Eight by closing the output buffer, runs the system.display event.
-	 *
-	 * @return  void
 	 */
 	public static function shutdown() {
 		// Close output buffers
@@ -693,7 +684,6 @@ final class Eight {
 	 * Inserts global Eight variables into the generated output and prints it.
 	 *
 	 * @param   string  final output that will displayed
-	 * @return  void
 	 */
 	public static function render($output) {
 		// Fetch memory usage in MB
@@ -768,12 +758,11 @@ final class Eight {
 	}
 
 	/**
-	 * Displays a 404 page.
+	 * Displays a 404 page, unless config says to ignore page not found.
 	 *
-	 * @throws  Eight_Exception_404
 	 * @param   string  URI of page
 	 * @param   string  custom template
-	 * @return  void
+	 * @throws  Eight_Exception_404
 	 */
 	public static function show_404($page = NO, $template = NO) {
 		if(in_array($page, arr::c(Eight::config('config.ignore_page_not_found')))) return FALSE;
@@ -1059,17 +1048,15 @@ final class Eight {
 	 * @param   array   array to search
 	 * @param   string  dot-noted string: foo.bar.baz
 	 * @return  string  if the key is found
-	 * @return  void    if the key is not found
+	 * @return  NULL    if the key is not found
 	 */
 	public static function key_string($array, $keys) {
-		if(empty($array))
-			return nil;
+		if(empty($array)) return NULL;
 
 		// Prepare for loop
 		$keys = explode('.', $keys);
 
-		do
-		{
+		while(!empty($keys)) {
 			// Get the next key
 			$key = array_shift($keys);
 
@@ -1086,9 +1073,8 @@ final class Eight {
 				break;
 			}
 		}
-		while(!empty($keys));
 
-		return nil;
+		return NULL;
 	}
 
 	/**
