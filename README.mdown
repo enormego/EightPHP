@@ -5,7 +5,9 @@ Eight is a PHP5 framework branched from [KohanaPHP](http://kohanaphp.com) that u
 Eight is a not a rapidly changing framework.  Unlike other frameworks developer, we actually use Eight, so major restructuring is only used when absolutely necessary.  Eight was born due in large because other developers developed their frameworks for the sake of developing a framework, and not actually using it.  This unfortunately leads to to changing code "just because".  We wanted all of our projects to use the latest version of it's framework, without needing massive code overhauls every-time we pulled in a new commit.  With Eight, you're going to get an awesome framework that's actively maintained without needing to worry "are these commits going to make me spend the next week rewriting my app?".
 
 # SVN Mirror
-If you're using SVN to manage your project and would prefer to use svn:externals, we currently mirror Eight to GoogleCode for SVN access.  You can access the GoogleCode page here: [http://code.google.com/p/eightframework/source](http://code.google.com/p/eightframework/source)
+If you're using SVN to manage your project and would prefer to use svn:externals, we currently mirror Eight on an SVN server for you to checkout:
+
+`svn co svn://eightphp.com/eightphp/trunk eightphp-read-only`
 
 # Documentation
 You can view the online documentation of Eight by at [http://enormego.pbworks.com/FrontPage](http://enormego.pbworks.com/FrontPage).
