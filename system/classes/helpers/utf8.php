@@ -38,7 +38,7 @@ class utf8_Core {
 	 */
 	public static function substr_replace($str, $replacement, $offset, $length = NULL)
 	{
-		if (text::is_ascii($str))
+		if (str::is_ascii($str))
 			return ($length === NULL) ? substr_replace($str, $replacement, $offset) : substr_replace($str, $replacement, $offset, $length);
 
 		$length = ($length === NULL) ? mb_strlen($str) : (int) $length;
@@ -60,7 +60,7 @@ class utf8_Core {
 	 */
 	public static function ucfirst($str)
 	{
-		if (text::is_ascii($str))
+		if (str::is_ascii($str))
 			return ucfirst($str);
 
 		preg_match('/^(.?)(.*)$/us', $str, $matches);
@@ -81,7 +81,7 @@ class utf8_Core {
 	 */
 	public static function strcasecmp($str1, $str2)
 	{
-		if (text::is_ascii($str1) AND text::is_ascii($str2))
+		if (str::is_ascii($str1) AND str::is_ascii($str2))
 			return strcasecmp($str1, $str2);
 
 		$str1 = mb_strtolower($str1);
@@ -106,7 +106,7 @@ class utf8_Core {
 	 */
 	public static function str_ireplace($search, $replace, $str, & $count = NULL)
 	{
-		if (text::is_ascii($search) AND text::is_ascii($replace) AND text::is_ascii($str))
+		if (str::is_ascii($search) AND str::is_ascii($replace) AND str::is_ascii($str))
 			return str_ireplace($search, $replace, $str, $count);
 
 		if (is_array($str))
@@ -179,7 +179,7 @@ class utf8_Core {
 	 */
 	public static function stristr($str, $search)
 	{
-		if (text::is_ascii($str) AND text::is_ascii($search))
+		if (str::is_ascii($str) AND str::is_ascii($search))
 			return stristr($str, $search);
 
 		if ($search == '')
@@ -213,7 +213,7 @@ class utf8_Core {
 		if ($str == '' OR $mask == '')
 			return 0;
 
-		if (text::is_ascii($str) AND text::is_ascii($mask))
+		if (str::is_ascii($str) AND str::is_ascii($mask))
 			return ($offset === NULL) ? strspn($str, $mask) : (($length === NULL) ? strspn($str, $mask, $offset) : strspn($str, $mask, $offset, $length));
 
 		if ($offset !== NULL OR $length !== NULL)
@@ -246,7 +246,7 @@ class utf8_Core {
 		if ($str == '' OR $mask == '')
 			return 0;
 
-		if (text::is_ascii($str) AND text::is_ascii($mask))
+		if (str::is_ascii($str) AND str::is_ascii($mask))
 			return ($offset === NULL) ? strcspn($str, $mask) : (($length === NULL) ? strcspn($str, $mask, $offset) : strcspn($str, $mask, $offset, $length));
 
 		if ($str !== NULL OR $length !== NULL)
@@ -276,7 +276,7 @@ class utf8_Core {
 	 */
 	public static function str_pad($str, $final_str_length, $pad_str = ' ', $pad_type = STR_PAD_RIGHT)
 	{
-		if (text::is_ascii($str) AND text::is_ascii($pad_str))
+		if (str::is_ascii($str) AND str::is_ascii($pad_str))
 		{
 			return str_pad($str, $final_str_length, $pad_str, $pad_type);
 		}
@@ -333,7 +333,7 @@ class utf8_Core {
 	{
 		$split_length = (int) $split_length;
 
-		if (text::is_ascii($str))
+		if (str::is_ascii($str))
 		{
 			return str_split($str, $split_length);
 		}
@@ -364,7 +364,7 @@ class utf8_Core {
 	 */
 	public static function strrev($str)
 	{
-		if (text::is_ascii($str))
+		if (str::is_ascii($str))
 			return strrev($str);
 
 		preg_match_all('/./us', $str, $matches);
@@ -405,7 +405,7 @@ class utf8_Core {
 		if ($charlist === NULL)
 			return ltrim($str);
 
-		if (text::is_ascii($charlist))
+		if (str::is_ascii($charlist))
 			return ltrim($str, $charlist);
 
 		$charlist = preg_replace('#[-\[\]:\\\\^/]#', '\\\\$0', $charlist);
@@ -428,7 +428,7 @@ class utf8_Core {
 		if ($charlist === NULL)
 			return rtrim($str);
 
-		if (text::is_ascii($charlist))
+		if (str::is_ascii($charlist))
 			return rtrim($str, $charlist);
 
 		$charlist = preg_replace('#[-\[\]:\\\\^/]#', '\\\\$0', $charlist);

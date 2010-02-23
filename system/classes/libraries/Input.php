@@ -48,6 +48,17 @@ class Input_Core {
 		$this->use_xss_clean = (bool) Eight::config('core.global_xss_filtering');
 
 		if(self::$instance === nil) {
+			// Convert all global variables to UTF-8.
+			$_GET    = Input::clean($_GET);
+			$_POST   = Input::clean($_POST);
+			$_COOKIE = Input::clean($_COOKIE);
+			$_SERVER = Input::clean($_SERVER);
+
+			if(PHP_SAPI == 'cli') {
+				// Convert command line arguments
+				$_SERVER['argv'] = Input::clean($_SERVER['argv']);
+			}
+			
 			// magic_quotes_runtime is enabled
 			if(get_magic_quotes_runtime()) {
 				set_magic_quotes_runtime(0);
@@ -415,6 +426,39 @@ class Input_Core {
 		if(strpos($str, "\r") !== NO) {
 			// Standardize newlines
 			$str = str_replace(array("\r\n", "\r"), "\n", $str);
+		}
+
+		return $str;
+	}
+
+	/**
+	 * Recursively cleans arrays, objects, and strings. Removes ASCII control
+	 * codes and converts to UTF-8 while silently discarding incompatible
+	 * UTF-8 characters.
+	 *
+	 * @param   string  string to clean
+	 * @return  string
+	 */
+	public static function clean($str) {
+		if (is_array($str) OR is_object($str)) {
+			foreach ($str as $key => $val) {
+				// Recursion!
+				$str[Input::clean($key)] = Input::clean($val);
+			}
+		} elseif (is_string($str) AND $str !== '') {
+			// Remove control characters
+			$str = str::strip_ascii_ctrl($str);
+
+			if (!str::is_ascii($str)) {
+				// Disable notices
+				$ER = error_reporting(~E_NOTICE);
+				
+				// iconv is expensive, so it is only used when needed
+				$str = iconv(Eight::CHARSET, Eight::CHARSET.'//IGNORE', $str);
+
+				// Turn notices back on
+				error_reporting($ER);
+			}
 		}
 
 		return $str;

@@ -76,31 +76,11 @@ Benchmark::stop(SYSTEM_BENCHMARK.'_environment_test');
 // Start system_initialization
 Benchmark::start(SYSTEM_BENCHMARK.'_system_initialization');
 
-// Load utf8 support
-require SYSPATH.'classes/core/utf8'.EXT;
-
 // Load Event support
 require SYSPATH.'classes/core/event'.EXT;
 
 // Load Eight core
 require SYSPATH.'classes/core/eight'.EXT;
-
-// Start utf8_conversion
-Benchmark::start(SYSTEM_BENCHMARK.'_utf8_conversion');
-
-// Convert all global variables to UTF-8.
-$_GET    = utf8::clean($_GET);
-$_POST   = utf8::clean($_POST);
-$_COOKIE = utf8::clean($_COOKIE);
-$_SERVER = utf8::clean($_SERVER);
-
-if(PHP_SAPI == 'cli') {
-	// Convert command line arguments
-	$_SERVER['argv'] = utf8::clean($_SERVER['argv']);
-}
-
-// Stop utf8_conversion
-Benchmark::stop(SYSTEM_BENCHMARK.'_utf8_conversion');
 
 // Prepare the environment
 Eight::setup();

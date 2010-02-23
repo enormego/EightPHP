@@ -49,14 +49,14 @@ class str_Core {
 
 		$limit = (int) $limit;
 
-		if(trim($str) === '' OR utf8::strlen($str) <= $limit)
+		if(trim($str) === '' OR mb_strlen($str) <= $limit)
 			return $str;
 
 		if($limit <= 0)
 			return $end_char;
 
 		if($preserve_words == NO) {
-			return rtrim(utf8::substr($str, 0, $limit)).$end_char;
+			return rtrim(mb_substr($str, 0, $limit)).$end_char;
 		}
 
 		preg_match('/^.{'.($limit - 1).'}\S*/us', $str, $matches);
@@ -116,17 +116,17 @@ class str_Core {
 			break;
 			default:
 				$pool = (string) $type;
-				$utf8 =!utf8::is_ascii($pool);
+				$utf8 =!str::is_ascii($pool);
 			break;
 		}
 
 		$str = '';
 
-		$pool_size = ($utf8 === YES) ? utf8::strlen($pool) : strlen($pool);
+		$pool_size = ($utf8 === YES) ? mb_strlen($pool) : strlen($pool);
 
 		for($i = 0; $i < $length; $i++) {
 			$str .= ($utf8 === YES)
-				? utf8::substr($pool, mt_rand(0, $pool_size - 1), 1)
+				? mb_substr($pool, mt_rand(0, $pool_size - 1), 1)
 				:       substr($pool, mt_rand(0, $pool_size - 1), 1);
 		}
 
@@ -166,9 +166,9 @@ class str_Core {
 
 		$regex = '!'.$regex.'!ui';
 
-		if(utf8::strlen($replacement) == 1) {
+		if(mb_strlen($replacement) == 1) {
 			$regex .= 'e';
-			return preg_replace($regex, 'str_repeat($replacement, utf8::strlen(\'$1\')', $str);
+			return preg_replace($regex, 'str_repeat($replacement, mb_strlen(\'$1\')', $str);
 		}
 
 		return preg_replace($regex, $replacement, $str);
@@ -598,6 +598,152 @@ class str_Core {
 		$lines[] = $str;
 
 		return implode($lines, "\n");
+	}
+
+	/**
+	 * Tests whether a string contains only 7bit ASCII bytes. This is used to
+	 * determine when to use native functions or UTF-8 functions.
+	 *
+	 * ##### Example
+	 *
+	 *     $str = 'abcd';
+	 *     var_export(str::is_ascii($str));
+	 *
+	 *     // Output:
+	 *     true
+	 *
+	 * @see http://sourceforge.net/projects/phputf8/
+	 * @copyright  (c) 2005 Harry Fuecks
+	 * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+	 *
+	 * @param   string  $str  String to check
+	 * @return  bool
+	 */
+	public static function is_ascii($str) {
+		return is_string($str) AND ! preg_match('/[^\x00-\x7F]/S', $str);
+	}
+	
+	/**
+	 * Strips out device control codes in the ASCII range.
+	 *
+	 * ##### Example
+	 *
+	 *     $result = str::strip_ascii_ctrl($str_containing_control_codes);
+	 *
+	 * @link http://sourceforge.net/projects/phputf8/
+	 * @copyright  (c) 2005 Harry Fuecks
+	 * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+	 *
+	 * @param   string  $str  String to clean
+	 * @return  string
+	 */
+	public static function strip_ascii_ctrl($str) {
+		return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S', '', $str);
+	}
+
+	/**
+	 * Strips out all non-7bit ASCII bytes.
+	 *
+	 * For a description of the difference between 7bit and
+	 * extended (8bit) ASCII:
+	 *
+	 * @link http://en.wikipedia.org/wiki/ASCII
+	 *
+	 * ##### Example
+	 *
+	 *     $result = str::strip_non_ascii($str_with_8bit_ascii);
+	 *
+	 * @link http://sourceforge.net/projects/phputf8/
+	 * @copyright  (c) 2005 Harry Fuecks
+	 * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+	 *
+	 * @param   string  $str  String to clean
+	 * @return  string
+	 */
+	public static function strip_non_ascii($str) {
+		return preg_replace('/[^\x00-\x7F]+/S', '', $str);
+	}
+
+	/**
+	 * Replaces special/accented UTF-8 characters by ASCII-7 'equivalents'.
+	 *
+	 * ##### Example
+	 *
+	 *     echo str::transliterate_to_ascii("Útgarðar");
+	 *
+	 *     // Output:
+	 *     Utgardhar
+	 *
+	 * @author  Andreas Gohr <andi@splitbrain.org>
+	 * @link http://sourceforge.net/projects/phputf8/
+	 * @copyright  (c) 2005 Harry Fuecks
+	 * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+	 *
+	 * @param   string   $str    String to transliterate
+	 * @param   integer  $case   -1 lowercase only, +1 uppercase only, 0 both cases
+	 * @return  string
+	 */
+	public static function transliterate_to_ascii($str, $case = 0) {
+		static $UTF8_LOWER_ACCENTS = NULL;
+		static $UTF8_UPPER_ACCENTS = NULL;
+
+		if ($case <= 0) {
+			if ($UTF8_LOWER_ACCENTS === NULL) {
+				$UTF8_LOWER_ACCENTS = array(
+					'à' => 'a',  'ô' => 'o',  'ď' => 'd',  'ḟ' => 'f',  'ë' => 'e',  'š' => 's',  'ơ' => 'o',
+					'ß' => 'ss', 'ă' => 'a',  'ř' => 'r',  'ț' => 't',  'ň' => 'n',  'ā' => 'a',  'ķ' => 'k',
+					'ŝ' => 's',  'ỳ' => 'y',  'ņ' => 'n',  'ĺ' => 'l',  'ħ' => 'h',  'ṗ' => 'p',  'ó' => 'o',
+					'ú' => 'u',  'ě' => 'e',  'é' => 'e',  'ç' => 'c',  'ẁ' => 'w',  'ċ' => 'c',  'õ' => 'o',
+					'ṡ' => 's',  'ø' => 'o',  'ģ' => 'g',  'ŧ' => 't',  'ș' => 's',  'ė' => 'e',  'ĉ' => 'c',
+					'ś' => 's',  'î' => 'i',  'ű' => 'u',  'ć' => 'c',  'ę' => 'e',  'ŵ' => 'w',  'ṫ' => 't',
+					'ū' => 'u',  'č' => 'c',  'ö' => 'o',  'è' => 'e',  'ŷ' => 'y',  'ą' => 'a',  'ł' => 'l',
+					'ų' => 'u',  'ů' => 'u',  'ş' => 's',  'ğ' => 'g',  'ļ' => 'l',  'ƒ' => 'f',  'ž' => 'z',
+					'ẃ' => 'w',  'ḃ' => 'b',  'å' => 'a',  'ì' => 'i',  'ï' => 'i',  'ḋ' => 'd',  'ť' => 't',
+					'ŗ' => 'r',  'ä' => 'a',  'í' => 'i',  'ŕ' => 'r',  'ê' => 'e',  'ü' => 'u',  'ò' => 'o',
+					'ē' => 'e',  'ñ' => 'n',  'ń' => 'n',  'ĥ' => 'h',  'ĝ' => 'g',  'đ' => 'd',  'ĵ' => 'j',
+					'ÿ' => 'y',  'ũ' => 'u',  'ŭ' => 'u',  'ư' => 'u',  'ţ' => 't',  'ý' => 'y',  'ő' => 'o',
+					'â' => 'a',  'ľ' => 'l',  'ẅ' => 'w',  'ż' => 'z',  'ī' => 'i',  'ã' => 'a',  'ġ' => 'g',
+					'ṁ' => 'm',  'ō' => 'o',  'ĩ' => 'i',  'ù' => 'u',  'į' => 'i',  'ź' => 'z',  'á' => 'a',
+					'û' => 'u',  'þ' => 'th', 'ð' => 'dh', 'æ' => 'ae', 'µ' => 'u',  'ĕ' => 'e',  'ı' => 'i',
+				);
+			}
+
+			$str = str_replace(
+				array_keys($UTF8_LOWER_ACCENTS),
+				array_values($UTF8_LOWER_ACCENTS),
+				$str
+			);
+		}
+
+		if ($case >= 0) {
+			if ($UTF8_UPPER_ACCENTS === NULL) {
+				$UTF8_UPPER_ACCENTS = array(
+					'À' => 'A',  'Ô' => 'O',  'Ď' => 'D',  'Ḟ' => 'F',  'Ë' => 'E',  'Š' => 'S',  'Ơ' => 'O',
+					'Ă' => 'A',  'Ř' => 'R',  'Ț' => 'T',  'Ň' => 'N',  'Ā' => 'A',  'Ķ' => 'K',  'Ĕ' => 'E',
+					'Ŝ' => 'S',  'Ỳ' => 'Y',  'Ņ' => 'N',  'Ĺ' => 'L',  'Ħ' => 'H',  'Ṗ' => 'P',  'Ó' => 'O',
+					'Ú' => 'U',  'Ě' => 'E',  'É' => 'E',  'Ç' => 'C',  'Ẁ' => 'W',  'Ċ' => 'C',  'Õ' => 'O',
+					'Ṡ' => 'S',  'Ø' => 'O',  'Ģ' => 'G',  'Ŧ' => 'T',  'Ș' => 'S',  'Ė' => 'E',  'Ĉ' => 'C',
+					'Ś' => 'S',  'Î' => 'I',  'Ű' => 'U',  'Ć' => 'C',  'Ę' => 'E',  'Ŵ' => 'W',  'Ṫ' => 'T',
+					'Ū' => 'U',  'Č' => 'C',  'Ö' => 'O',  'È' => 'E',  'Ŷ' => 'Y',  'Ą' => 'A',  'Ł' => 'L',
+					'Ų' => 'U',  'Ů' => 'U',  'Ş' => 'S',  'Ğ' => 'G',  'Ļ' => 'L',  'Ƒ' => 'F',  'Ž' => 'Z',
+					'Ẃ' => 'W',  'Ḃ' => 'B',  'Å' => 'A',  'Ì' => 'I',  'Ï' => 'I',  'Ḋ' => 'D',  'Ť' => 'T',
+					'Ŗ' => 'R',  'Ä' => 'A',  'Í' => 'I',  'Ŕ' => 'R',  'Ê' => 'E',  'Ü' => 'U',  'Ò' => 'O',
+					'Ē' => 'E',  'Ñ' => 'N',  'Ń' => 'N',  'Ĥ' => 'H',  'Ĝ' => 'G',  'Đ' => 'D',  'Ĵ' => 'J',
+					'Ÿ' => 'Y',  'Ũ' => 'U',  'Ŭ' => 'U',  'Ư' => 'U',  'Ţ' => 'T',  'Ý' => 'Y',  'Ő' => 'O',
+					'Â' => 'A',  'Ľ' => 'L',  'Ẅ' => 'W',  'Ż' => 'Z',  'Ī' => 'I',  'Ã' => 'A',  'Ġ' => 'G',
+					'Ṁ' => 'M',  'Ō' => 'O',  'Ĩ' => 'I',  'Ù' => 'U',  'Į' => 'I',  'Ź' => 'Z',  'Á' => 'A',
+					'Û' => 'U',  'Þ' => 'Th', 'Ð' => 'Dh', 'Æ' => 'Ae', 'İ' => 'I',
+				);
+			}
+
+			$str = str_replace(
+				array_keys($UTF8_UPPER_ACCENTS),
+				array_values($UTF8_UPPER_ACCENTS),
+				$str
+			);
+		}
+
+		return $str;
 	}
 
 } // End str

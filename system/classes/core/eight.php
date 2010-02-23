@@ -94,6 +94,9 @@ final class Eight {
 		// Define database error constant
 		define('E_DATABASE_ERROR', 44);
 
+		// Set the default charset for mb_* functions
+		mb_internal_encoding(Eight::CHARSET);
+
 		if(self::$cache_lifetime = self::config('core.internal_cache')) {
 			// Load cached configuration and language files
 			self::$internal_cache['configuration'] = self::cache('configuration', self::$cache_lifetime);
