@@ -63,7 +63,7 @@ interface Session_Driver {
 	 *
 	 * @return  string
 	 */
-	public function regenerate();
+	public function regenerate($delete_old_session=TRUE);
 
 	/**
 	 * Garbage collection.

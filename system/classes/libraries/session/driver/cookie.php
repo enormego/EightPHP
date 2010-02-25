@@ -59,8 +59,8 @@ class Session_Driver_Cookie_Core implements Session_Driver {
 		return cookie::delete($this->cookie_name);
 	}
 
-	public function regenerate() {
-		session_regenerate_id(YES);
+	public function regenerate($delete_old_session) {
+		session_regenerate_id($delete_old_session);
 
 		// Return new id
 		return session_id();

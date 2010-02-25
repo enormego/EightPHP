@@ -80,8 +80,8 @@ class Session_Driver_Cache_Core implements Session_Driver {
 		return $this->cache->delete($id);
 	}
 
-	public function regenerate() {
-		session_regenerate_id(YES);
+	public function regenerate($delete_old_session) {
+		session_regenerate_id($delete_old_session);
 
 		// Return new session id
 		return session_id();

@@ -164,9 +164,9 @@ class Session_Driver_Database_Core implements Session_Driver {
 		return TRUE;
 	}
 
-	public function regenerate() {
+	public function regenerate($delete_old_session) {
 		// Generate a new session id
-		session_regenerate_id();
+		session_regenerate_id($delete_old_session);
 
 		// Return new session id
 		return session_id();
