@@ -53,6 +53,10 @@ class Session_Driver_Cache_Core implements Session_Driver {
 	public function close() {
 		return YES;
 	}
+	
+	public function identify() {
+		return session_id();
+	}
 
 	public function read($id) {
 		$id = 'session_'.$id;

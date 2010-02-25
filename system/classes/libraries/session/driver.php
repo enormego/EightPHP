@@ -25,7 +25,14 @@ interface Session_Driver {
 	 * @return  boolean
 	 */
 	public function close();
-
+	
+	/**
+	 * Sets a session id.
+	 *
+	 * @return  session ID
+	 */
+	public function identify();
+	
 	/**
 	 * Reads a session.
 	 *

@@ -160,7 +160,7 @@ class Session_Core {
 		session_start();
 
 		// Put session_id in the session variable
-		$_SESSION['session_id'] = session_id();
+		$_SESSION['session_id'] = self::$driver->identify();
 
 		// Set defaults
 		if ( ! isset($_SESSION['_kf_flash_'])) {

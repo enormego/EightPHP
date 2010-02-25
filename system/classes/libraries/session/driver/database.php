@@ -73,18 +73,19 @@ class Session_Driver_Database_Core implements Session_Driver {
 		Eight::log('debug', 'Session Database Driver Initialized');
 	}
 
-	public function open($path, $name)
-	{
+	public function open($path, $name) {
 		return TRUE;
 	}
 
-	public function close()
-	{
+	public function close() {
 		return TRUE;
 	}
-
-	public function read($id)
-	{
+	
+	public function identify() {
+		return session_id();
+	}
+	
+	public function read($id) {
 		// Load the session
 		$this->db->use_master(YES);
 		$query = $this->db->from($this->table)->where('session_id', $id)->limit(1)->get()->result(TRUE);

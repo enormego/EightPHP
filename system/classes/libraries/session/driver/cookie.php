@@ -30,7 +30,11 @@ class Session_Driver_Cookie_Core implements Session_Driver {
 	public function close() {
 		return YES;
 	}
-
+	
+	public function identify() {
+		return session_id();
+	}
+	
 	public function read($id) {
 		$data = (string) cookie::get($this->cookie_name);
 
