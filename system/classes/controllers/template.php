@@ -72,11 +72,30 @@ abstract class Controller_Template extends Controller_Core {
 		$this->stylesheets[] = $name;
 	}
 	
+	public function remove_stylesheet($name) {
+		foreach($this->stylesheets as $index => $sheet) {
+			if($sheet == $name) {
+				unset($this->stylesheets[$index]);
+			}
+		}
+	}
 	
 	public function add_javascript($name) {
 		$this->jscripts[] = $name;
 	}
 	
+	public function remove_javascript($name) {
+		foreach($this->jscripts as $index => $jscript) {
+			if($jscript == $name) {
+				unset($this->jscripts[$index]);
+			}
+		}
+	}
+	
+	public function title() {
+		return $this->title;
+	}
+
 	public function set_title($title, $base=false) {
 		if($base) {
 			$this->title = $title;
