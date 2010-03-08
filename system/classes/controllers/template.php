@@ -32,8 +32,8 @@ abstract class Controller_Template extends Controller_Core {
 	public function __construct() {
 		parent::__construct();
 		if($this->auto_render == YES) {
-			// Render the template immediately after the controller method
-			Event::add('system.post_controller', array($this, '_render'));
+			// Render the template along with the system display stuff
+			Event::add_before('system.display', array($this, 'render'), array($this, '_render'));
 		}
 	}
 
@@ -61,7 +61,8 @@ abstract class Controller_Template extends Controller_Core {
 		
 		$data = array_merge($data, self::$data, $this->template);
 		
-		echo View::factory($this->wrapper, $data)->render();
+		// Tack on our output to Eight's output buffer
+		Eight::$output .= View::factory($this->wrapper, $data)->render();
 	}
 	
 	public function set_wrapper($view) {

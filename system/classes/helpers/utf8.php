@@ -48,7 +48,7 @@ class utf8_Core {
 		array_splice($str_array[0], $offset, $length, $replacement_array[0]);
 		return implode('', $str_array[0]);
 	}
-
+	
 	/**
 	 * Makes a UTF-8 string's first character uppercase.
 	 * @see http://php.net/ucfirst
@@ -58,13 +58,43 @@ class utf8_Core {
 	 * @param   string   mixed case string
 	 * @return  string
 	 */
-	public static function ucfirst($str)
-	{
+	public static function ucfirst($str) {
 		if (str::is_ascii($str))
 			return ucfirst($str);
 
 		preg_match('/^(.?)(.*)$/us', $str, $matches);
 		return mb_strtoupper($matches[1]).$matches[2];
+	}
+	
+	/**
+	* UTF-8 aware alternative to ucwords
+	* Uppercase the first character of each word in a string
+	* Note: requires substr_replace and strtoupper
+	* @param string
+	* @return string with first char of each word uppercase
+	* @see http://www.php.net/ucwords
+	*/
+	public static function ucwords($str) {
+	    // Note: [\x0c\x09\x0b\x0a\x0d\x20] matches;
+	    // form feeds, horizontal tabs, vertical tabs, linefeeds and carriage returns
+	    // This corresponds to the definition of a "word" defined at http://www.php.net/ucwords
+	    $pattern = '/(^|([\x0c\x09\x0b\x0a\x0d\x20]+))([^\x0c\x09\x0b\x0a\x0d\x20]{1})[^\x0c\x09\x0b\x0a\x0d\x20]*/u';
+	    return preg_replace_callback($pattern, array('utf8','ucwords_callback'), $str);
+	}
+
+	/**
+	* Callback function for preg_replace_callback call in utf8_ucwords
+	* You don't need to call this yourself
+	* @param array of matches corresponding to a single word
+	* @return string with first char of the word in uppercase
+	* @see ucwords
+	* @see strtoupper
+	*/
+	public static function ucwords_callback($matches) {
+	    $leadingws = $matches[2];
+	    $ucfirst = mb_strtoupper($matches[3]);
+	    $ucword = self::substr_replace(ltrim($matches[0]),$ucfirst,0,1);
+	    return $leadingws . $ucword;
 	}
 
 	/**
@@ -79,8 +109,7 @@ class utf8_Core {
 	 * @return  integer  greater than 0 if str1 is greater than str2
 	 * @return  integer  0 if they are equal
 	 */
-	public static function strcasecmp($str1, $str2)
-	{
+	public static function strcasecmp($str1, $str2) {
 		if (str::is_ascii($str1) AND str::is_ascii($str2))
 			return strcasecmp($str1, $str2);
 

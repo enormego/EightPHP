@@ -1244,7 +1244,7 @@ final class Eight {
 	/**
 	 * Quick debugging of any variable. Any number of parameters can be set.
 	 *
-	 * @return  string
+	 * @return  NULL
 	 */
 	public static function debug() {
 		if(func_num_args() === 0)
@@ -1258,7 +1258,7 @@ final class Eight {
 			$output[] = '<pre>('.gettype($var).') '.html::specialchars(print_r($var, YES)).'</pre>';
 		}
 
-		return implode("\n", $output);
+		echo implode("\n", $output);
 	}
 
 	/**
@@ -1287,12 +1287,14 @@ final class Eight {
 	 * any variable.
 	 *
 	 * @param   mixed   variable to dump
-	 * @return  string
+	 * @param	bool	whether or not we are running in recursion mode
+	 * @param	bool	whether we should return a string or echo the value
+	 * @return  NULL|string	if the $return parameter is TRUE, a string will be returned
 	 */
-	public static function debug_var($var, $recursion = NO) {
+	public static function debug_var($var, $recursion = FALSE, $return = FALSE) {
 		static $objects;
 
-		if ($recursion === NO) {
+		if ($recursion === FALSE) {
 			$objects = array();
 		}
 
@@ -1314,7 +1316,7 @@ final class Eight {
 					foreach ($object->getProperties() as $property) {
 						$out .= ($more === YES ? ', ' : '').$property->getName().' => ';
 						if ($property->isPublic()) {
-							$out .= self::debug_var($property->getValue($var), YES);
+							$out .= self::debug_var($property->getValue($var), YES, YES);
 						} elseif ($property->isPrivate()) {
 							$out .= '*PRIVATE*';
 						} else {
@@ -1323,28 +1325,41 @@ final class Eight {
 						$more = YES;
 					}
 				}
-				return $out.' }';
+				$out .= $out.' }';
+				break;
 			case 'array':
 				$more = NO;
 				$out = 'array (';
 				foreach ((array) $var as $key => $val) {
 					if (!is_int($key)) {
-						$key = self::debug_var($key, YES).' => ';
+						$key = self::debug_var($key, YES, YES).' => ';
 					} else {
 						$key = '';
 					}
-					$out .= ($more ? ', ' : '').$key.self::debug_var($val, YES);
+					$out .= ($more ? ', ' : '').$key.self::debug_var($val, YES, YES);
 					$more = YES;
 				}
-				return $out.')';
+				$out = $out.')';
+				break;
 			case 'string':
-				return "'$var'";
+				$out = "'$var'";
+				break;
 			case 'float':
-				return number_format($var, 6).'&hellip;';
+				$out = number_format($var, 6).'&hellip;';
+				break;
 			case 'boolean':
-				return $var === YES ? 'YES' : 'NO';
+				$out = $var === YES ? 'YES' : 'NO';
+				break;
 			default:
-				return (string) $var;
+				$out = (string) $var;
+				break;
+		}
+		
+		// Return or dump
+		if($return) {
+			return $out;
+		} else {
+			echo $out;
 		}
 	}
 

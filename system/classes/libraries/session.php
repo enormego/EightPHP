@@ -16,7 +16,7 @@ class Session_Core {
 	private static $instance;
 
 	// Protected key names (cannot be set by the user)
-	protected static $protect = array('session_id', 'user_agent', 'last_activity', 'ip_address', 'total_hits', '_kf_flash_');
+	protected static $protect = array('session_id', 'user_agent', 'last_activity', 'ip_address', 'total_hits', '_e_flash');
 
 	// Configuration and driver
 	protected static $config;
@@ -163,15 +163,15 @@ class Session_Core {
 		$_SESSION['session_id'] = self::$driver->identify();
 
 		// Set defaults
-		if ( ! isset($_SESSION['_kf_flash_'])) {
+		if ( ! isset($_SESSION['_e_flash'])) {
 			$_SESSION['user_agent'] = Eight::$user_agent;
 			$_SESSION['ip_address'] = $this->input->ip_address();
-			$_SESSION['_kf_flash_'] = array();
+			$_SESSION['_e_flash'] = array();
 			$_SESSION['total_hits'] = 0;
 		}
 
 		// Set up flash variables
-		self::$flash =& $_SESSION['_kf_flash_'];
+		self::$flash =& $_SESSION['_e_flash'];
 
 		// Update constant session variables
 		$_SESSION['last_activity'] = time();
