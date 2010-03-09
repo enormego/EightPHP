@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
  * Formation library.
  *
@@ -245,7 +245,7 @@ class Formation_Core {
 	 * @param   boolean  use a custom view
 	 * @return  string
 	 */
-	public function render($template = 'formation_template', $custom = NO) {
+	public function render($template = 'formation/wrapper', $custom = NO) {
 		// Load template
 		$form = new View($template);
 

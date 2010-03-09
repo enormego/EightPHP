@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 /**
  * Formation group library.
  *
@@ -17,7 +17,10 @@ class Form_Group_Core extends Formation {
 		'label' => '',
 		'message' => ''
 	);
-
+	
+	// Default layout structure
+	public $layout = 'rows';
+	
 	// Input method
 	public $method;
 
@@ -48,7 +51,12 @@ class Form_Group_Core extends Formation {
 			$this->$key = $val;
 		}
 	}
-
+	
+	public function layout($layout) {
+		$this->layout = $layout;
+		return $this;
+	}
+	
 	public function label($val = nil) {
 		if ($val === nil) {
 			if ($label = $this->data['label']) {
