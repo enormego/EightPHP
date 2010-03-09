@@ -12,12 +12,7 @@
 
 class Controller_Formationdemo extends Controller {
 
-	// Do not allow to run in production
-	const ALLOW_PRODUCTION = NO;
-
 	public function index() {
-		$profiler = new Profiler;
-
 		$foods = array(
 			'tacos' => array('tacos', NO),
 			'burgers' => array('burgers', NO),
