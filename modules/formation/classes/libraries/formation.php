@@ -292,6 +292,10 @@ class Formation_Core {
 				}
 			}
 
+			// Tack on the "formation" class
+			$space = str::e($this->attr['class']) ? '' : ' ';
+			$this->attr['class'] = 'formation'.$space.$this->attr['class'];
+			
 			// Set the form open and close
 			$form->open  = form::$form_type(arr::remove('action', $this->attr), $this->attr, $hidden);
 			$form->close = form::close();

@@ -24,7 +24,17 @@
  */
 
 class utf8_Core {
-
+	
+	/**
+	 * This method is depricated; however, it's included for compatibility sake
+	 * 
+	 * @param	string	input string
+	 * @return	string	lowercased utf8 compatible string
+	 */
+	public static function strtolower($str) {
+		return mb_strtolower($str);
+	}
+	
 	/**
 	 * Replaces text within a portion of a UTF-8 string.
 	 * @see http://php.net/substr_replace

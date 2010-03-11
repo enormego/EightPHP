@@ -6,14 +6,14 @@
 		<?endif?>
 	<?endforeach?>
 	
-	<table class="<?=$class?>">
+	<table class="main_wrapper">
 		<?if ($title != ''): ?>
 			<caption><?=$title?></caption>
 		<?endif?>
 		<tr>
-		<td>
-		<?=View::factory('formation/inputs', array('inputs' => $inputs))?>
-		</td>
+			<td>
+				<?=View::factory('formation/inputs', array('inputs' => $inputs))?>
+			</td>
 		</tr>
 	</table>
 <?=$close?>

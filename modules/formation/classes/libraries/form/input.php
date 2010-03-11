@@ -139,7 +139,10 @@ class Form_Input_Core {
 	public function label($val = nil) {
 		if ($val === nil) {
 			if (isset($this->data['name']) AND isset($this->data['label'])) {
-				return form::label($this->data['name'], $this->data['label']);
+				if($this->has_rule('required')) {
+					$extra_text .= '<span class="required">*</span>';
+				}
+				return form::label($this->data['name'], $this->data['label'].$extra_text);
 			}
 			return NO;
 		} else {
@@ -498,7 +501,21 @@ class Form_Input_Core {
 		// If there are errors, validation failed
 		return $this->is_valid = empty($this->errors);
 	}
-
+	
+	/**
+	 * Checks for the given rule in the rules array stack
+	 * 
+	 * @param	string	rule as defined in the formation object creation
+	 * @return	bool	whether or not the object has this rule
+	 */
+	public function has_rule($rule) {
+		foreach($this->rules as $r) {
+			if($r == $rule) {
+				return TRUE;
+			}
+		}
+	}
+	
 	/**
 	 * Validate required.
 	 */

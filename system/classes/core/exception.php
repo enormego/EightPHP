@@ -43,7 +43,7 @@ class Eight_Exception_Core extends Exception {
 		}
 
 		// Translate the error message
-		//$message = strval(Eight::lang($message, $variables));
+		$message = strval(Eight::lang($message, $variables));
 
 		$code = intval($code);
 

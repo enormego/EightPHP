@@ -2,15 +2,13 @@
 <?if(!isset($layout)) $layout = 'rows'?>
 
 <?if($parent == 'group'):?>
+	<div class="group <?=$input->name?><?=str::e($input->label()) ? ' no_header' : ' has_header'?>">
 	<table class="group">
 		<?if(isset($input)):?>
 			<?if(!str::e($input->label())):?>
 			<tr>
 				<th colspan="<?=count($inputs)?>">
 					<?=$input->label()?>
-					<?if($message = $input->message()):?>
-						<p class="message"><?=$message?></p>
-					<?endif?>
 				</th>
 			</tr>
 			<?endif?>
@@ -21,9 +19,9 @@
 		<?endif?>
 <?endif?>
 
-<?foreach($inputs as $input):?>
+<?foreach($inputs as $i):?>
 	<? /* Skip hidden fields since we processed them already */ ?>
-	<?if($input instanceof Form_Hidden):?>
+	<?if($i instanceof Form_Hidden):?>
 		<?continue?>
 	<?endif?>
 	
@@ -35,13 +33,13 @@
 		<?endif?>
 	<?endif?>
 	
-	<?if($input instanceof Form_Group):?>
-		<?=View::factory('formation/inputs', array('input' => $input, 'inputs' => $input->inputs, 'layout' => $input->layout, 'parent' => 'group'))?>
+	<?if($i instanceof Form_Group):?>
+		<?=View::factory('formation/inputs', array('input' => $i, 'inputs' => $i->inputs, 'layout' => $i->layout, 'parent' => 'group'))?>
 	<?endif?>
 	
 	<? /* Regular old input. This will only run if the other things up top didn't match */ ?>
-	<?if(!($input instanceof Form_Group)):?>
-		<?=View::factory('formation/input', array('input' => $input, 'layout' => $layout))?>
+	<?if(!($i instanceof Form_Group)):?>
+		<?=View::factory('formation/input', array('input' => $i, 'layout' => $layout))?>
 	<?endif?>
 	
 	<?if($parent == 'group'):?>
@@ -59,4 +57,8 @@
 			</tr>
 		<?endif?>
 	</table>
+	<?if($message = $input->message()):?>
+		<p class="message"><?=$message?></p>
+	<?endif?>
+	</div>
 <?endif?>
