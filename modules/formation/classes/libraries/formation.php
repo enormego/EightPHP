@@ -189,38 +189,43 @@ class Formation_Core {
 	 * @return  array
 	 */
 	public function as_array() {
-		$data = array();
-		foreach(array_merge($this->hidden, $this->inputs) as $input) {
-			if($input->name == 'formation_id') continue;
-			if (is_object($input->name)) { // It's a Formation_Group object (hopefully) 
-				foreach ($input->inputs as $group_input) {
-					if ($name = $group_input->name) {
-						$data[$name] = $group_input->value;
-					}
-				}
-			} else if (is_array($input->inputs)) {
-				foreach ($input->inputs as $group_input) {
-					if ($name = $group_input->name) {
-						$data[$name] = $group_input->value;
-					}
-				}
-			} else if ($name = $input->name) { //  otherwise, it's a modifier 
-				// Return only named inputs
-				$data[$name] = $input->value;
-			}
-		}
+		$this->as_array_data = array();
 		
-		foreach(array_keys($data) as $key) {
+		// This will dig through the Formation classes and return the values
+		$this->process_inputs(array_merge($this->hidden, $this->inputs));
+		
+		foreach(array_keys($this->as_array_data) as $key) {
 			if(preg_match_all("#\[([^\]]+)\]#", $key, $matches)) {
 				$original_key = $key;
 				$keys = $matches[1];
 				array_unshift($keys, trim(substr($key, 0, strpos($key, "["))));
-				$data = arr::set_key_path($data, $keys, $data[$original_key]);
-				unset($data[$original_key]);
+				$this->as_array_data = arr::set_key_path($this->as_array_data, $keys, $this->as_array_data[$original_key]);
+				unset($this->as_array_data[$original_key]);
 			}
 		}
 		
-		return $data;
+		return $this->as_array_data;
+	}
+	
+	/**
+	 * Processes all of the provided inputs and recursively digs through groups
+	 */
+	public function process_inputs($inputs) {
+		foreach($inputs as $input) {
+			if($input->name == 'formation_id') continue;
+			if ($input instanceof Form_Group) { // It's a Form_Group Object
+				$this->process_inputs($input->inputs); // Go deeper
+			} else if (is_array($input->inputs)) {
+				foreach ($input->inputs as $group_input) {
+					if ($name = $group_input->name) {
+						$this->as_array_data[$name] = $group_input->value;
+					}
+				}
+			} else if ($name = $input->name) { //  otherwise, it's a modifier 
+				// Return only named inputs
+				$this->as_array_data[$name] = $input->value;
+			}
+		}
 	}
 
 	/**
