@@ -79,6 +79,12 @@ final class Eight {
 			error_reporting(E_ALL ^ E_NOTICE);
 			ini_set('display_errors', true);
 			Eight::config_set('core.display_errors', YES);
+
+			foreach($_SERVER['argv'] as $k => $v) {
+				if($v == "--show-errors") {
+					unset($_SERVER['argv'][$k]);
+				}
+			}
 		}
 
 		// This function can only be run once
