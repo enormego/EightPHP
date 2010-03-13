@@ -42,6 +42,9 @@ final class Eight {
 
 	// Cache lifetime
 	private static $cache_lifetime;
+	
+	// Force Show Errors
+	public static $force_show_errors = NO; // Only set to true when --show-errors is detected in CLI
 
 	// Log levels
 	private static $log_levels = array (
@@ -76,6 +79,7 @@ final class Eight {
 		static $run;
 
 		if(PHP_SAPI == 'cli' && in_array("--show-errors", $_SERVER['argv'])) {
+			Eight::$force_show_errors = YES;
 			error_reporting(E_ALL ^ E_NOTICE);
 			ini_set('display_errors', true);
 			Eight::config_set('core.display_errors', YES);

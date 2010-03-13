@@ -116,7 +116,7 @@ class Eight_Exception_Core extends Exception {
 			// Manually save logs after exceptions
 			Eight::log_save();
 
-			if(Eight::config('core.display_errors') === FALSE) {
+			if(Eight::config('core.display_errors') === FALSE && Eight::$force_show_errors !== YES) {
 				// Do not show the details
 				$file = $line = NULL;
 				$trace = array();
