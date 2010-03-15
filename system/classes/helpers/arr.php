@@ -8,6 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
+
 class arr_Core {
 
 	/**
@@ -330,6 +331,25 @@ class arr_Core {
 	 */
 	public static function is_assoc($array) {
 	    return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
+	}
+	
+	/**
+	 * Recursively converts an object to a multi-dimensional array
+	 * 
+	 * @param		object
+	 * @return		array
+	 */
+	public static function from_object($obj) {
+		if(!is_object($obj) && !is_array($obj)) return NULL;
+		
+		$raw_arr = is_object($obj) ? get_object_vars($obj) : $obj;
+		$arr = array();
+		
+        foreach($raw_arr as $k => $v) {
+               $arr[$k] = (is_array($v) || is_object($v)) ? arr::from_object($v) : $v;
+        }
+
+        return $arr;
 	}
 	
 	/**
