@@ -52,7 +52,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 		if(is_int($length) OR ctype_digit($length)) {
 			foreach($days as $i => $day) {
 				// Shorten the days to the expected length
-				$days[$i] = utf8::substr($day, 0, $length);
+				$days[$i] = mb_substr($day, 0, $length);
 			}
 		}
 
