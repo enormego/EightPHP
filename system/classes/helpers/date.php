@@ -392,6 +392,16 @@ class date_Core {
 	}
 
 	/**
+	 * Converts a UNIX timestamp to ATOM ISO 8601 format.
+	 *
+	 * @param   integer  UNIX timestamp
+	 * @return  string	ATOM timestamp
+	 */
+	public static function unix2atom($time=0) {
+		$time == 0 && $time = time();
+		return date(DATE_ATOM, $time);
+	}
+	/**
 	 * Converts a UNIX timestamp to a relative string format.
 	 *
 	 * @param   integer  UNIX timestamp
@@ -471,6 +481,17 @@ class date_Core {
 						);
 		*/
 	}
+	
+	/**
+	 * Converts an ATOM ISO 8601 timestamp to UNIX format.
+	 *
+	 * @param   integer  ATOM timestamp
+	 * @return  string	UNIX timestamp
+	 */
+	public static function atom2unix($time="0000-00-00T00:00:00+00:00") {
+		return strtotime($time);
+	}	
+	
 	
 	/**
 	 * Takes a string and determines whether it's a valid MySQL Timestamp.
