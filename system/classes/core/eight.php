@@ -45,7 +45,10 @@ final class Eight {
 	
 	// Force Show Errors
 	public static $force_show_errors = NO; // Only set to true when --show-errors is detected in CLI
-
+	
+	// Enable Eight Error/Exception Handling?
+	public static $errors = TRUE;
+	
 	// Log levels
 	private static $log_levels = array (
 		'error' => 1,
@@ -77,15 +80,28 @@ final class Eight {
 	 */
 	public static function setup() {
 		static $run;
-
+		
+		/**
+		 * CMD Line Debugging Tool. Allows us to run stuff via cmd line 
+		 * to show errors that normally would be surpressed in the browser.
+		 * 
+		 * 		Example Usage:
+		 * 			/usr/bin/php index.php "home/index" --show-errors --native-errors
+		 */
 		if(PHP_SAPI == 'cli' && in_array("--show-errors", $_SERVER['argv'])) {
 			Eight::$force_show_errors = YES;
 			error_reporting(E_ALL ^ E_NOTICE);
 			ini_set('display_errors', true);
 			Eight::config_set('core.display_errors', YES);
-
+			
+			// Enable native errors?
+			if(in_array("--native-errors", $_SERVER['argv'])) {
+				Eight::$errors = FALSE; // Disables Eight error handling and lets PHP's error handling come through
+			}
+			
+			// Remove the keys from the arguments
 			foreach($_SERVER['argv'] as $k => $v) {
-				if($v == "--show-errors") {
+				if($v == "--show-errors" OR $v == "--native-errors") {
 					unset($_SERVER['argv'][$k]);
 				}
 			}
@@ -124,13 +140,19 @@ final class Eight {
 
 		// Send default text/html UTF-8 header
 		header('Content-Type: text/html; charset=UTF-8');
+		
+		// Should we be using Eight errors
+		if(Eight::$errors === TRUE) {
+			// Enable exception handling
+			Eight_Exception::enable();
 
-		// Enable exception handling
-		Eight_Exception::enable();
-
-		// Enable error handling
-		Eight_Exception_PHP::enable();
-
+			// Enable error handling
+			Eight_Exception_PHP::enable();
+		
+			// Enable error handling, converts all PHP errors to exceptions.
+			set_error_handler(array('Eight', 'error_handler'));
+		}
+		
 		if(self::$configuration['core']['log_threshold'] > 0) {
 			// Set the log directory
 			self::log_directory(self::$configuration['core']['log_directory']);
@@ -780,6 +802,24 @@ final class Eight {
 	public static function show_404($page = NO, $template = NO) {
 		if(in_array($page, arr::c(Eight::config('config.ignore_page_not_found')))) return FALSE;
 		throw new Eight_Exception_404($page, $template);
+	}
+	
+	/**
+	 * PHP error handler, converts all errors into ErrorExceptions. This handler
+	 * respects error_reporting settings.
+	 *
+	 * @throws  ErrorException
+	 * @return  TRUE
+	 */
+	public static function error_handler($code, $error, $file = NULL, $line = NULL) {
+		if (error_reporting() & $code) {
+			// This error is not suppressed by current error reporting settings
+			// Convert the error into an ErrorException
+			throw new ErrorException($error, $code, 0, $file, $line);
+		}
+
+		// Do not execute the PHP error handler
+		return TRUE;
 	}
 
 	/**

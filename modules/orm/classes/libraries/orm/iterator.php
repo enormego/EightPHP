@@ -171,19 +171,19 @@ class ORM_Iterator_Core implements Iterator, ArrayAccess, Countable {
 	/**
 	 * ArrayAccess: offsetSet
 	 *
-	 * @throws  Eight_Database_Exception
+	 * @throws  Database_Exception
 	 */
 	public function offsetSet($offset, $value) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 	/**
 	 * ArrayAccess: offsetUnset
 	 *
-	 * @throws  Eight_Database_Exception
+	 * @throws  Database_Exception
 	 */
 	public function offsetUnset($offset) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 } // End ORM Iterator

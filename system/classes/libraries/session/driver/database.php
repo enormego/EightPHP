@@ -90,8 +90,7 @@ class Session_Driver_Database_Core implements Session_Driver {
 		$this->db->use_master(YES);
 		$query = $this->db->from($this->table)->where('session_id', $id)->limit(1)->get()->result(TRUE);
 
-		if ($query->count() === 0)
-		{
+		if ($query->count() === 0) {
 			// No current session
 			$this->session_id = NULL;
 
@@ -108,6 +107,11 @@ class Session_Driver_Database_Core implements Session_Driver {
 	}
 
 	public function write($id, $data) {
+		// Don't run without a database connection
+		if(!$this->db->link()) {
+			return FALSE;
+		}
+		
 		// Only write once...
 		if($this->written) {
 			return true;

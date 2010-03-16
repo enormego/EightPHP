@@ -74,11 +74,17 @@ class Database_Driver_Mysql extends Database_Driver {
 		$port = (isset($port)) ? ':'.$port : '';
 
 		// Make the connection and select the database
-		if (($active_link = $connect($host.$port, $user, $pass, TRUE))) {
-			
+		try {
+			$active_link = $connect($host.$port, $user, $pass, TRUE);
+		} catch (Exception $e) {
+			throw new Database_Exception($e->getMessage());
+		}
+		
+		// Successful connection, proceed...
+		if ($active_link) {
 			// Select the database
 			if(!mysql_select_db($database, $active_link)) {
-				throw new Eight_Database_Exception('database.unknown_database', $database);
+				throw new Database_Exception('database.unknown_database', $database);
 				return FALSE;
 			}
 			
@@ -233,7 +239,7 @@ class Database_Driver_Mysql extends Database_Driver {
 	}
 
 	public function stmt_prepare($sql = '') {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function compile_select($database) {
@@ -428,7 +434,7 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 		} elseif (is_bool($result)) {
 			if ($result == FALSE) {
 				// SQL error
-				throw new Eight_Database_Exception('database.error', mysql_error($link).' - '.$sql);
+				throw new Database_Exception('database.error', mysql_error($link).' - '.$sql);
 			} else {
 				// Its an DELETE, INSERT, REPLACE, or UPDATE query
 				$this->insert_id  = mysql_insert_id($link);
@@ -585,20 +591,20 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	 *
 	 * @param  integer $offset
 	 * @param  integer $value
-	 * @throws Eight_Database_Exception
+	 * @throws Database_Exception
 	 */
 	public function offsetSet($offset, $value) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 	/**
 	 * Unsets the offset. Since you can't modify query result sets, this function just throws an exception.
 	 *
 	 * @param  integer $offset
-	 * @throws Eight_Database_Exception
+	 * @throws Database_Exception
 	 */
 	public function offsetUnset($offset) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 	// End Interface
 

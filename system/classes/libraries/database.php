@@ -35,7 +35,7 @@ class Database_Core {
 	// Database driver object
 	protected $driver;
 	protected $link;
-
+	
 	// Un-compiled parts of the SQL query
 	protected $select     	= array();
 	protected $set        	= array();
@@ -86,7 +86,7 @@ class Database_Core {
 	 *
 	 * @param	array|string	Config array or DSN String
 	 * 
-	 * @throws <Eight_Database_Exception>	if there is no database group, an invalid DSN is supplied, or the requested driver doesn't exist.
+	 * @throws <Database_Exception>	if there is no database group, an invalid DSN is supplied, or the requested driver doesn't exist.
 	 */
 	public function __construct($config = array()) {
 		if (empty($config)) {
@@ -103,7 +103,7 @@ class Database_Core {
 				
 				// Test the config group name
 				if (($config = Eight::config('database.'.$config)) === NULL)
-					throw new Eight_Database_Exception('database.undefined_group', $name);
+					throw new Database_Exception('database.undefined_group', $name);
 					
 				$this->connection_group = $name;
 			}
@@ -114,7 +114,7 @@ class Database_Core {
 
 		// Make sure the connection is valid
 		if (strpos($this->config['connection'], '://') === FALSE)
-			throw new Eight_Database_Exception('database.invalid_dsn', $this->config['connection']);
+			throw new Database_Exception('database.invalid_dsn', $this->config['connection']);
 			
 		// Parse the DSN, creating an array to hold the connection parameters
 		$db = array
@@ -187,14 +187,14 @@ class Database_Core {
 
 		// Load the driver
 		if ( ! Eight::auto_load($driver))
-			throw new Eight_Database_Exception('database.driver_not_supported', $this->config['connection']['type']);
+			throw new Database_Exception('database.driver_not_supported', $this->config['connection']['type']);
 
 		// Initialize the driver
 		$this->driver = new $driver($this->config);
 
 		// Validate the driver
 		if ( ! ($this->driver instanceof Database_Driver))
-			throw new Eight_Database_Exception('database.driver_not_supported', 'Database drivers must use the Database_Driver interface.');
+			throw new Database_Exception('database.driver_not_supported', 'Database drivers must use the Database_Driver interface.');
 
 		Eight::log('debug', 'Database Library initialized');
 	}
@@ -268,7 +268,7 @@ class Database_Core {
 	 */
 	public function create_database($name) {
 		if(!method_exists($this->driver, 'create_database')) {
-			throw new Eight_Database_Exception('database.driver_not_supported', "The selected database type does not implement the create database functionality.");
+			throw new Database_Exception('database.driver_not_supported', "The selected database type does not implement the create database functionality.");
 		}
 		
 		return $this->driver->create_database($name);
@@ -289,6 +289,10 @@ class Database_Core {
 	public function connection_group() {
 		return $this->connection_group;
 	}
+	
+	public function connection_status() {
+		return $this->connection_status;
+	}
 
 	/**
 	 * Method: connect
@@ -297,10 +301,14 @@ class Database_Core {
 	public function connect() {	
 		// A link can be a resource or an object
 		if ( ! is_resource($this->link) AND ! is_object($this->link)) {
+			
+			// Make connection
 			$this->link = $this->driver->connect();
-			if ( ! is_resource($this->link) AND ! is_object($this->link))
-				throw new Eight_Database_Exception('database.connection', $this->driver->show_error());
-
+			
+			if(!is_resource($this->link) AND !is_object($this->link)) {
+				throw new Database_Exception('database.connection', $this->driver->show_error());
+			}
+			
 			// Clear password after successful connect
 			$this->config['connection']['pass'] = NULL;
 			
@@ -334,7 +342,7 @@ class Database_Core {
 		if ($sql == '') return FALSE;
 
 		// No link? Connect!
-		$this->link or $this->connect();
+		$this->link OR $this->connect();
 
 		// Start the benchmark
 		$start = microtime(TRUE);
@@ -1110,11 +1118,11 @@ class Database_Core {
 		}
 
 		if ($this->set == NULL)
-			throw new Eight_Database_Exception('database.must_use_set');
+			throw new Database_Exception('database.must_use_set');
 
 		if ($table == '') {
 			if ( ! isset($this->from[0]))
-				throw new Eight_Database_Exception('database.must_use_table');
+				throw new Database_Exception('database.must_use_table');
 
 			$table = $this->from[0];
 		}
@@ -1143,11 +1151,11 @@ class Database_Core {
 		}
 
 		if ($this->set == NULL)
-			throw new Eight_Database_Exception('database.must_use_set');
+			throw new Database_Exception('database.must_use_set');
 
 		if ($table == '') {
 			if ( ! isset($this->from[0]))
-				throw new Eight_Database_Exception('database.must_use_table');
+				throw new Database_Exception('database.must_use_table');
 
 			$table = $this->from[0];
 		}
@@ -1181,11 +1189,11 @@ class Database_Core {
 		}
 
 		if ($this->set == FALSE)
-			throw new Eight_Database_Exception('database.must_use_set');
+			throw new Database_Exception('database.must_use_set');
 
 		if ($table == '') {
 			if ( ! isset($this->from[0]))
-				throw new Eight_Database_Exception('database.must_use_table');
+				throw new Database_Exception('database.must_use_table');
 
 			$table = $this->from[0];
 		}
@@ -1211,7 +1219,7 @@ class Database_Core {
 	public function delete($table = '', $where = NULL) {
 		if ($table == '') {
 			if ( ! isset($this->from[0]))
-				throw new Eight_Database_Exception('database.must_use_table');
+				throw new Database_Exception('database.must_use_table');
 
 			$table = $this->from[0];
 		}
@@ -1221,7 +1229,7 @@ class Database_Core {
 		}
 
 		if (count($this->where) < 1)
-			throw new Eight_Database_Exception('database.must_use_where');
+			throw new Database_Exception('database.must_use_where');
 
 		$sql = $this->driver->delete($this->config['table_prefix'].$table, $this->where);
 
@@ -1255,7 +1263,7 @@ class Database_Core {
 	public function count_records($table = FALSE, $where = NULL) {
 		if (count($this->from) < 1) {
 			if ($table == FALSE)
-				throw new Eight_Database_Exception('database.must_use_table');
+				throw new Database_Exception('database.must_use_table');
 
 			$this->from($table);
 		}
@@ -1464,17 +1472,3 @@ class Database_Core {
 	}
 
 } // End Database Class
-
-/**
- * Class: Eight Database Exception
- *  Sets the code for a <Database> exception.
- */
-class Eight_Database_Exception extends Eight_Exception {
-
-	protected $code = E_DATABASE_ERROR;
-	
-	public function __construct($message, $variables = NULL, $code = 0) {
-		parent::__construct(Eight::lang($message, $variables), NULL, $code);
-	}
-
-} // End Eight Database Exception

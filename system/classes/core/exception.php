@@ -181,10 +181,8 @@ class Eight_Exception_Core extends Exception {
 
 			// Display the exception text
 			echo Eight_Exception::text($e), "\n";
-		}
-
-		if(Eight::$server_api === 'cli') {
-			// Exit with an error status
+			
+			// Exit with an error code
 			exit(1);
 		}
 	}

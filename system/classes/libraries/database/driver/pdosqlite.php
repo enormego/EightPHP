@@ -46,7 +46,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 			}
 		}
 		catch (PDOException $e) {
-			throw new Eight_Database_Exception('database.error', $e->getMessage());
+			throw new Database_Exception('database.error', $e->getMessage());
 		}
 
 		return $this->link;
@@ -61,7 +61,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 			$sth = $active_link->prepare($sql);
 		}
 		catch (PDOException $e) {
-			throw new Eight_Database_Exception('database.error', $e->getMessage());
+			throw new Database_Exception('database.error', $e->getMessage());
 		}
 		return new Pdosqlite_Result($sth, $active_link, $this->db_config['object'], $sql);
 	}
@@ -109,15 +109,15 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 	}
 
 	public function regex($field, $match = '', $type = 'AND ', $num_regexs) {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function notregex($field, $match = '', $type = 'AND ', $num_regexs) {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function merge($table, $keys, $values) {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function limit($limit, $offset = 0) {
@@ -125,7 +125,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 	}
 
 	public function stmt_prepare($sql = '') {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function compile_select($database) {
@@ -189,7 +189,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 			}
 		}
 		catch (PDOException $e) {
-			throw new Eight_Database_Exception('database.error', $e->getMessage());
+			throw new Database_Exception('database.error', $e->getMessage());
 		}
 		return $retval;
 	}
@@ -271,7 +271,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 				$result->execute();
 			}
 			catch (PDOException $e) {
-				throw new Eight_Database_Exception('database.error', $e->getMessage());
+				throw new Database_Exception('database.error', $e->getMessage());
 			}
 
 			if (preg_match('/^SELECT|PRAGMA|EXPLAIN/i', $sql)) {
@@ -288,7 +288,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 			}
 		} else {
 			// SQL error
-			throw new Eight_Database_Exception('database.error', $link->errorInfo().' - '.$sql);
+			throw new Database_Exception('database.error', $link->errorInfo().' - '.$sql);
 		}
 		// Set result type
 		$this->result($object);
@@ -360,7 +360,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 			}
 		}
 		catch(PDOException $e) {
-			throw new Eight_Database_Exception('database.error', $e->getMessage());
+			throw new Database_Exception('database.error', $e->getMessage());
 			return FALSE;
 		}
 		return $rows;
@@ -445,7 +445,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 			$row = $this->result->fetch($this->fetch_type, PDO::FETCH_ORI_ABS, $offset);
 		}
 		catch(PDOException $e) {
-			throw new Eight_Database_Exception('database.error', $e->getMessage());
+			throw new Database_Exception('database.error', $e->getMessage());
 			return FALSE;
 		}
 		return $row;
@@ -460,11 +460,11 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 	 *  value  - value to set
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 *
 	 */
 	public function offsetSet($offset, $value) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 	/*
@@ -475,11 +475,11 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 	 *  offset - offset id
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 *
 	 */
 	public function offsetUnset($offset) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 	// End Interface
 

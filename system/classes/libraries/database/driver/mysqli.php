@@ -84,7 +84,7 @@ class Database_Driver_Mysqli extends Database_Driver_Mysql {
 
 	public function set_charset($charset) {
 		if ($this->link->set_charset($charset) === FALSE)
-			throw new Eight_Database_Exception('database.error', $this->show_error());
+			throw new Database_Exception('database.error', $this->show_error());
 	}
 
 	public function stmt_prepare($sql = '') {
@@ -165,7 +165,7 @@ class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Cou
 
 		if ( ! $this->link->multi_query($sql)) {
 			// SQL error
-			throw new Eight_Database_Exception('database.error', $this->link->error.' - '.$sql);
+			throw new Database_Exception('database.error', $this->link->error.' - '.$sql);
 		} else {
 			$this->result = $this->link->store_result();
 
@@ -176,7 +176,7 @@ class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Cou
 				$this->fetch_type = ($object === TRUE) ? 'fetch_object' : 'fetch_array';
 			} elseif ($this->link->error) {
 				// SQL error
-				throw new Eight_Database_Exception('database.error', $this->link->error.' - '.$sql);
+				throw new Database_Exception('database.error', $this->link->error.' - '.$sql);
 			} else {
 				// Its an DELETE, INSERT, REPLACE, or UPDATE query
 				$this->insert_id  = $this->link->insert_id;
@@ -346,10 +346,10 @@ class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Cou
 	 *  value  - value to set
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 */
 	public function offsetSet($offset, $value) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 	/**
@@ -360,10 +360,10 @@ class Eight_Mysqli_Result implements Database_Result, ArrayAccess, Iterator, Cou
 	 *  offset - offset id
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 */
 	public function offsetUnset($offset) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 	// End Interface
 

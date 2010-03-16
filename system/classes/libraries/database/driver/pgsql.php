@@ -131,7 +131,7 @@ class Database_Driver_Pgsql extends Database_Driver {
 	}
 
 	public function merge($table, $keys, $values) {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 
 	public function limit($limit, $offset = 0) {
@@ -318,7 +318,7 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 		} elseif (is_bool($result)) {
 			if ($result == FALSE) {
 				// SQL error
-				throw new Eight_Database_Exception('database.error', pg_last_error().' - '.$sql);
+				throw new Database_Exception('database.error', pg_last_error().' - '.$sql);
 			} else {
 				// Its an DELETE, INSERT, REPLACE, or UPDATE query
 				$this->insert_id  = $this->get_insert_id($link);
@@ -392,7 +392,7 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	}
 
 	public function list_fields() {
-		throw new Eight_Database_Exception('database.not_implemented', __FUNCTION__);
+		throw new Database_Exception('database.not_implemented', __FUNCTION__);
 	}
 	// End Interface
 
@@ -469,10 +469,10 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	 *  value  - value to set
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 */
 	public function offsetSet($offset, $value) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 
 	/**
@@ -483,10 +483,10 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	 *  offset - offset id
 	 *
 	 * Returns:
-	 *  <Eight_Database_Exception> object
+	 *  <Database_Exception> object
 	 */
 	public function offsetUnset($offset) {
-		throw new Eight_Database_Exception('database.result_read_only');
+		throw new Database_Exception('database.result_read_only');
 	}
 	// End Interface
 
