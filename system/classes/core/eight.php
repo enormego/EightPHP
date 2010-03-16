@@ -148,9 +148,6 @@ final class Eight {
 
 			// Enable error handling
 			Eight_Exception_PHP::enable();
-		
-			// Enable error handling, converts all PHP errors to exceptions.
-			set_error_handler(array('Eight', 'error_handler'));
 		}
 		
 		if(self::$configuration['core']['log_threshold'] > 0) {
@@ -262,17 +259,20 @@ final class Eight {
 		static $run;
 
 		// Only run this function once
-		if ($run === TRUE)
+		if($run === TRUE) {
 			return;
-
+		}
+		
 		$run = TRUE;
-
-		Eight_Exception::disable();
-
-		Eight_Exception_PHP::disable();
+		
+		// Using Eight Errors? Disable them since we're finished.
+		if(Eight::$errors === TRUE) {
+			Eight_Exception::disable();
+			Eight_Exception_PHP::disable();
+		}
 
 		spl_autoload_unregister(array('Eight', 'auto_load'));
-
+		
 		Eight::close_buffers();
 	}
 
@@ -612,7 +612,7 @@ final class Eight {
 	 */
 	public static function cache($name, $lifetime) {
 		if($lifetime > 0) {
-			$path = APPPATH.'cache/eight_'.$name;
+			$path = Eight::config('core.internal_cache_path').'/eight_'.$name;
 
 			if(is_file($path)) {
 				// Check the file modification time
@@ -802,24 +802,6 @@ final class Eight {
 	public static function show_404($page = NO, $template = NO) {
 		if(in_array($page, arr::c(Eight::config('config.ignore_page_not_found')))) return FALSE;
 		throw new Eight_Exception_404($page, $template);
-	}
-	
-	/**
-	 * PHP error handler, converts all errors into ErrorExceptions. This handler
-	 * respects error_reporting settings.
-	 *
-	 * @throws  ErrorException
-	 * @return  TRUE
-	 */
-	public static function error_handler($code, $error, $file = NULL, $line = NULL) {
-		if (error_reporting() & $code) {
-			// This error is not suppressed by current error reporting settings
-			// Convert the error into an ErrorException
-			throw new ErrorException($error, $code, 0, $file, $line);
-		}
-
-		// Do not execute the PHP error handler
-		return TRUE;
 	}
 
 	/**
@@ -1472,7 +1454,8 @@ final class Eight {
 		
 		return '<ul class="backtrace">'.$output.'</ul>';
 	}
-		/**
+	
+	/**
 	 * Saves the internal caches: configuration, include paths, etc.
 	 *
 	 * @return  boolean
@@ -1522,4 +1505,3 @@ function __($string, $args = NULL) {
 	
 	return $localized_string;
 }
-

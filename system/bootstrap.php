@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
- 
+
 define('EIGHT_VERSION',  '1.0');
 define('YES', TRUE);
 define('NO', FALSE);
