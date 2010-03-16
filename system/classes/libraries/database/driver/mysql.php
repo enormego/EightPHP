@@ -38,7 +38,6 @@ class Database_Driver_Mysql extends Database_Driver {
 	 */
 	public function __construct($config) {
 		$this->db_config = $config;
-
 		Eight::log('debug', 'MySQL Database Driver Initialized');
 	}
 
@@ -138,13 +137,13 @@ class Database_Driver_Mysql extends Database_Driver {
 
 			if ( ! isset(self::$query_cache[$hash])) {
 				// Set the cached object
-				self::$query_cache[$hash] = new Mysql_Result(mysql_query($sql, $this->link), $this->link, $this->db_config['object'], $sql);
+				self::$query_cache[$hash] = new Database_Mysql_Result(mysql_query($sql, $this->link), $this->link, $this->db_config['object'], $sql);
 			}
 
 			// Return the cached query
 			return self::$query_cache[$hash];
 		}
-		return new Mysql_Result(mysql_query($sql, $active_link), $active_link, $this->db_config['object'], $sql);
+		return new Database_Mysql_Result(mysql_query($sql, $active_link), $active_link, $this->db_config['object'], $sql);
 	}
 	
 	public function trans_start() {
@@ -343,8 +342,8 @@ class Database_Driver_Mysql extends Database_Driver {
 	 * @deprecated
 	 */
 	public function insert_id() {
-		if(is_object(Mysql_Result::$last_result)) {
-			return Mysql_Result::$last_result->insert_id();
+		if(is_object(Database_Mysql_Result::$last_result)) {
+			return Database_Mysql_Result::$last_result->insert_id();
 		} else {
 			Eight::log("error", "Could not find last result");
 			return false;
@@ -369,7 +368,7 @@ class Database_Driver_Mysql extends Database_Driver {
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable {
+class Database_Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable {
 
 	public static $last_result = NULL;
 
@@ -485,8 +484,7 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 				$fetch = 'mysql_fetch_object';
 
 				// NOTE - The class set by $type must be defined before fetching the result,
-				// autoloading is disabled to save a lot of stupid overhead.
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			} else {
 				$fetch = 'mysql_fetch_array';
 			}
@@ -495,7 +493,7 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 			$fetch = $this->fetch_type;
 
 			if ($fetch == 'mysql_fetch_object') {
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			}
 		}
 
@@ -612,7 +610,7 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	/**
 	 * Retreives the current result set row.
 	 *
-	 * @return integer The current result row (type based on <Mysql_result.result>)
+	 * @return integer The current result row (type based on <Database_Mysql_Result.result>)
 	 */
 	public function current() {
 		return $this->offsetGet($this->current_row);
@@ -621,7 +619,7 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	/**
 	 * Retreives the current result set row.
 	 *
-	 * @return integer The current result row (type based on <Mysql_result.result>)
+	 * @return integer The current result row (type based on <Database_Mysql_Result.result>)
 	 */
 	public function row_array() {
 		return $this->current();
@@ -672,4 +670,4 @@ class Mysql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 		return $this->offsetExists($this->current_row);
 	}
 	// End Interface
-} // End Mysql_Result Class
+} // End Database_Mysql_Result Class

@@ -67,13 +67,13 @@ class Database_Driver_Pgsql extends Database_Driver {
 
 			if ( ! isset(self::$query_cache[$hash])) {
 				// Set the cached object
-				self::$query_cache[$hash] = new Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
+				self::$query_cache[$hash] = new Database_Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
 			}
 
 			return self::$query_cache[$hash];
 		}
 
-		return new Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
+		return new Database_Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
 	}
 
 	public function set_charset($charset) {
@@ -140,7 +140,7 @@ class Database_Driver_Pgsql extends Database_Driver {
 
 	public function stmt_prepare($sql = '') {
 		is_object($this->link) or $this->connect();
-		return new Eight_Mysqli_Statement($sql, $this->link);
+		return new Database_Pgsql_Statement($sql, $this->link);
 	}
 
 	public function compile_select($database) {
@@ -282,7 +282,7 @@ ORDER BY pg_attribute.attnum';
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable {
+class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable {
 
 	// Result resource
 	protected $result = NULL;
@@ -366,8 +366,7 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 				$fetch = 'pg_fetch_object';
 
 				// NOTE - The class set by $type must be defined before fetching the result,
-				// autoloading is disabled to save a lot of stupid overhead.
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			} else {
 				$fetch = 'pg_fetch_array';
 			}
@@ -376,7 +375,7 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 			$fetch = $this->fetch_type;
 
 			if ($fetch == 'pg_fetch_object') {
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			}
 		}
 
@@ -496,7 +495,7 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 	 *  Retreives the current result set row.
 	 *
 	 * Returns:
-	 *  The current result row (type based on <Pgsql_result.result>)
+	 *  The current result row (type based on <Database_Pgsql_Result.result>)
 	 */
 	public function current() {
 		return $this->offsetGet($this->current_row);
@@ -557,9 +556,9 @@ class Pgsql_Result implements Database_Result, ArrayAccess, Iterator, Countable 
 		return $this->offsetExists($this->current_row);
 	}
 	// End Interface
-} // End Pgsql_Result Class
+} // End Database_Pgsql_Result Class
 
-class Eight_Pgsql_Statement {
+class Database_Pgsql_Statement {
 
 	protected $link = NULL;
 	protected $stmt;
@@ -591,4 +590,4 @@ class Eight_Pgsql_Statement {
 	public function execute() {
 		return $this;
 	}
-}
+} // End Database Pgsql Statement Class

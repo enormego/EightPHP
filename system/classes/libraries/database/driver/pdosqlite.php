@@ -63,7 +63,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
 		catch (PDOException $e) {
 			throw new Database_Exception('database.error', $e->getMessage());
 		}
-		return new Pdosqlite_Result($sth, $active_link, $this->db_config['object'], $sql);
+		return new Database_Pdosqlite_Result($sth, $active_link, $this->db_config['object'], $sql);
 	}
 
 	public function set_charset($charset) {
@@ -240,7 +240,7 @@ class Database_Driver_Pdosqlite extends Database_Driver {
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Countable {
+class Database_Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Countable {
 
 	// Result resource
 	protected $result = NULL;
@@ -341,8 +341,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 				$fetch = PDO::FETCH_OBJ;
 
 				// NOTE - The class set by $type must be defined before fetching the result,
-				// autoloading is disabled to save a lot of stupid overhead.
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			} else {
 				$fetch = PDO::FETCH_OBJ;
 			}
@@ -351,7 +350,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 			$fetch = $this->fetch_type;
 
 			if ($fetch == PDO::FETCH_OBJ) {
-				$type = class_exists($type, FALSE) ? $type : 'stdClass';
+				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			}
 		}
 		try {
@@ -373,7 +372,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 	public function list_fields() {
 		//~ This function only work correctly after you execute a query,
 		//~ AND BEFORE you fetch the query result!!
-		//~ You should really use Database_PdoSqlite::list_fields instead of PdoSqlite_Result::list_fields()
+		//~ You should really use Database_PdoSqlite::list_fields instead of Database_Pdosqlite_Result::list_fields()
 		Eight::log('debug','If Sqlite_Result::list_fields() do NOT work as what you expect,read the method\'s comment plz');
 
 		$field_names = array();
@@ -489,7 +488,7 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 	 *  Retreives the current result set row.
 	 *
 	 * Returns:
-	 *  The current result row (type based on <PdoSqlite_result.result>)
+	 *  The current result row (type based on <Database_Pdosqlite_Result.result>)
 	 *
 	 */
 	public function current() {
@@ -560,4 +559,4 @@ class Pdosqlite_Result implements Database_Result, ArrayAccess, Iterator, Counta
 		return $this->offsetExists($this->current_row);
 	}
 	// End Interface
-} // End PdoSqlite_Result Class
+} // End Database_Pdosqlite_Result Class
