@@ -63,7 +63,10 @@ final class Eight {
 	
 	// Server API that PHP is using. Allows testing of different APIs.
 	public static $server_api = PHP_SAPI;
-
+	
+	// Run the controller's method?
+	public static $run_method = TRUE;
+	
 	/**
 	 * Sets up the PHP environment. Adds error/exception handling, output
 	 * buffering, and adds an auto-loading method for loading classes.
@@ -315,7 +318,8 @@ final class Eight {
 
 			// Controller constructor has been executed
 			Event::run('system.post_controller_constructor');
-
+			
+			
 			try {
 				// Load the controller method
 				$method = $class->getMethod(Router::$method);
@@ -340,16 +344,20 @@ final class Eight {
 				// Use arguments in __call format
 				$arguments = array(Router::$method, Router::$arguments);
 			}
-
+			
+		
 			// Stop the controller setup benchmark
 			Benchmark::stop(SYSTEM_BENCHMARK.'_controller_setup');
 
 			// Start the controller execution benchmark
 			Benchmark::start(SYSTEM_BENCHMARK.'_controller_execution');
-
-			// Execute the controller method
-			$method->invokeArgs($controller, $arguments);
-
+			
+			// We MAY want to prevent a method from running sometimes
+			if(Eight::$run_method) {
+				// Execute the controller method
+				$method->invokeArgs($controller, $arguments);
+			}
+			
 			// Controller method has been executed
 			Event::run('system.post_controller');
 
@@ -705,9 +713,9 @@ final class Eight {
 	 * Triggers the shutdown of Eight by closing the output buffer, runs the system.display event.
 	 */
 	public static function shutdown() {
-		// Close output buffers
-		self::close_buffers(YES);
-
+		// Close output buffer
+		self::close_buffers(YES, NO);
+		
 		// Run the output event
 		Event::run('system.display', self::$output);
 
