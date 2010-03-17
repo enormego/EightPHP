@@ -2,7 +2,7 @@
 <?if(!isset($layout)) $layout = 'rows'?>
 
 <?if($parent == 'group'):?>
-	<div class="group <?=$input->name?><?=str::e($input->label()) ? ' no_header' : ' has_header'?>">
+	<div class="group <?=$input->name?><?=str::e($input->label()) ? ' no_header' : ' has_header'?>" <?=str::e($input->style) ? '' : "style='".$input->style."'"?>>
 	<table class="group">
 		<?if(isset($input)):?>
 			<?if(!str::e($input->label())):?>
