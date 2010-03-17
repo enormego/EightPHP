@@ -57,6 +57,11 @@ class Form_Group_Core extends Formation {
 		return $this;
 	}
 	
+	public function style($style) {
+		$this->style = $style;
+		return $this;
+	}
+	
 	public function label($val = nil) {
 		if ($val === nil) {
 			if ($label = $this->data['label']) {
