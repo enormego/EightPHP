@@ -399,7 +399,7 @@ class date_Core {
 	 */
 	public static function unix2atom($time=0) {
 		$time == 0 && $time = time();
-		return date(DATE_ATOM, $time);
+		return gmdate(DATE_ATOM, $time);
 	}
 	/**
 	 * Converts a UNIX timestamp to a relative string format.
