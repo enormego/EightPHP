@@ -1295,9 +1295,9 @@ final class Eight {
 		$output = array();
 
 		foreach($params as $var) {
-			$output[] = '<pre>('.gettype($var).') '.html::specialchars(print_r($var, YES)).'</pre>';
+			$output[] = '<pre>('.gettype($var).') '.html::specialchars(print_r($var, TRUE)).'</pre>';
 		}
-
+		
 		echo implode("\n", $output);
 	}
 
@@ -1388,7 +1388,7 @@ final class Eight {
 				$out = number_format($var, 6).'&hellip;';
 				break;
 			case 'boolean':
-				$out = $var === YES ? 'YES' : 'NO';
+				$out = $var === YES ? 'TRUE' : 'FALSE';
 				break;
 			default:
 				$out = (string) $var;
