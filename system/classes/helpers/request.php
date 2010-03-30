@@ -264,7 +264,7 @@ class request_Core {
 	 * @return	string	IP address
 	 */
 	public static function ip() {
-		return Input::intance()->ip_address();
+		return Input::instance()->ip_address();
 	}
 
 } // End request
