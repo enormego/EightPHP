@@ -119,8 +119,8 @@ class Session_Driver_Database_Core implements Session_Driver {
 		
 		$data = array
 		(
-			'session_id' 			=> $id,
-			'session_ip'			=>	$_SERVER['REMOTE_ADDR'],
+			'session_id' 			=>	$id,
+			'session_ip'			=>	request::ip(),
 			'session_user_agent'	=>	$_SERVER['HTTP_USER_AGENT'],
 			'session_last_activity' => time(),
 			'session_data' 			=> ($this->encrypt === NULL) ? base64_encode($data) : $this->encrypt->encode($data)
