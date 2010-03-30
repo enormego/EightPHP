@@ -936,7 +936,7 @@ final class Eight {
 				$directory = 'core.'.inflector::singular($directory);
 
 				// If the file is required, throw an exception
-				throw new Eight_Exception('core.resource_not_found', self::lang($directory), $filename);
+				throw new Eight_Exception('core.resource_not_found', array(self::lang($directory), $filename));
 			} else {
 				// Nothing was found, return NO
 				$found = NO;
