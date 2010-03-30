@@ -257,5 +257,14 @@ class request_Core {
 			}
 		}
 	}
+	
+	/**
+	 * Grabs the true IP address of the request. Provides an interface to the Input method.
+	 * 
+	 * @return	string	IP address
+	 */
+	public static function ip() {
+		return Input::intance()->ip_address();
+	}
 
 } // End request
