@@ -629,7 +629,12 @@ final class Eight {
 					return unserialize(file_get_contents($path));
 				} else {
 					// Cache is invalid, delete it
-					unlink($path);
+					try {
+						unlink($path);
+					} catch (Exception $e) {
+						// Cache has already been deleted
+						return NULL;
+					}
 				}
 			}
 		}
@@ -1490,7 +1495,7 @@ final class Eight {
 
 		return $written;
 	}
-
+	
 } // End Eight
 
 /**
