@@ -1068,14 +1068,14 @@ final class Eight {
 		// Get the line from cache
 		$line = self::key_string(self::$internal_cache['language'][$locale], $key);
 
-		if($line === nil) {
+		if($line === NULL OR arr::e($line)) {
 			Eight::log('error', 'Missing i18n entry '.$key.' for language '.$locale);
 
 			// Return the key string as fallback
 			return $key;
 		}
 
-		if(is_string($line) and func_num_args() > 1) {
+		if(is_string($line) && func_num_args() > 1) {
 			$args = array_slice(func_get_args(), 1);
 
 			// Add the arguments into the line
