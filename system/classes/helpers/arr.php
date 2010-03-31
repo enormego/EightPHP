@@ -414,14 +414,18 @@ class arr_Core {
 	}
 	
 	/**
-	 * Checks if an array is empty or not
+	 * Checks if an array is empty or not. If the passed var is
+	 * not an array it will return FALSE.
 	 * 
 	 * @param	array 		Pass an array to be checked
 	 * @return	boolean 	Whether or not the array is empty
 	 * @author	Saverio Mondelli
 	 */
 	public static function e($arr) {
-		return (boolean) (!is_array($arr) OR empty($arr));
+		if(!is_array($arr)) {
+			return FALSE;
+		}
+		return (boolean) empty($arr);
 	}
 	
 } // End arr
