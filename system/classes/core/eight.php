@@ -856,20 +856,24 @@ final class Eight {
 				// Load class extension
 				require $path;
 			} else {
-				// Class extension to be evaluated
-				$extension = 'class '.$class.' extends '.$class.'_Core { }';
+				if(function_exists('class_alias')) {
+					class_alias($class."_Core", $class);
+				} else {
+					// Class extension to be evaluated
+					$extension = 'class '.$class.' extends '.$class.'_Core { }';
 
-				// Start class analysis
-				$core = new ReflectionClass($class.'_Core');
+					// Start class analysis
+					$core = new ReflectionClass($class.'_Core');
 
-				if($core->isAbstract()) {
-					// Make the extension abstract
-					$extension = 'abstract '.$extension;
+					if($core->isAbstract()) {
+						// Make the extension abstract
+						$extension = 'abstract '.$extension;
+					}
+
+					// Transparent class extensions are handled using eval. This is
+					// a disgusting hack, but it gets the job done.
+					eval($extension);
 				}
-
-				// Transparent class extensions are handled using eval. This is
-				// a disgusting hack, but it gets the job done.
-				eval($extension);
 			}
 		}
 
