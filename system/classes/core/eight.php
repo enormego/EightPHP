@@ -1291,23 +1291,13 @@ final class Eight {
 	}
 
 	/**
-	 * Quick debugging of any variable. Any number of parameters can be set.
+	 * Quick debugging of any variable.
 	 *
 	 * @return  NULL
 	 */
-	public static function debug() {
-		if(func_num_args() === 0)
-			return;
-
-		// Get params
-		$params = func_get_args();
-		$output = array();
-
-		foreach($params as $var) {
-			$output[] = '<pre>('.gettype($var).') '.html::specialchars(print_r($var, TRUE)).'</pre>';
-		}
-		
-		echo implode("\n", $output);
+	public static function debug($var) {
+		require_once Eight::find_file('vendor', 'dBug');
+		new dBug($var, NULL, TRUE);
 	}
 
 	/**
