@@ -1,60 +1,101 @@
-#eight-profiler .eight-profiler-table {
-	font-size: 1.0em;
-	color: #4D6171;
-	max-width: 90%;
-	margin-bottom: 10px;
+#eight-profiler table.eight-profiler-table {
+	background-color: white;
+	position: relative;
+	width: 100%;
+	border: dotted 1px #b7c680;
+	margin-top: -15px;
+	font: 12px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace;
 }
 
-#eight-profiler .eight-profiler-table td {
+#eight-profiler table.eight-profiler-table td {
 	background-color: #FFFFFF;
-	border-bottom: 1px solid #E5EFF8;
-	padding: 3px;
+	border-bottom: 1px solid #d1d1d1;
+	padding: 5px;
 	vertical-align: top;
 	white-space: normal !important;
 	word-wrap: break-word !important;
+	width: 550px;
+	max-width: 550px;
 }
 
-#eight-profiler .eight-profiler-table .kp-title td {
-	font-weight: bold;
-	background-color: inherit;
-}
-
-#eight-profiler .eight-profiler-table .kp-altrow td {
-	background-color: rgb(240,240,240);
+#eight-profiler table.eight-profiler-table tr.ep-altrow td {
+	background-color: #f9f9f9;
 	white-space: normal !important;
 	word-wrap: break-word !important;
 }
 
-#eight-profiler .eight-profiler-table .kp-totalrow td {
-	background-color: #FAFAFA;
+#eight-profiler table.eight-profiler-table td.ep-column {
+	border-left: 1px solid #d1d1d1;
+	text-align: center;
+	width: auto;
+}
+
+#eight-profiler table.eight-profiler-table td.ep-name {
+	border-right: 1px solid #d1d1d1;
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-hover {
+	/*background-color: #aed6fc;*/
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-hover td {
+	/*background-color: transparent !important;*/
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-title {
+	background-color: #ffbcbd;
+	color: #2c2c2c;
+	font: bold 14px "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-title td {
+	background-color: transparent;
+	height: 25px;
+	line-height: 25px;
+	border-color: transparent;
+	border-bottom: 1px dotted black;
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-totalrow {
+	background-color: #ffbcbd;
 	border-top: 1px solid #D2DCE5;
 	font-weight: bold;
+	font: bold 14px "Lucida Grande", Lucida, Verdana, sans-serif;
 }
 
-#eight-profiler .eight-profiler-table .kp-column {
-	width: 100px;
-	border-left: 1px solid #E5EFF8;
-	text-align: center;
-}
-
-#eight-profiler .eight-profiler-table .kp-data, #eight-profiler .eight-profiler-table .kp-name {
-	background-color: #FAFAFB;
-	vertical-align: top;
-}
-
-#eight-profiler .eight-profiler-table .kp-name {
-	width: 200px;
-	border-right: 1px solid #E5EFF8;
-}
-
-#eight-profiler .eight-profiler-table .kp-altrow .kp-data, #eight-profiler .eight-profiler-table .kp-altrow .kp-name {
-	background-color: rgb(240,240,240);
-}
-
-#eight-profiler .eight-profiler-table tr.kp-hover {
-	background-color: #aed6fc;
-}
-
-#eight-profiler .eight-profiler-table tr.kp-hover td {
+#eight-profiler table.eight-profiler-table tr.ep-totalrow td {
 	background-color: transparent;
+	border-color: transparent;
+	height: 25px;
+	line-height: 25px;
+	border-bottom: none;
+}
+
+#eight-profiler table.eight-profiler-table tr.ep-totalrow td.ep-data {
+	font-family: 'Menlo', 'Panic Sans', Monaco, 'Courier New';
+}
+
+#eight-profiler table.eight-profiler-table td a {
+	color: #3a1b1b;
+	text-decoration: underline;
+}
+
+#eight-profiler table.ep-args {
+	width: 300px;
+	margin: 10px;
+	background-color: white;
+}
+
+#eight-profiler table.ep-args td {
+	border: solid 1px #ddd;
+	text-align: left;
+	vertical-align: top;
+	padding: 0.4em;
+	font: 11px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace !important;
+	background-color: white !important;
+}
+
+#eight-profiler table.ep-args td:first-child {
+	width: 45px;
+	text-align: right;
 }

@@ -10,29 +10,34 @@
 
 <div id="eight-profiler">
 	<div class="eight-profiler-inner">
-	<div id="eight-profiler-tabs">
-	<?
-		foreach($profiles as $profile) {
-			echo "<a href='#' onclick='return eight_profiler_toggle_tab(this, \"".$profile->table_id()."\")'>".$profile->name()."</a>";
-		}
-	?>
-	</div>
-	<br style="clear:left" /><br />
-	<div id="eight-profiler-tables">
-	<?
-		foreach($profiles as $profile) {
-			$hidden = YES;
-			
-			if(!$first_selected) {
-				$first_selected = YES;
-				$hidden = NO;
+		<div id="eight-profiler-tabs">
+		<?
+			foreach($profiles as $profile) {
+				echo "<a href='#'".(!$first_selected ? ' class="eight-profiler-tab-active"' : '')." onclick='return eight_profiler_toggle_tab(this, \"".$profile->table_id()."\")'>".$profile->name()."</a>";
+				if(!$first_selected) {
+					$first_selected = YES;
+				}
 			}
 			
-			echo $profile->render($hidden);
-		}
-	?>
-	</div>
-	<p class="kp-meta">Profiler executed in <?php echo number_format($execution_time, 3) ?>s</p>
+			$first_selected = NO;
+		?>
+		</div>
+		<br style="clear:left" /><br />
+		<div id="eight-profiler-tables">
+		<?
+			foreach($profiles as $profile) {
+				$hidden = YES;
+			
+				if(!$first_selected) {
+					$first_selected = YES;
+					$hidden = NO;
+				}
+			
+				echo $profile->render($hidden);
+			}
+		?>
+		</div>
+		<p class="ep-meta">Profiler executed in <?php echo number_format($execution_time, 3) ?>s</p>
 	</div>
 </div>
 
@@ -51,7 +56,7 @@
 			tables[x].style.display = "none";
 		}
 
-		document.getElementById(table_id).style.display = "block";
+		document.getElementById(table_id).style.display = "";
 		
 		return false;
 	}

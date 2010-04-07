@@ -1,41 +1,5 @@
-#eight-profiler {
-	font-family: 'Menlo', 'Panic Sans', Monaco, 'Courier New';
-	background-color:transparent;
-	clear: both;
-	border: none;
-	text-align: left;
-	display: none;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 1000;
-	width:100%;
-}
-
-div.eight-profiler-inner {
-	background-color: rgba(0,0,0,.8);
-	-webkit-border-radius: 10px;
-	width: auto;
-	margin: 15px 15px;
-	padding: 10px 10px;
-	position: relative;
-}
-
-#eight-profiler pre {
-	margin: 0;
-	font: inherit;
-}
-
-#eight-profiler .kp-meta {
-	margin: 0 0 10px;
-	padding: 4px;
-	background-color: rgba(0,0,0,.5);
-	color: #A6B0B8;
-	text-align: center;
-}
-
 #eight-profiler-toggler {
-	z-index: 9999; 
+	z-index: 9999999; 
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -49,22 +13,74 @@ div.eight-profiler-inner {
 	color:white;
 }
 
+#eight-profiler {
+	clear: both;
+	border: none;
+	text-align: left;
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 999999;
+	width:100%;
+	font-size: 9pt;
+	background: #eee;
+}
+
+div.eight-profiler-inner {
+	background: #fff;
+	border: 1px solid #ddd;
+	font-family: sans-serif;
+	color: #111;
+	font-size: 14px;
+	line-height: 130%;
+	width: 900px;
+	margin: 20px auto;
+}
+
+#eight-profiler pre {
+	margin: 0;
+	font: inherit;
+}
+
+#eight-profiler .ep-meta {
+	margin: 0;
+	padding: 4px;
+	color: transparent;
+	text-align: center;
+}
+
+div#eight-profiler-tabs {
+	margin: 0;
+	padding: 10px;
+	font-weight: normal;
+	background: #ffbcbd;
+	color: #000000;
+	height: 25px;
+}
+
 div#eight-profiler-tabs a {
 	display: block;
-	height: 30px;
-	line-height: 30px;
 	padding: 0 10px;
 	float: left;
 	margin: 0 5px 0 0;
 	font-family: Helvetica, "Lucida Grande", Arial;
 	font-size: 14px;
-	color: white;
-	background-color: rgba(255,255,255,.08);
-	-webkit-border-radius: 10px;		
+	color: #494949;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
 }
 
 div#eight-profiler-tabs a.eight-profiler-tab-active {
-	font-weight: bold;
-	background-color: rgba(255,255,255,.1);
-	-webkit-border-radius: 10px;		
+	background-color: white;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	margin-top: -5px;
+}
+
+div#eight-profiler-tables {
+	padding: 0 20px;
+	position: relative;
 }

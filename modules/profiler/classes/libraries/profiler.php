@@ -130,9 +130,9 @@ class Profiler_Core {
 			return;
 
 		$table->add_column();
-		$table->add_column('kp-column kp-data');
-		$table->add_column('kp-column kp-data');
-		$table->add_row(array('Benchmarks', 'Time', 'Memory'), 'kp-title', 'background-color: #FFE0E0');
+		$table->add_column('ep-column ep-data');
+		$table->add_column('ep-column ep-data');
+		$table->add_row(array('Benchmarks', 'Time', 'Memory'), 'ep-title', '');
 
 		$benchmarks = Benchmark::get(YES);
 
@@ -145,10 +145,10 @@ class Profiler_Core {
 			$name = ucwords(str_replace(array('_', '-'), ' ', str_replace(SYSTEM_BENCHMARK.'_', '', $name)));
 
 			$data = array($name, number_format($benchmark['time'], 3), number_format($benchmark['memory'] / 1024 / 1024, 2).'MB');
-			$class = str::alternate('', 'kp-altrow');
+			$class = str::alternate('', 'ep-altrow');
 
 			if($name == 'Total Execution')
-				$class = 'kp-totalrow';
+				$class = 'ep-totalrow';
 
 			$table->add_row($data, $class);
 		}
@@ -164,9 +164,9 @@ class Profiler_Core {
 			return;
 
 		$table->add_column();
-		$table->add_column('kp-column kp-data');
-		$table->add_column('kp-column kp-data');
-		$table->add_row(array('Queries', 'Time', 'Rows'), 'kp-title', 'background-color: #E0FFE0');
+		$table->add_column('ep-column ep-data');
+		$table->add_column('ep-column ep-data');
+		$table->add_row(array('Queries', 'Time', 'Rows'), 'ep-title', '');
 
 		$queries = Database::$benchmarks;
 
@@ -174,14 +174,14 @@ class Profiler_Core {
 		$total_time = $total_rows = 0;
 		foreach($queries as $query) {
 			$data = array($query['query'], number_format($query['time'], 3), $query['rows']);
-			$class = str::alternate('', 'kp-altrow');
+			$class = str::alternate('', 'ep-altrow');
 			$table->add_row($data, $class);
 			$total_time += $query['time'];
 			$total_rows += $query['rows'];
 		}
 
 		$data = array('Total: ' . count($queries), number_format($total_time, 3), $total_rows);
-		$table->add_row($data, 'kp-totalrow');
+		$table->add_row($data, 'ep-totalrow');
 	}
 
 	/**
@@ -195,9 +195,9 @@ class Profiler_Core {
 		if(!$table = $this->table('session'))
 			return;
 
-		$table->add_column('kp-name');
+		$table->add_column('ep-name');
 		$table->add_column();
-		$table->add_row(array('Session', 'Value'), 'kp-title', 'background-color: #CCE8FB');
+		$table->add_row(array('Session', 'Value'), 'ep-title', '');
 
 		str::alternate();
 		foreach($_SESSION as $name => $value) {
@@ -206,7 +206,7 @@ class Profiler_Core {
 			}
 
 			$data = array($name, $value);
-			$class = str::alternate('', 'kp-altrow');
+			$class = str::alternate('', 'ep-altrow');
 			$table->add_row($data, $class);
 		}
 	}
@@ -222,14 +222,14 @@ class Profiler_Core {
 		if(!$table = $this->table('post'))
 			return;
 
-		$table->add_column('kp-name');
+		$table->add_column('ep-name');
 		$table->add_column();
-		$table->add_row(array('POST', 'Value'), 'kp-title', 'background-color: #E0E0FF');
+		$table->add_row(array('POST', 'Value'), 'ep-title', '');
 
 		str::alternate();
 		foreach($_POST as $name => $value) {
 			$data = array($name, $value);
-			$class = str::alternate('', 'kp-altrow');
+			$class = str::alternate('', 'ep-altrow');
 			$table->add_row($data, $class);
 		}
 	}
@@ -245,14 +245,14 @@ class Profiler_Core {
 		if(!$table = $this->table('cookies'))
 			return;
 
-		$table->add_column('kp-name');
+		$table->add_column('ep-name');
 		$table->add_column();
-		$table->add_row(array('Cookies', 'Value'), 'kp-title', 'background-color: #FFF4D7');
+		$table->add_row(array('Cookies', 'Value'), 'ep-title', '');
 
 		str::alternate();
 		foreach($_COOKIE as $name => $value) {
 			$data = array($name, $value);
-			$class = str::alternate('', 'kp-altrow');
+			$class = str::alternate('', 'ep-altrow');
 			$table->add_row($data, $class);
 		}
 	}
