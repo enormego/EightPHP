@@ -457,7 +457,6 @@ final class SQSRequest
 
 		$ssl = (Amazon_SQS::$useSSL && extension_loaded('openssl'));
 		$url = ($ssl ? 'https://' : 'http://').$this->url.'/'.$this->queue.'?'.$query;
-		echo "Using: " . $url."\n";
 
 		// Basic setup
 		$curl = curl_init();
