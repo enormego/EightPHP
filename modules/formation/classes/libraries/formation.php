@@ -81,6 +81,8 @@ class Formation_Core {
 			return $this->inputs[$key];
 		} elseif (isset($this->hidden[$key])) {
 			return $this->hidden[$key];
+		} elseif (isset($this->attr[$key])) {
+			return $this->attr[$key];
 		}
 	}
 
@@ -137,13 +139,17 @@ class Formation_Core {
 	 * @param   string        attribute value
 	 * @return  object
 	 */
-	public function set_attr($key, $val = nil) {
+	public function set_attr($key, $val = nil, $append = FALSE) {
 		if (is_array($key)) {
 			// Merge the new attributes with the old ones
 			$this->attr = array_merge($this->attr, $key);
 		} else {
-			// Set the new attribute
-			$this->attr[$key] = $val;
+			if($key == 'class' && $append) {
+				$this->attr[$key] .= ' '.$val;
+			} else {
+				// Set the new attribute
+				$this->attr[$key] = $val;
+			}
 		}
 
 		return $this;

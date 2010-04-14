@@ -422,7 +422,7 @@ class arr_Core {
 	 * @author	Saverio Mondelli
 	 */
 	public static function e($arr) {
-		if(!is_array($arr)) {
+		if(!is_array($arr) OR is_null($arr)) {
 			return FALSE;
 		}
 		return (boolean) empty($arr);
