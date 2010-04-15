@@ -111,7 +111,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function createQueue($queue, $visibility_timeout = null) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, '', 'CreateQueue', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, '', 'CreateQueue', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('QueueName', $queue);
 
@@ -138,7 +138,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function deleteQueue($queue) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'DeleteQueue', 'DELETE', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'DeleteQueue', 'DELETE', self::$__accessKey);
 		$rest = $rest->getResponse();
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
@@ -157,7 +157,7 @@ class Amazon_SQS_Core
 	* @return array | false
 	*/
 	public static function listQueues($prefix = '') {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, '', 'ListQueues', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, '', 'ListQueues', 'GET', self::$__accessKey);
 
 		if(strlen($prefix) > 0)
 		{
@@ -194,7 +194,7 @@ class Amazon_SQS_Core
 	* @return array (name => value) | false
 	*/
 	public static function getQueueAttributes($queue, $attribute = 'All') {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'GetQueueAttributes', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'GetQueueAttributes', 'GET', self::$__accessKey);
 
 		$rest->setParameter('AttributeName', $attribute);
 
@@ -229,7 +229,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function setQueueAttributes($queue, $attribute, $value) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'SetQueueAttributes', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'SetQueueAttributes', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('Attribute.Name', $attribute);
 		$rest->setParameter('Attribute.Value', $value);
@@ -253,7 +253,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function sendMessage($queue, $message) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'SendMessage', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'SendMessage', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('MessageBody', $message);
 
@@ -277,7 +277,7 @@ class Amazon_SQS_Core
 	* @return array of array(key => value) | false
 	*/
 	public static function receiveMessage($queue, $num_messages = null, $visibility_timeout = null) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'ReceiveMessage', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'ReceiveMessage', 'GET', self::$__accessKey);
 
 		if($num_messages !== null)
 		{
@@ -323,7 +323,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function deleteMessage($queue, $receipt_handle) {
-		$rest = new SQSRequest(Amazon_SQS::$endpoint, $queue, 'DeleteMessage', 'DELETE', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'DeleteMessage', 'DELETE', self::$__accessKey);
 
 		$rest->setParameter('ReceiptHandle', $receipt_handle);
 
