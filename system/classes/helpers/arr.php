@@ -422,10 +422,11 @@ class arr_Core {
 	 * @author	Saverio Mondelli
 	 */
 	public static function e($arr) {
-		if(!is_array($arr) OR is_null($arr)) {
-			return FALSE;
+		if(is_array($arr) && !empty($arr)) {
+			return false;
+		} else {
+			return true;
 		}
-		return (boolean) empty($arr);
 	}
 	
 } // End arr
