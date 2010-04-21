@@ -70,7 +70,9 @@ abstract class Controller_Template extends Controller_Core {
 	}
 	
 	public function add_stylesheet($name) {
-		$this->stylesheets[] = $name;
+		if(!in_array($name, $this->stylesheets)) {
+			$this->stylesheets[] = $name;
+		}
 	}
 	
 	public function remove_stylesheet($name) {
@@ -82,7 +84,9 @@ abstract class Controller_Template extends Controller_Core {
 	}
 	
 	public function add_javascript($name) {
-		$this->jscripts[] = $name;
+		if(!in_array($name, $this->jscripts)) {
+			$this->jscripts[] = $name;
+		}
 	}
 	
 	public function remove_javascript($name) {
