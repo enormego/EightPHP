@@ -58,5 +58,33 @@ class format_Core {
 		// Return the original URL
 		return $str;
 	}
+	
+	/**
+	 * Formats a second into hours, minutes, seconds.
+	 * Maxes out at one day.
+	 * 
+	 * Example:
+	 * format::seconds(65) returns "1 minute, 5 seconds"
+	 * 
+	 * @param	int	number of seconds
+	 * @return	string	formatted seconds
+	 */
+	public static function seconds($seconds) {
+		list($hours, $minutes, $seconds) = explode(":", gmdate("G:i:s", $seconds));
+		$parts = array();
+		if($hours > 0) {
+			$parts[] = $hours . " " . str::plural("hour", $hours);
+		}
+		
+		if($minutes > 0) {
+			$parts[] = sprintf("%d", $minutes) . " " . str::plural("minute", $minutes);
+		}
+		
+		if($seconds > 0) {
+			$parts[] = sprintf("%d", $seconds) . " " . str::plural("second", $seconds);
+		}
+		
+		return implode(", ", $parts);
+	}
 
 } // End format
