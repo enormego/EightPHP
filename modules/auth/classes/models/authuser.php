@@ -88,8 +88,8 @@ class Model_AuthUser extends Modeler {
 		}
 
 		if(!is_array($this->roles) OR $this->roles === NULL) {
-			$this->db->use_master(YES);
-			$rs = $this->db->join('user_roles AS ur', 'ur.user_role_role_id = r.role_id', 'LEFT')->where('ur.user_role_user_id', $this->id)->get('roles AS r')->result_array();
+			self::db()->use_master(YES);
+			$rs = self::db()->join('user_roles AS ur', 'ur.user_role_role_id = r.role_id', 'LEFT')->where('ur.user_role_user_id', $this->id)->get('roles AS r')->result_array();
 			foreach(arr::c($rs) as $r) {
 				$this->roles[$r['role_id']] = $r['role_name'];
 			}
@@ -115,8 +115,8 @@ class Model_AuthUser extends Modeler {
 	 * @return  boolean
 	 */
 	public function user_exists($user) {
-		$this->db->use_master(YES);
-		return (bool) $this->db->where($this->username_field, $user)->count_records($this->table_name);
+		self::db()->use_master(YES);
+		return (bool) $this->db()->where($this->username_field, $user)->count_records($this->table_name);
 	}
 	
 	/**
@@ -126,8 +126,8 @@ class Model_AuthUser extends Modeler {
 	* @return  boolean
 	*/
 	public function fetch_all_with_role($role) {
-		$this->db->use_master(YES);
-		return $this->db->join('user_roles AS ur', 'u.user_id = ur.user_role_user_id', 'LEFT')->join('roles AS r', 'r.role_id = ur.user_role_role_id', 'LEFT')->where('r.role_name', $role)->get('users AS u')->result_array();
+		self::db()->use_master(YES);
+		return self::db()->join('user_roles AS ur', 'u.user_id = ur.user_role_user_id', 'LEFT')->join('roles AS r', 'r.role_id = ur.user_role_role_id', 'LEFT')->where('r.role_name', $role)->get('users AS u')->result_array();
 	}
 	
 } // End Auth User Model
