@@ -71,6 +71,8 @@ class format_Core {
 	public static function seconds($seconds) {
 		list($years, $months, $days, $hours, $minutes, $seconds) = explode(":", gmdate("Y:n:j:G:i:s", $seconds));
 		$years -= 1970;
+		$months--;
+		$days--;
 		
 		$parts = array();
 		if($years > 0) {
