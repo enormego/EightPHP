@@ -60,18 +60,31 @@ class format_Core {
 	}
 	
 	/**
-	 * Formats a second into hours, minutes, seconds.
-	 * Maxes out at one day.
+	 * Formats a second into years, months, days, hours, minutes, seconds.
 	 * 
 	 * Example:
 	 * format::seconds(65) returns "1 minute, 5 seconds"
 	 * 
-	 * @param	int	number of seconds
+	 * @param	int		number of seconds
 	 * @return	string	formatted seconds
 	 */
 	public static function seconds($seconds) {
-		list($hours, $minutes, $seconds) = explode(":", gmdate("G:i:s", $seconds));
+		list($years, $months, $days, $hours, $minutes, $seconds) = explode(":", gmdate("Y:n:j:G:i:s", $seconds));
+		$years -= 1970;
+		
 		$parts = array();
+		if($years > 0) {
+			$parts[] = $years . " " . str::plural("year", $years);
+		}
+		
+		if($months > 0) {
+			$parts[] = $months . " " . str::plural("month", $months);
+		}
+		
+		if($days > 0) {
+			$parts[] = $days . " " . str::plural("day", $days);
+		}
+		
 		if($hours > 0) {
 			$parts[] = $hours . " " . str::plural("hour", $hours);
 		}
