@@ -79,7 +79,7 @@ class Model_AuthUserToken extends Modeler {
 			$this->created = time();
 		}
 		
-		$this->db->use_master(YES);
+		self::db()->use_master(YES);
 
 		return parent::save();
 	}
@@ -91,8 +91,8 @@ class Model_AuthUserToken extends Modeler {
 	 */
 	public function delete_expired() {
 		// Delete all expired tokens
-		$this->db->use_master(YES);
-		$this->db->where('user_token_expires <', $this->now)->delete($this->table_name);
+		self::db()->use_master(YES);
+		self::db()->where('user_token_expires <', $this->now)->delete($this->table_name);
 		return $this;
 	}
 
@@ -109,8 +109,8 @@ class Model_AuthUserToken extends Modeler {
 			$token = str::random('alnum', 32);
 
 			// Make sure the token does not already exist
-			$this->db->use_master(YES);
-			if ($this->db->select('user_token_id')->where('user_token_token', $token)->get($this->table_name)->count() === 0) {
+			self::db()->use_master(YES);
+			if (self::db()->select('user_token_id')->where('user_token_token', $token)->get($this->table_name)->count() === 0) {
 				// A unique token has been found
 				return $token;
 			}
