@@ -36,7 +36,7 @@ body {
 	padding: 5px;
 	margin-top: 5px;
 	font: 12px Menlo, "Panic Sans", Monaco, "Courier New", Courier, monospace;
-	white-space: pre;
+	white-space: normal;
 }
 
 #eight_error h2 {

@@ -1077,7 +1077,7 @@ final class Eight {
 		// Get the line from cache
 		$line = self::key_string(self::$internal_cache['language'][$locale], $key);
 
-		if($line === NULL OR arr::e($line)) {
+		if($line === NULL OR empty($line)) {
 			Eight::log('error', 'Missing i18n entry '.$key.' for language '.$locale);
 
 			// Return the key string as fallback

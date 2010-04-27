@@ -12,7 +12,7 @@ class Database_Exception_Core extends Eight_Exception {
 	protected $code = E_DATABASE_ERROR;
 
 	public function __construct($message, $variables = NULL, $code = 0) {
-		parent::__construct(Eight::lang($message, $variables), NULL, $code);
+		parent::__construct($message, $variables, $code);
 	}
 
 } // End Database Exception
