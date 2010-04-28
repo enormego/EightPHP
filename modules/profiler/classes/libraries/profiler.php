@@ -35,6 +35,7 @@ class Profiler_Core {
 		Event::add('profiler.run', array($this, 'session'));
 		Event::add('profiler.run', array($this, 'post'));
 		Event::add('profiler.run', array($this, 'cookies'));
+		Event::add('profiler.run', array($this, 'environment'));
 
 		// Add profiler to page output automatically
 		Event::add('system.display', array($this, 'render'));
@@ -251,6 +252,29 @@ class Profiler_Core {
 
 		str::alternate();
 		foreach($_COOKIE as $name => $value) {
+			$data = array($name, $value);
+			$class = str::alternate('', 'ep-altrow');
+			$table->add_row($data, $class);
+		}
+	}
+
+	/**
+	 * Environment data.
+	 *
+	 * @return  void
+	 */
+	public function environment() {
+		if(empty($_ENV)) return;
+
+		if(!$table = $this->table('environment'))
+			return;
+
+		$table->add_column('ep-name');
+		$table->add_column();
+		$table->add_row(array('Environment', 'Value'), 'ep-title', '');
+
+		str::alternate();
+		foreach($_ENV as $name => $value) {
 			$data = array($name, $value);
 			$class = str::alternate('', 'ep-altrow');
 			$table->add_row($data, $class);
