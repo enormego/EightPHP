@@ -131,6 +131,28 @@ class arr_Core {
 
 		return $found;
 	}
+	
+	/**
+	 * Gets a value from an array by key
+	 * Useful for when an array is returned by a function and you only need one value
+	 * 
+	 * @param	array	array to search
+	 * @param	string	key
+	 * @return	mixed
+	 */
+	public static function get($search, $key) {
+		if(is_array($search)) {
+			if(array_key_exists($key, $search)) {
+				return $search[$key];
+			} else {
+				return NULL;
+			}
+		} else if(is_object($search)) {
+			return $search->$key;
+		} else {
+			return NULL;
+		}
+	}
 
 	/**
 	 * Because PHP does not have this function.
