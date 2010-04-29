@@ -33,7 +33,7 @@ class Auth_Core {
 	 */
 	public static function instance($config = array()) {
 		static $instance;
-
+		
 		// Load the Auth instance
 		empty($instance) and $instance = new Auth($config);
 
@@ -72,7 +72,7 @@ class Auth_Core {
 
 		// Load the driver for access
 		$this->driver = $driver;
-
+		
 		Eight::log('debug', 'Auth Library loaded');
 	}
 
@@ -209,7 +209,7 @@ class Auth_Core {
 	 * @param   string  hashed password
 	 * @return  string
 	 */
-	protected function find_salt($password) {
+	public function find_salt($password) {
 		$salt = '';
 
 		foreach ($this->config['salt_pattern'] as $i => $offset) {
