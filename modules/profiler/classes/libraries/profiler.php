@@ -36,6 +36,7 @@ class Profiler_Core {
 		Event::add('profiler.run', array($this, 'post'));
 		Event::add('profiler.run', array($this, 'cookies'));
 		Event::add('profiler.run', array($this, 'environment'));
+		Event::add('profiler.run', array($this, 'logs'));
 
 		// Add profiler to page output automatically
 		Event::add('system.display', array($this, 'render'));
@@ -280,4 +281,30 @@ class Profiler_Core {
 			$table->add_row($data, $class);
 		}
 	}
+
+	/**
+	 * Logs data.
+	 *
+	 * @return  void
+	 */
+	public function logs() {
+		$logs = Eight::log_get();
+		if(arr::e($logs)) return;
+
+		if(!$table = $this->table('logs'))
+			return;
+
+		$table->add_column('ep-name');
+		$table->add_column('ep-column ep-data');
+		$table->add_column('ep-column ep-data');
+		$table->add_row(array('Log', 'Level', 'Date'), 'ep-title', '');
+
+		str::alternate();
+		foreach($logs as $log) {
+			$data = array($name, $value);
+			$class = str::alternate('', 'ep-altrow');
+			$table->add_row(array_reverse($log), $class);
+		}
+	}
+	
 }

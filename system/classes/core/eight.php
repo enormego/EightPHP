@@ -153,9 +153,9 @@ final class Eight {
 			Eight_Exception_PHP::enable();
 		}
 		
-		if(self::$configuration['core']['log_threshold'] > 0) {
+		if(Eight::config('log.threshold') > 0) {
 			// Set the log directory
-			self::log_directory(self::$configuration['core']['log_directory']);
+			self::log_directory(Eight::config('log.directory'));
 
 			// Enable log writing at shutdown
 			register_shutdown_function(array(__CLASS__, 'log_save'));
@@ -542,9 +542,18 @@ final class Eight {
 	 * @return  void
 	 */
 	public static function log($type, $message) {
-		if(self::$log_levels[$type] <= self::$configuration['core']['log_threshold']) {
-			self::$log[] = array(date('Y-m-d H:i:s P'), $type, $message);
+		if(self::$log_levels[$type] <= self::$configuration['log']['threshold']) {
+			self::$log[] = array(date(self::$configuration['log']['format']), $type, $message);
 		}
+	}
+	
+	/**
+	 * Gets the current log messages
+	 * 
+	 * @return	array	array of messages
+	 */
+	public static function log_get() {
+		return self::$log;
 	}
 
 	/**

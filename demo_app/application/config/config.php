@@ -119,32 +119,6 @@ $config['ignore_page_not_found'] = array
 $config['display_errors'] = YES;
 
 /**
- * Set default logging threshold.
- *
- *     $config['log_threshold'] = 1;
- *
- * It is highly recommended to enable error and exception logging on production
- * websites and to disable
- *
- * - 0: Disable all logging
- * - 1: Log only PHP errors and exceptions
- * - 2: Also log PHP warnings
- * - 3: Also log PHP notices
- * - 4: Also log Eight debugging messages
- */
-$config['log_threshold'] = 1;
-
-/**
- * Set default logging directory.
- *
- *     $config['log_directory'] = APPPATH.'logs';
- *
- * Any writable directory can be specified here. Path can be relative to the
- * DOCROOT, or an absolute path.
- */
-$config['log_directory'] = APPPATH.'logs';
-
-/**
  * Enable or disable hooks, raw PHP files that are included during setup.
  *
  *     $config['enable_hooks'] = NO;
