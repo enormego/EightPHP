@@ -18,12 +18,12 @@ class Formation_Core {
 		'close' => '',
 	);
 
-	// Form attributes
+	// Formation attributes
 	protected $attr = array();
 	protected $formation_id = nil;
 	private   $formation_id_element;
 
-	// Form inputs and hidden inputs
+	// Formation inputs and hidden inputs
 	public $inputs = array();
 	public $hidden = array();
 
@@ -32,7 +32,7 @@ class Formation_Core {
 	public $newline_char = "\n";
 
 	/**
-	 * Form constructor. Sets the form action, title, method, and attributes.
+	 * Formation constructor. Sets the form action, title, method, and attributes.
 	 *
 	 * @return  void
 	 */
@@ -87,7 +87,7 @@ class Formation_Core {
 	}
 
 	/**
-	 * Magic __call method. Creates a new form element object.
+	 * Magic __call method. Creates a new formation element object.
 	 *
 	 * @throws  Eight_Exception
 	 * @param   string   input type
@@ -96,7 +96,7 @@ class Formation_Core {
 	 */
 	public function __call($method, $args) {
 		// Class name
-		$input = 'Form_'.ucfirst($method);
+		$input = 'Formation_'.ucfirst($method);
 
 		// Create the input
 		switch(count($args)) {
@@ -110,7 +110,7 @@ class Formation_Core {
 				throw new Eight_Exception('formation.invalid_input', $input);
 		}
 
-		if ( ! ($input instanceof Form_Input) AND ! ($input instanceof Formation))
+		if ( ! ($input instanceof Formation_Input) AND ! ($input instanceof Formation))
 			throw new Eight_Exception('formation.unknown_input', get_class($input));
 
 		$input->method = $this->attr['method'];
@@ -119,7 +119,7 @@ class Formation_Core {
 			// Assign by name
 			if ($method == 'hidden') {
 				$this->hidden[$name] = $input;
-			} elseif($input instanceof Form_Radio) {
+			} elseif($input instanceof Formation_Radio) {
 				$this->inputs[] = $input;
 			} else {
 				$this->inputs[$name] = $input;
@@ -219,7 +219,7 @@ class Formation_Core {
 	public function process_inputs($inputs) {
 		foreach($inputs as $input) {
 			if($input->name == 'formation_id') continue;
-			if ($input instanceof Form_Group) { // It's a Form_Group Object
+			if ($input instanceof Formation_Group) { // It's a Formation_Group Object
 				$this->process_inputs($input->inputs); // Go deeper
 			} else if (is_array($input->inputs)) {
 				foreach ($input->inputs as $group_input) {
@@ -267,7 +267,7 @@ class Formation_Core {
 				$data[$input->name] = $input;
 				
 				// Groups will never have errors, so skip them
-				if ($input instanceof Form_Group)
+				if ($input instanceof Formation_Group)
 					continue;
 
 				// Compile the error messages for this input
@@ -298,7 +298,7 @@ class Formation_Core {
 			$form_type = 'open';
 			// See if we need a multipart form
 			foreach($this->inputs as $input) {
-				if ($input instanceof Form_Upload) {
+				if ($input instanceof Formation_Upload) {
 					$form_type = 'open_multipart';
 				}
 			}

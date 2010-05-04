@@ -1,7 +1,7 @@
 <?=$open?>
 	<? /* Handle the hidden fields at the top of the form */ ?>
 	<?foreach($inputs as $input):?>
-		<?if($input instanceof Form_Hidden):?>
+		<?if($input instanceof Formation_Hidden):?>
 			<?=View::factory('formation/hidden', array('input' => $input))?>
 		<?endif?>
 	<?endforeach?>

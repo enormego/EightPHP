@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Phonenumber_Core extends Form_Input {
+class Formation_Phonenumber_Core extends Formation_Input {
 
 	protected $data = array(
 		'name'  => '',
@@ -84,4 +84,4 @@ class Form_Phonenumber_Core extends Form_Input {
 
 		$this->data['value'] = $data['area_code'].$data['exchange'].$data['last_four'];
 	}
-} // End Form Phonenumber
+} // End Formation Phonenumber

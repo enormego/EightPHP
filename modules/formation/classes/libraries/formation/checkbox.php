@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Checkbox_Core extends Form_Input {
+class Formation_Checkbox_Core extends Formation_Input {
 
 	protected $data = array(
 		'type' => 'checkbox',
@@ -67,4 +67,4 @@ class Form_Checkbox_Core extends Form_Input {
 		$this->data['checked'] = ($this->input_value($this->name) == $this->data['value']);
 	}
 
-} // End Form Checkbox
+} // End Formation Checkbox

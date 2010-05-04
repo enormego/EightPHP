@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Radio_Core extends Form_Checkbox {
+class Formation_Radio_Core extends Formation_Checkbox {
 
 	protected $data = array(
 		'type' => 'radio',
@@ -17,4 +17,4 @@ class Form_Radio_Core extends Form_Checkbox {
 		'checked' => NO,
 	);
 
-} // End Form_Radio
+} // End Formation_Radio

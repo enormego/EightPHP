@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Birthday_Core extends Form_Dateselect {
+class Formation_Birthday_Core extends Formation_Dateselect {
 	protected $min_age = 0;
 	
 	public function __construct($name, $formation) {
@@ -38,4 +38,4 @@ class Form_Birthday_Core extends Form_Dateselect {
 	}
 
 
-} // End Form_Birthday_Core
+} // End Formation_Birthday_Core

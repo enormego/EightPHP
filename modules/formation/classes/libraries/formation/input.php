@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Input_Core {
+class Formation_Input_Core {
 
 	// Input method
 	public $method;
@@ -74,6 +74,13 @@ class Form_Input_Core {
 		}
 
 		return $this;
+	}
+	
+	/**
+	 * Accessor to the form this is attached to
+	 */
+	public function form() {
+		return $this->formation;
 	}
 
 	/**
@@ -570,4 +577,4 @@ class Form_Input_Core {
 		$this->value = Eight::instance()->input->xss_clean($this->value);
 	}
 	
-} // End Form Input
+} // End Formation Input

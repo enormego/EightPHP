@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Radiolist_Core extends Form_Checklist {
+class Formation_Radiolist_Core extends Formation_Checklist {
 
 	protected $data = array(
 		'name'    => '',
@@ -17,4 +17,4 @@ class Form_Radiolist_Core extends Form_Checklist {
 		'options' => array(),
 	);
 		
-} // End Form_Radiolist_Core
+} // End Formation_Radiolist_Core

@@ -21,7 +21,7 @@
 
 <?foreach($inputs as $i):?>
 	<? /* Skip hidden fields since we processed them already */ ?>
-	<?if($i instanceof Form_Hidden):?>
+	<?if($i instanceof Formation_Hidden):?>
 		<?continue?>
 	<?endif?>
 	
@@ -33,12 +33,12 @@
 		<?endif?>
 	<?endif?>
 	
-	<?if($i instanceof Form_Group):?>
+	<?if($i instanceof Formation_Group):?>
 		<?=View::factory('formation/inputs', array('input' => $i, 'inputs' => $i->inputs, 'layout' => $i->layout, 'parent' => 'group'))?>
 	<?endif?>
 	
 	<? /* Regular old input. This will only run if the other things up top didn't match */ ?>
-	<?if(!($i instanceof Form_Group)):?>
+	<?if(!($i instanceof Formation_Group)):?>
 		<?=View::factory('formation/input', array('input' => $i, 'layout' => $layout))?>
 	<?endif?>
 	

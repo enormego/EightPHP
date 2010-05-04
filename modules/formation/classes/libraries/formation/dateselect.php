@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Dateselect_Core extends Form_Input {
+class Formation_Dateselect_Core extends Formation_Input {
 
 	protected $data = array(
 		'name'  => '',
@@ -167,4 +167,4 @@ class Form_Dateselect_Core extends Form_Input {
 		);
 	}
 
-} // End Form Dateselect
+} // End Formation Dateselect

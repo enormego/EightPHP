@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Submit_Core extends Form_Input {
+class Formation_Validatedsubmit_Core extends Formation_Input {
 
 	protected $data = array(
 		'type'  => 'submit',
@@ -29,9 +29,4 @@ class Form_Submit_Core extends Form_Input {
 		return form::button($data);
 	}
 
-	public function validate() {
-		// Submit buttons do not need to be validated
-		return $this->is_valid = YES;
-	}
-
-} // End Form Submit
+} // End Formation Submit

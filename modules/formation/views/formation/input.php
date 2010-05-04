@@ -6,7 +6,7 @@
 	<div class="input">
 			<?=$input->label()?>
 
-			<?if($input instanceof Form_Textarea && $input->__get('wysiwyg') == TRUE): ?>
+			<?if($input instanceof Formation_Textarea && $input->__get('wysiwyg') == TRUE): ?>
 				<?$usewysiwyg = true?>
 				<?$input->class_value('mceAdvanced')?>
 			<?endif?>

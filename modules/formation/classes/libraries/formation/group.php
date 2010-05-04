@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Group_Core extends Formation {
+class Formation_Group_Core extends Formation {
 
 	protected $data = array(
 		'type'  => 'group',
@@ -32,6 +32,13 @@ class Form_Group_Core extends Formation {
 		$this->attr['action'] = '';
 		$this->attr['method'] = 'post';
 		$this->formation = $formation;
+	}
+	
+	/**
+	 * Accessor to the form this is attached to
+	 */
+	public function form() {
+		return $this->formation;
 	}
 
 	public function __get($key) {
@@ -87,4 +94,4 @@ class Form_Group_Core extends Formation {
 		return;
 	}
 
-} // End Form Group
+} // End Formation Group

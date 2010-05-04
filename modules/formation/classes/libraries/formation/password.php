@@ -1,6 +1,6 @@
 <?php
 /**
- * Formation textarea input library.
+ * Formation password input library.
  *
  * @package		Modules
  * @subpackage	Formation
@@ -8,21 +8,14 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Textarea_Core extends Form_Input {
+class Formation_Password_Core extends Formation_Input {
 
 	protected $data = array(
-		'class' => 'textarea',
+		'type'  => 'password',
+		'class' => 'password',
 		'value' => '',
 	);
 
 	protected $protect = array('type');
 
-	protected function html_element() {
-		$data = $this->data;
-
-		unset($data['label']);
-
-		return form::textarea($data);
-	}
-
-} // End Form Textarea
+} // End Formation Password

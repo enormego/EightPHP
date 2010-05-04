@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Captcha_Core extends Form_Input {
+class Formation_Captcha_Core extends Formation_Input {
 
 	protected $data = array(
 		'type'  => 'text',
@@ -38,4 +38,4 @@ class Form_Captcha_Core extends Form_Input {
 	    }
 	}
 
-} // End Form Captcha
+} // End Formation Captcha

@@ -8,7 +8,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Form_Upload_Core extends Form_Input {
+class Formation_Upload_Core extends Formation_Input {
 
 	protected $data = array(
 		'class' => 'upload',
@@ -177,4 +177,4 @@ class Form_Upload_Core extends Form_Input {
 		return form::upload($data);
 	}
 
-} // End Form Upload
+} // End Formation Upload
