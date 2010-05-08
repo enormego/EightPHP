@@ -13,6 +13,49 @@ class file_Core {
 	// Location of Mime Magic DB
 	const MAGIC_DB = '/usr/share/misc/magic';
 	
+	// Dir push/pop stack
+	static $dir_stack = array();
+	
+	/**
+	 * Moves into a new directory
+	 * 
+	 * @param	string	directory to move into
+	 */
+	public static function push_dir($dir) {
+		array_push(self::$dir_stack, getcwd());
+		chdir($dir);
+	}
+	
+	/**
+	 * Pops back to previous directory
+	 */
+	public static function pop_dir() {
+		if(!arr::e(self::$dir_stack)) {
+			$dir = array_pop(self::$dir_stack);
+			chdir($dir);
+		}
+	}
+	
+	/**
+	 * Recursive version of php's native glob() method
+	 * 
+	 * @param int		the pattern passed to glob()
+	 * @param int		the flags passed to glob()
+	 * @param string	the path to scan
+	 * @return mixed	an array of files in the given path matching the pattern.
+	 */
+
+	public static function rglob($pattern='*', $flags = 0, $path='') {
+	    $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
+	    $files = glob($path.$pattern, $flags);
+	    
+		foreach ($paths as $path) {
+			$files = array_merge($files, file::rglob($pattern, $flags, $path));
+		}
+		
+	    return $files;
+	}
+	
 	/**
 	 * Attempt to get the mime type from a file. This method is horribly
 	 * unreliable, due to PHP being horribly unreliable when it comes to
