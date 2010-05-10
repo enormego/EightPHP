@@ -41,6 +41,10 @@ class browser_Core {
 		return !stristr($_SERVER['HTTP_USER_AGENT'], 'ipod') ? false : true;
 	}
 	
+	public static function is_ipad() {
+		return !stristr($_SERVER['HTTP_USER_AGENT'], 'ipad') ? false : true;
+	}
+	
 	public static function supports_ellipsis($word=NO) {
 		return self::is_safari() || self::is_ie(7) || self::is_ie(8) || self::is_ie(9);
 	}
