@@ -244,8 +244,10 @@ class Input_Core {
 
 		if($ip = $this->server('HTTP_CLIENT_IP')) {
 			 $this->ip_address = $ip;
+		} elseif($ip = $this->server('HTTP_X_REAL_IP')) {
+			$this->ip_address = $ip;
 		} elseif($ip = $this->server('HTTP_X_FORWARDED_FOR')) {
-			 $this->ip_address = $ip;
+			$this->ip_address = $ip;
 		} elseif($ip = $this->server('REMOTE_ADDR')) {
 			 $this->ip_address = $ip;
 		}
