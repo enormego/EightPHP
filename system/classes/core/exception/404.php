@@ -36,7 +36,7 @@ class Eight_Exception_404_Core extends Eight_Exception {
 	 */
 	public static function trigger($page = NULL) {
 		// Silence 404 errors (as matched within the ignore array) and die quietly
-		if(in_array(Router::$complete_uri, arr::c(Eight::config('core.ignore_page_not_found')))) Eight::shutdown();
+		if(in_array(Router::$complete_uri, arr::c(Eight::config('core.ignore_page_not_found')))) Eight::shutdown(); exit;
 		
 		throw new Eight_Exception_404($page);
 	}
