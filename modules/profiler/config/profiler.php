@@ -12,3 +12,13 @@
  * sections can be used too.
  */
 $config['show'] = YES;
+
+/**
+ * Position
+ */
+$config['position'] = 'top_right';
+
+/**
+ * Position Offset
+ */
+$config['offset'] = array('x' => 5, 'y' => 5);

@@ -4,7 +4,30 @@
 <?php echo $styles ?>
 </style>
 
-<div id="eight-profiler-toggler" onclick="if(document.getElementById('eight-profiler').style.display == 'block'){ document.getElementById('eight-profiler').style.display = 'none'; } else { document.getElementById('eight-profiler').style.display = 'block'; }">
+<?
+$style='';
+$x = 0 + Eight::config('profiler.offset.x');
+$y = 0 + Eight::config('profiler.offset.y');
+
+switch(Eight::config('profiler.position')) {
+	case 'top_left':
+		$style .= 'top: '.$y.'px; left: '.$x.'px;';
+		break;
+	case 'top_right':
+		$style .= 'top: '.$y.'px; right: '.$x.'px;';
+		break;
+	case 'btm_left':
+		$style .= 'bottom: '.$y.'px; left: '.$x.'px;';
+		break;
+	case 'btm_right':
+		$style .= 'bottom: '.$y.'px; right: '.$x.'px;';
+		break;
+}
+
+$style = 'style="'.$style.'"';
+
+?>
+<div id="eight-profiler-toggler" <?=$style?> onclick="if(document.getElementById('eight-profiler').style.display == 'block'){ document.getElementById('eight-profiler').style.display = 'none'; } else { document.getElementById('eight-profiler').style.display = 'block'; }">
 	Toggle Debug Info
 </div>
 
