@@ -822,7 +822,7 @@ final class Eight {
 	 * @throws  Eight_Exception_404
 	 */
 	public static function show_404($page = NO, $template = NO) {
-		if(in_array($page, arr::c(Eight::config('config.ignore_page_not_found')))) return FALSE;
+		if(in_array($page, arr::c(Eight::config('core.ignore_page_not_found')))) return FALSE;
 		throw new Eight_Exception_404($page, $template);
 	}
 
