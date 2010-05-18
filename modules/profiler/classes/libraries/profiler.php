@@ -106,7 +106,7 @@ class Profiler_Core {
 			'styles'   => $styles,
 			'execution_time' => microtime(YES) - $start
 		);
-		$view = new View('eight_profiler', $data);
+		$view = new View('profiler/profiler', $data);
 
 		// Return rendered view if $return is YES
 		if($return == YES)

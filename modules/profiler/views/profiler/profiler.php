@@ -1,6 +1,6 @@
 <!-- Profiler Starts -->
 <style type="text/css">
-<?=file_get_contents(Eight::find_file('views', 'eight_profiler', NO, 'css'))?>
+<?=file_get_contents(Eight::find_file('views', 'profiler/profiler', NO, 'css'))?>
 <?php echo $styles ?>
 </style>
 

@@ -24,7 +24,7 @@ class Profiler_Table_Core {
 
 		if(!$styles_output) {
 			$styles_output = YES;
-			return file_get_contents(Eight::find_file('views', 'eight_profiler_table', NO, 'css'));
+			return file_get_contents(Eight::find_file('views', 'profiler/table', NO, 'css'));
 		}
 
 		return '';
@@ -75,6 +75,6 @@ class Profiler_Table_Core {
 		$data['columns'] = $this->columns;
 		$data['hidden'] = $hidden;
 		$data['id'] = $this->table_id();
-		return View::factory('eight_profiler_table', $data)->render();
+		return View::factory('profiler/table', $data)->render();
 	}
 }
