@@ -24,6 +24,10 @@
 	word-wrap: break-word !important;
 }
 
+#eight-profiler table.eight-profiler-table tr:hover td {
+	background-color: #cae7ff;
+}
+
 #eight-profiler table.eight-profiler-table td.ep-column {
 	border-left: 1px solid #d1d1d1;
 	text-align: center;
