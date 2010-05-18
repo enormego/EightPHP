@@ -543,7 +543,7 @@ final class Eight {
 	 */
 	public static function log($type, $message) {
 		if(self::$log_levels[$type] <= self::$configuration['log']['threshold']) {
-			self::$log[] = array(date(self::$configuration['log']['format']), $type, $message);
+			self::$log[] = array(gmdate(self::$configuration['log']['format']), $type, $message);
 		}
 	}
 	
@@ -566,7 +566,7 @@ final class Eight {
 			return;
 
 		// Filename of the log
-		$filename = self::log_directory().date('Y-m-d').'.log'.EXT;
+		$filename = self::log_directory().gmdate('Y-m-d').'.log'.EXT;
 
 		if(!is_file($filename)) {
 			// Write the SYSPATH checking header
