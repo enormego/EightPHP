@@ -288,7 +288,7 @@ class Profiler_Core {
 	 * @return  void
 	 */
 	public function logs() {
-		$logs = Eight::log_get();
+		$logs = Eight::log_get(TRUE);
 		if(arr::e($logs)) return;
 
 		if(!$table = $this->table('logs'))

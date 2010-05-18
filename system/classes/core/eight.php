@@ -37,8 +37,11 @@ final class Eight {
 	// Include paths
 	private static $include_paths;
 
-	// Logged messages
+	// Logged messages (to write to file)
 	private static $log;
+	
+	// All Logged messages (not all written to file)
+	private static $full_log;
 
 	// Cache lifetime
 	private static $cache_lifetime;
@@ -542,9 +545,16 @@ final class Eight {
 	 * @return  void
 	 */
 	public static function log($type, $message) {
+		// Create message to append to log
+		$log = array(gmdate(self::$configuration['log']['format']), $type, $message);
+		
+		// Should we log these to file?
 		if(self::$log_levels[$type] <= self::$configuration['log']['threshold']) {
-			self::$log[] = array(gmdate(self::$configuration['log']['format']), $type, $message);
+			self::$log[] = $log;
 		}
+		
+		// Always keep track of the full log
+		self::$full_log[] = $log;
 	}
 	
 	/**
@@ -552,8 +562,8 @@ final class Eight {
 	 * 
 	 * @return	array	array of messages
 	 */
-	public static function log_get() {
-		return self::$log;
+	public static function log_get($full = FALSE) {
+		return $full === TRUE ? self::$ful_log : self::$log;
 	}
 
 	/**
