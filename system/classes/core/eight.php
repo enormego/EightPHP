@@ -563,7 +563,7 @@ final class Eight {
 	 * @return	array	array of messages
 	 */
 	public static function log_get($full = FALSE) {
-		return $full === TRUE ? self::$ful_log : self::$log;
+		return $full === TRUE ? self::$full_log : self::$log;
 	}
 
 	/**
