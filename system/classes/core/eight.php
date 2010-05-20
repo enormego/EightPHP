@@ -114,9 +114,10 @@ final class Eight {
 		}
 
 		// This function can only be run once
-		if($run === YES)
+		if($run === YES) {
 			return;
-
+		}
+		
 		// Define Eight error constant
 		define('E_EIGHT', 42);
 
@@ -154,8 +155,13 @@ final class Eight {
 
 			// Enable error handling
 			Eight_Exception_PHP::enable();
+			
+			// Wrap errors in tags so we can better find them
+			ini_set('error_prepend_string', '<phperror>');
+			ini_set('error_append_string', '</phperror>');
 		}
 		
+		// Enable logging if the threshold is above 0
 		if(Eight::config('log.threshold') > 0) {
 			// Set the log directory
 			self::log_directory(Eight::config('log.directory'));
@@ -170,7 +176,8 @@ final class Eight {
 
 		// Set the user agent
 		self::$user_agent = trim($_SERVER['HTTP_USER_AGENT']);
-
+		
+		// Try to set the default timezone
 		if(!($timezone = Eight::config('locale.timezone'))) {
 			// Get the default timezone
 			$timezone = date_default_timezone_get();
@@ -699,10 +706,30 @@ final class Eight {
 		}
 
 		// Set final output
-		Eight::$output = $output;
-
+		self::$output = $output;
+		
+		// Look for errors in the output buffer
+		if(!self::$configuration['core']['display_errors'] && self::$configuration['core']['catch_all_errors']) {
+			$matches = array();
+			if(preg_match('#<phperror>.*</phperror>#is', self::$output, &$matches) ) {
+				// We only care about the first error
+				$match = $matches[0];
+				
+				// Pull some info out of the error
+				preg_match('#error:(.*)\ in\ (.*)\ on\ line ([0-9]+)#i', strip_tags($match), $matches);
+				$error = new Eight_Exception_PHP(E_ERROR, trim($matches[1]), trim($matches[2]), trim($matches[3]));	
+				
+				// Log the error
+				self::log('error', Eight_Exception_PHP::text($error));
+				self::log_save();
+				
+				// Show the pretty error page
+				self::$output = file_get_contents(self::find_file('views', 'eight/error_disabled', TRUE));
+			}
+		}
+		
 		// Set and return the final output
-		return Eight::$output;
+		return self::$output;
 	}
 
 	/**
@@ -742,7 +769,7 @@ final class Eight {
 		
 		// Run the output event
 		Event::run('system.display', self::$output);
-
+		
 		// Render the final output
 		self::render(self::$output);
 	}
