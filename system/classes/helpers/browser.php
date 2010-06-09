@@ -12,7 +12,7 @@
 class browser_Core {
 
 	public static function is($browser) {
-		$func = "is_" . $browser;
+		$f = "is_" . $browser;
 		return self::$f();
 	}
 	
