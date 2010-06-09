@@ -710,8 +710,7 @@ final class Eight {
 		
 		// Look for errors in the output buffer
 		if(!self::$configuration['core']['display_errors'] && self::$configuration['core']['catch_all_errors']) {
-			$matches = array();
-			if(preg_match('#<phperror>.*</phperror>#is', self::$output, &$matches) ) {
+			if(preg_match('#<phperror>.*</phperror>#is', self::$output, $matches) ) {
 				// We only care about the first error
 				$match = $matches[0];
 				
