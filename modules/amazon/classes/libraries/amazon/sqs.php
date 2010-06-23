@@ -41,7 +41,7 @@
  * Amazon SQS PHP class
  *
  * @link		http://sourceforge.net/projects/php-sqs/
- * @version		0.9.1
+ * @version		0.9.2
  * @package		Modules
  * @subpackage	Amazon
  */
@@ -49,6 +49,7 @@ class Amazon_SQS_Core
 {
 	private static $__accessKey; // AWS Access key
 	private static $__secretKey; // AWS Secret key
+	private static $endpoint = 'queue.amazonaws.com';
 
 	public static $useSSL = true;
 	public static $verifyHost = 1;
@@ -125,7 +126,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function createQueue($queue, $visibility_timeout = null) {
-		$rest = new SQSRequest('queue.amazonaws.com', '', 'CreateQueue', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, '', 'CreateQueue', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('QueueName', $queue);
 
@@ -138,7 +139,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('createQueue', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -152,12 +153,12 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function deleteQueue($queue) {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'DeleteQueue', 'DELETE', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'DeleteQueue', 'DELETE', self::$__accessKey);
 		$rest = $rest->getResponse();
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('deleteQueue', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -171,7 +172,7 @@ class Amazon_SQS_Core
 	* @return array | false
 	*/
 	public static function listQueues($prefix = '', $queueNameOnly = FALSE) {
-		$rest = new SQSRequest('queue.amazonaws.com', '', 'ListQueues', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, '', 'ListQueues', 'GET', self::$__accessKey);
 
 		if(strlen($prefix) > 0)
 		{
@@ -182,7 +183,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('listQueues', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -209,7 +210,7 @@ class Amazon_SQS_Core
 	* @return array (name => value) | false
 	*/
 	public static function getQueueAttributes($queue, $attribute = 'All') {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'GetQueueAttributes', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'GetQueueAttributes', 'GET', self::$__accessKey);
 
 		$rest->setParameter('AttributeName', $attribute);
 
@@ -217,7 +218,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('getQueueAttributes', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -244,7 +245,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function setQueueAttributes($queue, $attribute, $value) {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'SetQueueAttributes', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'SetQueueAttributes', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('Attribute.Name', $attribute);
 		$rest->setParameter('Attribute.Value', $value);
@@ -253,7 +254,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('setQueueAttributes', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -268,7 +269,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function sendMessage($queue, $message) {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'SendMessage', 'PUT', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'SendMessage', 'PUT', self::$__accessKey);
 
 		$rest->setParameter('MessageBody', $message);
 
@@ -276,7 +277,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('sendMessage', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -292,7 +293,7 @@ class Amazon_SQS_Core
 	* @return array of array(key => value) | false
 	*/
 	public static function receiveMessage($queue, $num_messages = null, $visibility_timeout = null) {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'ReceiveMessage', 'GET', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'ReceiveMessage', 'GET', self::$__accessKey);
 
 		if($num_messages !== null)
 		{
@@ -307,7 +308,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('receiveMessage', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -338,7 +339,7 @@ class Amazon_SQS_Core
 	* @return boolean
 	*/
 	public static function deleteMessage($queue, $receipt_handle) {
-		$rest = new SQSRequest('queue.amazonaws.com', $queue, 'DeleteMessage', 'DELETE', self::$__accessKey);
+		$rest = new SQSRequest(self::$endpoint, $queue, 'DeleteMessage', 'DELETE', self::$__accessKey);
 
 		$rest->setParameter('ReceiptHandle', $receipt_handle);
 
@@ -346,7 +347,7 @@ class Amazon_SQS_Core
 		if ($rest->error === false && $rest->code !== 200)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			Amazon_SQS::__triggerError('deleteMessage', $rest->error);
+			Amazon_SQS::__triggerError(__FUNCTION__, $rest->error);
 			return false;
 		}
 
@@ -395,7 +396,7 @@ class Amazon_SQS_Core
  * Amazon SQS Request PHP class
  *
  * @link		http://sourceforge.net/projects/php-sqs/
- * @version		0.9.1
+ * @version		0.9.2
  * @package		Modules
  * @subpackage	Amazon
  */
@@ -416,7 +417,7 @@ final class SQSRequest {
 	*/
 	function __construct($url, $queue, $action, $verb, $accesskey, $expires = false) {
 		$this->parameters['Action'] = $action;
-		$this->parameters['Version'] = '2008-01-01';
+		$this->parameters['Version'] = '2009-02-01';
 		$this->parameters['SignatureVersion'] = '2';
 		$this->parameters['SignatureMethod'] = 'HmacSHA256';
 		$this->parameters['AWSAccessKeyId'] = $accesskey;
