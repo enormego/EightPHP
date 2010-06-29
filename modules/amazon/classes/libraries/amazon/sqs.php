@@ -1,4 +1,5 @@
 <?php
+
 /**
 *
 * Copyright (c) 2009, Dan Myers.
@@ -48,12 +49,14 @@ class Amazon_SQS_Core
 {
 	private static $__accessKey; // AWS Access key
 	private static $__secretKey; // AWS Secret key
+	private static $endpoint = 'queue.amazonaws.com';
 
 	public static $useSSL = true;
 	public static $verifyHost = 1;
 	public static $verifyPeer = 1;
-
-	private static $endpoint = 'queue.amazonaws.com';
+	
+	public static $connectionTimeout = 0;
+	public static $requestExecutionTimeout = 0;
 
 	/**
 	* Constructor - if you're not using the class statically
@@ -67,6 +70,18 @@ class Amazon_SQS_Core
 		if ($accessKey !== null && $secretKey !== null)
 			self::setAuth($accessKey, $secretKey);
 		self::$useSSL = $useSSL;
+	}
+	
+	/**
+	 * Update the CURL timeout values
+	 * Use 0 to disable timeouts
+	 * 
+	 * @param	integer	value for CURLOPT_CONNECTTIMEOUT
+	 * @param	integer value for CURLOPT_TIMEOUT 
+	 */
+	public static function setTimeouts($connectionTimeout=0, $requestExecutionTimeout=0) {
+		self::$connectionTimeout = $connectionTimeout;
+		self::$requestExecutionTimeout = $requestExecutionTimeout;
 	}
 
 	/**
@@ -156,7 +171,7 @@ class Amazon_SQS_Core
 	* @param string $prefix Only return queues starting with this string (optional)
 	* @return array | false
 	*/
-	public static function listQueues($prefix = '') {
+	public static function listQueues($prefix = '', $queueNameOnly = FALSE) {
 		$rest = new SQSRequest(self::$endpoint, '', 'ListQueues', 'GET', self::$__accessKey);
 
 		if(strlen($prefix) > 0)
@@ -180,6 +195,7 @@ class Amazon_SQS_Core
 
 		foreach($rest->body->ListQueuesResult->QueueUrl as $q)
 		{
+			$q = $queueNameOnly === TRUE ? end(explode('/', $q)) : $q;  
 			$results[] = (string)$q;
 		}
 
@@ -384,8 +400,7 @@ class Amazon_SQS_Core
  * @package		Modules
  * @subpackage	Amazon
  */
-final class SQSRequest
-{
+final class SQSRequest {
 	private $url, $queue, $verb, $expires, $resource = '', $parameters = array();
 	public $response;
 
@@ -472,6 +487,10 @@ final class SQSRequest
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
 		curl_setopt($curl, CURLOPT_WRITEFUNCTION, array(&$this, '__responseWriteCallback'));
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+
+		// Timeouts
+		curl_setopt($curl, CURLOPT_TIMEOUT, Amazon_SQS::$requestExecutionTimeout);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, Amazon_SQS::$connectionTimeout);
 
 		// Request types
 		switch ($this->verb) {
