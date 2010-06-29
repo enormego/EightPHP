@@ -53,11 +53,11 @@ abstract class Calendar_Event_Subject implements SplSubject {
 	 * @param   mixed   message string, object, or array
 	 * @return  object
 	 */
-	public function notify($message)
+	public function notify()
 	{
 		foreach ($this->listeners as $obj)
 		{
-			$obj->notify($message);
+			$obj->notify($this);
 		}
 
 		return $this;
