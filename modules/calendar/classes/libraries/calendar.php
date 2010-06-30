@@ -220,7 +220,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 			// i = number of day, t = number of days to pad
 			for($i = $n - $w + 1, $t = $w; $t > 0; $t--, $i++) {
 				// Notify the listeners
-				$this->notify(array($this->month - 1, $i, $this->year, $week_number, NO));
+				$this->notify2(array($this->month - 1, $i, $this->year, $week_number, NO));
 
 				// Add previous month padding days
 				$week[] = array($i, NO, $this->observed_data);
@@ -239,7 +239,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 			}
 
 			// Notify the listeners
-			$this->notify(array($this->month, $i, $this->year, $week_number, YES));
+			$this->notify2(array($this->month, $i, $this->year, $week_number, YES));
 
 			// Add days to this month
 			$week[] = array($i, YES, $this->observed_data);
@@ -254,7 +254,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 			// i = number of day, t = number of days to pad
 			for($i = 1, $t = 6 - $w; $t > 0; $t--, $i++) {
 				// Notify the listeners
-				$this->notify(array($this->month + 1, $i, $this->year, $week_number, NO));
+				$this->notify2(array($this->month + 1, $i, $this->year, $week_number, NO));
 
 				// Add next month padding days
 				$week[] = array($i, NO, $this->observed_data);
@@ -292,7 +292,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 	 * @param   array  UNIX timestamp
 	 * @return  void
 	 */
-	public function notify($data) {
+	public function notify2($data) {
 		// Reset observed data
 		$this->observed_data = array
 		(
@@ -301,7 +301,7 @@ class Calendar_Core extends Calendar_Event_Subject {
 		);
 
 		// Send a notify
-		parent::notify($data);
+		parent::notify2($data);
 	}
 
 	/**
