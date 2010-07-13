@@ -10,7 +10,7 @@
  * @license		http://license.eightphp.com
  */
 
-class localeALL_Core {
+class localeall_Core {
 
 	public static function countries() {
 		return array(
