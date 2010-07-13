@@ -10,7 +10,7 @@
  * @license		http://license.eightphp.com
  */
 
-class localeUS_Core {
+class localeus_Core {
 
 	public static function states() {
 		return array
