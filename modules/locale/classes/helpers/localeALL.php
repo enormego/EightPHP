@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Locale World Helper
+ * All Locale (World) Helper
  *
  * @package		Modules
  * @subpackage	Locale
@@ -10,7 +10,7 @@
  * @license		http://license.eightphp.com
  */
 
-class locale_Core {
+class localeALL_Core {
 
 	public static function countries() {
 		return array(
