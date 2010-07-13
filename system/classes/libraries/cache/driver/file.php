@@ -113,8 +113,11 @@ class Cache_Driver_File extends Cache_Driver {
 
 			foreach($files as $file) {
 				// Validate that the item has not expired
-				if($this->expired($file))
+				if($this->expired($file)) {
+					// If it expired, let's go ahead and delete it.
+					@unlink($file);
 					continue;
+				}
 
 				list($key, $junk) = explode('~', basename($file), 2);
 
