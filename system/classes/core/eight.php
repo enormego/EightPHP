@@ -709,7 +709,7 @@ final class Eight {
 		self::$output = $output;
 		
 		// Look for errors in the output buffer
-		if(!self::$configuration['core']['display_errors'] && self::$configuration['core']['catch_all_errors']) {
+		if(PHP_SAPI != 'cli' && !self::$configuration['core']['display_errors'] && self::$configuration['core']['catch_all_errors']) {
 			if(preg_match('#<phperror>.*</phperror>#is', self::$output, $matches) ) {
 				// We only care about the first error
 				$match = $matches[0];
