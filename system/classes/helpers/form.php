@@ -253,8 +253,8 @@ class form_Core {
 			}
 		}
 
-		// Selected value should always be a string
-		$selected = (string) $selected;
+		// Selected value can be a string or array
+		$selected = is_array($selected) ? $selected : (string) $selected;
 
 		$input = '<select'.form::attributes($data, 'select').' '.$extra.'>'."\n";
 		foreach((array) $options as $key => $val) {
@@ -272,7 +272,7 @@ class form_Core {
 				}
 				$input .= '</optgroup>'."\n";
 			} else {
-				$sel = ($selected === $key) ? ' selected="selected"' : '';
+				$sel = ($selected === $key || (is_array($selected) && in_array($key, $selected))) ? ' selected="selected"' : '';
 				$input .= '<option value="'.$key.'"'.$sel.'>'.$val.'</option>'."\n";
 			}
 		}

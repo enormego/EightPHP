@@ -24,7 +24,7 @@ class Formation_Dropdown_Core extends Formation_Input {
 
 		return parent::__get($key);
 	}
-
+	
 	public function html_element() {
 		// Import base data
 		$base_data = $this->data;
