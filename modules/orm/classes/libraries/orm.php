@@ -208,7 +208,7 @@ class ORM_Core {
 
 			return $this;
 		} else {
-			throw new Eight_Exception('core.invalid_method', $method, get_class($this));
+			throw new Eight_Exception('core.invalid_method', array($method, get_class($this)));
 		}
 	}
 
@@ -286,7 +286,7 @@ class ORM_Core {
 			// Model meta information
 			return $this->$column;
 		} else {
-			throw new Eight_Exception('core.invalid_property', $column, get_class($this));
+			throw new Eight_Exception('core.invalid_property', array($column, get_class($this)));
 		}
 	}
 
@@ -311,7 +311,7 @@ class ORM_Core {
 
 			$this->object[$column] = $this->load_type($column, $value);
 		} else {
-			throw new Eight_Exception('core.invalid_property', $column, get_class($this));
+			throw new Eight_Exception('core.invalid_property', array($column, get_class($this)));
 		}
 	}
 
@@ -611,7 +611,7 @@ class ORM_Core {
 	public function reload_columns($force = NO) {
 		if($force === YES OR empty($this->table_columns)) {
 			// Load table columns
-			$this->table_columns = $this->db->list_columns($this->table_name, YES);
+			$this->table_columns = $this->db->list_fields($this->table_name, YES);
 		}
 
 		return $this;
