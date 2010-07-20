@@ -131,7 +131,7 @@ class Formation_Upload_Core extends Formation_Input {
 		foreach ($types as $type) {
 			// Load the mime types 
 			$type = Eight::config('mimes.'.$type); 
-			var_dump($type); exit;
+
 			if (is_array($type) AND in_array($mime, $type)) {
 				// Type is valid
 				$allow = YES;
