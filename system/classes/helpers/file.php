@@ -8,10 +8,11 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
+
 class file_Core {
 	
 	// Location of Mime Magic DB
-	const MAGIC_DB = '/usr/share/misc/magic';
+	const MAGIC_DB = '/usr/share/misc/magic.mgc';
 	
 	// Dir push/pop stack
 	static $dir_stack = array();
@@ -87,9 +88,8 @@ class file_Core {
 				return $mime['mime'];
 		}
 
-		if(function_exists('finfo_open')) {
+		if(function_exists('finfo_open') && ($finfo = finfo_open(FILEINFO_MIME, self::MAGIC_DB)) !== FALSE) {
 			// Use the fileinfo extension
-			$finfo = finfo_open(FILEINFO_MIME, self::MAGIC_DB);
 			$mime  = finfo_file($finfo, $filename);
 			finfo_close($finfo);
 
@@ -101,7 +101,7 @@ class file_Core {
 			// Return the mime type using mime_content_type
 			return mime_content_type($filename);
 		}
-
+		
 		if(!empty($extension) and is_array($mime = Eight::config('mimes.'.$extension))) {
 			// Return the mime-type guess, based on the extension
 			return $mime[0];
