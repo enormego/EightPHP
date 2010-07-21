@@ -13,7 +13,7 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-abstract class Controller_Template extends Controller_Core {
+abstract class Controller_Template_Core extends Controller_Core {
 
 	protected $auto_render = true;
 	protected $html;
