@@ -146,7 +146,7 @@ class arr_Core {
 			if(array_key_exists($key, $search)) {
 				return $search[$key];
 			} else {
-				return NULL;
+				return $default;
 			}
 		} else if(is_object($search)) {
 			return $search->$key;
