@@ -12,7 +12,7 @@
 class file_Core {
 	
 	// Location of Mime Magic DB
-	const MAGIC_DB = '/usr/share/misc/magic.mgc';
+	const MAGIC_DB = '/usr/share/file/magic';
 	
 	// Dir push/pop stack
 	static $dir_stack = array();
