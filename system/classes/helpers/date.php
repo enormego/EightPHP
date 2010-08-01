@@ -384,11 +384,18 @@ class date_Core {
 	 * Converts a UNIX timestamp to MySQL format.
 	 *
 	 * @param   integer  UNIX timestamp
+	 * @param   string  MySQL Format Type
 	 * @return  string	MySQL timestamp
 	 */
-	public static function unix2mysql($time=0) {
+	public static function unix2mysql($time=0, $type='datetime') {
 		$time == 0 && $time = time();
-		return date('Y-m-d H:i:s', $time);
+		if($type == 'date') {
+			return date('Y-m-d', $time);
+		} else if($type == 'time') {
+			return date('H:i:s', $time);
+		} else {
+			return date('Y-m-d H:i:s', $time);
+		}
 	}
 
 	/**
