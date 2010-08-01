@@ -133,24 +133,25 @@ class arr_Core {
 	}
 	
 	/**
-	 * Gets a value from an array by key
-	 * Useful for when an array is returned by a function and you only need one value
+	 * Retrieve a single key from an array. If the key does not exist in the
+	 * array, the default value will be returned instead.
 	 * 
 	 * @param	array	array to search
 	 * @param	string	key
+	 * @param	mixed	default value
 	 * @return	mixed
 	 */
-	public static function get($search, $key) {
+	public static function get($search, $key, $default=NULL) {
 		if(is_array($search)) {
 			if(array_key_exists($key, $search)) {
 				return $search[$key];
 			} else {
-				return NULL;
+				return $default;
 			}
 		} else if(is_object($search)) {
 			return $search->$key;
 		} else {
-			return NULL;
+			return $default;
 		}
 	}
 

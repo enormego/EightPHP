@@ -117,6 +117,7 @@ class remote_Core {
 	 */
 	public static function get($url, $timeout=120, $ua='GoogleBot') {
 		$c = curl_init($url);
+		curl_setopt($c, CURLOPT_CONNECTTIMEOUT, $timeout);
 		curl_setopt($c, CURLOPT_TIMEOUT, $timeout);
 		curl_setopt($c, CURLOPT_USERAGENT, $ua); 
 		curl_setopt($c, CURLOPT_HEADER, false);
@@ -151,12 +152,12 @@ class remote_Core {
 		$ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $url); 
 		curl_setopt($ch, CURLOPT_HEADER, $return_headers); 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-		curl_setopt($ch, CURLOPT_POST, 1); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+		curl_setopt($ch, CURLOPT_POST, TRUE); 
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data); 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:", "Content-Type: application/x-www-form-urlencoded"));
 		self::populate_proxy($ch);
-		$data = curl_exec($ch); 
+		$data = curl_exec($ch);
 		curl_close($ch);
 		return $data;
 	}

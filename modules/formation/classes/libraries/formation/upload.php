@@ -121,14 +121,17 @@ class Formation_Upload_Core extends Formation_Input {
 			// Trust the browser
 			$mime = $this->upload['type'];
 		}
+		
+		// Clean up charset garbage
+		$mime = arr::get(explode(';', $mime), 0);
 
 		// Allow nothing by default
 		$allow = NO;
-
+		
 		foreach ($types as $type) {
 			// Load the mime types 
 			$type = Eight::config('mimes.'.$type); 
-			
+
 			if (is_array($type) AND in_array($mime, $type)) {
 				// Type is valid
 				$allow = YES;

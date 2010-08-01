@@ -45,7 +45,12 @@ abstract class Calendar_Event_Subject implements SplSubject {
 
 		return $this;
 	}
-
+	
+	/** 
+	 * SplSubject Compatible Version of Notify
+	 */
+	public function notify() {}
+	
 	/**
 	 * Notify all attached observers of a new message.
 	 *
@@ -53,7 +58,7 @@ abstract class Calendar_Event_Subject implements SplSubject {
 	 * @param   mixed   message string, object, or array
 	 * @return  object
 	 */
-	public function notify($message)
+	public function notify2($message)
 	{
 		foreach ($this->listeners as $obj)
 		{
