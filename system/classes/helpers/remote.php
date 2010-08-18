@@ -123,6 +123,7 @@ class remote_Core {
 		curl_setopt($c, CURLOPT_HEADER, false);
 		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($c,CURLOPT_ENCODING , "gzip"); 
 		self::populate_proxy($c);
 		$output = curl_exec($c);
 		$info = curl_getinfo($c);
