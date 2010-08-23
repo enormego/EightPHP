@@ -95,7 +95,18 @@ class Model_AuthUserToken extends Modeler {
 		self::db()->where('user_token_expires <', $this->now)->delete($this->table_name);
 		return $this;
 	}
-
+	
+	/**
+	 * Determines whether or not the current token is valid
+	 */
+	public function is_valid() {
+		if($this->expires > time()) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+	
 	/**
 	 * Finds a new unique token, using a loop to make sure that the token does
 	 * not already exist in the database. This could potentially become an
@@ -116,7 +127,25 @@ class Model_AuthUserToken extends Modeler {
 			}
 		}
 	}
-	
+
+	/**
+	 * Search for the provided token
+	 */
+	public static function find_token($token) {
+		if(empty($token)) {
+			return FALSE;
+		}
+		
+		$data = self::db()->use_master(TRUE)->where('user_token_token', $token)->get('user_tokens')->row_array();
+		if($data === FALSE) {
+			return FALSE;
+		} else {
+			$token = new Model_UserToken(NULL, TRUE);
+			$token->set($data);
+			return $token;
+		}
+	}
+		
 	/**
 	 * Finds a token for the given user
 	 * 
