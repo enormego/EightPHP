@@ -160,7 +160,9 @@ class Session_Core {
 		session_start();
 
 		// Put session_id in the session variable
-		$_SESSION['session_id'] = self::$driver->identify();
+		if(self::$config['driver'] != 'native') {
+			$_SESSION['session_id'] = self::$driver->identify();
+		}
 
 		// Set defaults
 		if ( ! isset($_SESSION['_e_flash'])) {
