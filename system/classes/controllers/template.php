@@ -66,19 +66,22 @@ abstract class Controller_Template_Core extends Controller_Core {
 		// Auto-Compile Javascript?
 		if($this->auto_compile_js) {
 			$compiled_js = '';
-			$compiled_path = DOCROOT.'js/';
+			$compiled_path = DOCROOT.'js/eight_compiled/';
 			$compiled_filename = md5(print_r($data['jscripts'], TRUE));
 			$compiled_fullpath = $compiled_path.$compiled_filename.'.js';
-			if(!file_exists($compiled_fullpath) || filemtime($compiled_fullpath) < (time() + 3600)) {
+			if(!file_exists($compiled_fullpath) || (time() - filemtime($compiled_fullpath) > 3600)) {
 				foreach(arr::c($data['jscripts']) as $js) {
 					if(file_exists(DOCROOT.'js/'.$js.'.js')) {
 						$compiled_js .= file_get_contents(DOCROOT.'js/'.$js.'.js')."\n\n";
 					}
 				}
 				try {
+					if(!file_exists($compiled_path)) {
+						mkdir($compiled_path, 0777, TRUE);
+					}
 					file_put_contents($compiled_fullpath, $compiled_js);
-					$data['jscripts'] = array(0 => $compiled_filename);
-				} catch(Exception $e) { } // Don't do anything
+					$data['jscripts'] = array(0 => 'compiled/'.$compiled_filename);
+				} catch(Exception $e) { throw $e; } // Don't do anything
 			}
 		}
 		
