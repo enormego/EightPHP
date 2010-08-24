@@ -15,9 +15,10 @@
  */
 abstract class Controller_Template_Core extends Controller_Core {
 
-	protected $auto_render = true;
+	protected $auto_render = TRUE;
 	protected $html;
 	protected $template = array();
+	protected $auto_compile_js = FALSE;
 	
 	public $title;
 	private $wrapper;
@@ -59,7 +60,27 @@ abstract class Controller_Template_Core extends Controller_Core {
 		$data['stylesheets'] = $this->stylesheets;
 		$data['jscripts'] = $this->jscripts;
 		
+		// Merge in data from the controllers
 		$data = array_merge($data, self::$data, $this->template);
+		
+		// Auto-Compile Javascript?
+		if($this->auto_compile_js) {
+			$compiled_js = '';
+			$compiled_path = DOCROOT.'js/';
+			$compiled_filename = md5(print_r($data['jscripts'], TRUE));
+			$compiled_fullpath = $compiled_path.$compiled_filename.'.js';
+			if(!file_exists($compiled_fullpath) || filemtime($compiled_fullpath) < (time() + 3600)) {
+				foreach(arr::c($data['jscripts']) as $js) {
+					if(file_exists(DOCROOT.'js/'.$js.'.js')) {
+						$compiled_js .= file_get_contents(DOCROOT.'js/'.$js.'.js')."\n\n";
+					}
+				}
+				try {
+					file_put_contents($compiled_fullpath, $compiled_js);
+					$data['jscripts'] = array(0 => $compiled_filename);
+				} catch(Exception $e) { } // Don't do anything
+			}
+		}
 		
 		// Tack on our output to Eight's output buffer
 		Eight::$output .= View::factory($this->wrapper, $data)->render();
