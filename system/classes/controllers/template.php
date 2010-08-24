@@ -82,10 +82,10 @@ abstract class Controller_Template_Core extends Controller_Core {
 					}
 					file_put_contents($compiled_fullpath, $compiled_js);
 					$compiled = TRUE;
-				} catch(Exception $e) { throw $e; } // Don't do anything
+				} catch(Exception $e) {} // Don't do anything
 			}
 			if($compiled) {
-				$data['jscripts'] = array(0 => 'compiled/'.$compiled_filename);
+				$data['jscripts'] = array(0 => arr::get(explode('js/', $compiled_path), 1).$compiled_filename);
 			}
 		}
 		
