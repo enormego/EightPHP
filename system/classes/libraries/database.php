@@ -131,63 +131,25 @@ class Database_Core {
 		// Get the protocol and arguments
 		list ($db['type'], $connection) = explode('://', $this->config['connection'], 2);
 
-		if (strpos($connection, '@') !== FALSE) {
-			$db = self::parse_dsn($this->config['connection']);
-			$this->name = $db['database'];
-		} else {
-			// File connection
-			$connection = explode('/', $connection);
-
-			// Find database file name
-			$db['database'] = array_pop($connection);
-
-			// Find database directory name
-			$db['socket'] = implode('/', $connection).'/';
-		}
-
-		// Reset the connection array to the database config
-		$this->config['connection'] = $db;
-		
-		// Check to see if we use a separate database for updates
-		if(!str::e($this->config['connection_master'])) {
-			// Parse the DSN, creating an array to hold the connection parameters
-			$db = array
-			(
-				'type'     => FALSE,
-				'user'     => FALSE,
-				'pass'     => FALSE,
-				'host'     => FALSE,
-				'port'     => FALSE,
-				'socket'   => FALSE,
-				'database' => FALSE
-			);
-
-			// Get the protocol and arguments
-			list ($db['type'], $connection) = explode('://', $this->config['connection_master'], 2);
-
-			if (strpos($connection, '@') !== FALSE) {
-				$db = self::parse_dsn($this->config['connection_master']);
-			} else {
-				// File connection
-				$connection = explode('/', $connection);
-
-				// Find database file name
-				$db['database'] = array_pop($connection);
-
-				// Find database directory name
-				$db['socket'] = implode('/', $connection).'/';
-			}
-
-			// Reset the connection array to the database config
-			$this->config['connection_master'] = $db;
-		}
-
 		// Set driver name
-		$driver = 'Database_Driver_'.ucfirst($this->config['connection']['type']);
+		$driver = 'Database_Driver_'.ucfirst($db['type']);
 
 		// Load the driver
 		if ( ! Eight::auto_load($driver))
 			throw new Database_Exception('database.driver_not_supported', $this->config['connection']['type']);
+
+		// Reset the connection array to the database config
+		$this->config['connection'] = call_user_func(array($driver, 'parse_connection'), $db['type'], $connection);
+		$this->name = $this->config['connection']['database'];
+		
+		// Check to see if we use a separate database for updates
+		if(!str::e($this->config['connection_master'])) {
+			// Get the protocol and arguments
+			list ($db['type'], $connection) = explode('://', $this->config['connection_master'], 2);
+
+			// Reset the connection array to the database config
+			$this->config['connection_master'] = call_user_func(array($driver, 'parse_connection'), $db['type'], $connection);
+		}
 
 		// Initialize the driver
 		$this->driver = new $driver($this->config);
@@ -197,52 +159,6 @@ class Database_Core {
 			throw new Database_Exception('database.driver_not_supported', 'Database drivers must use the Database_Driver interface.');
 
 		Eight::log('debug', 'Database Library initialized');
-	}
-	
-	/**
-	 * Converts DSN string to config array
-	 *
-	 * @param	string	DSN String
-	 * @return	array	configuration array
-	 */
-
-	public static function parse_dsn($dsn_string) {
-		// Get the protocol and arguments
-		list ($db['type'], $connection) = explode('://', $dsn_string, 2);
-
-		if (strpos($connection, '@') !== FALSE) {
-			// Get the username and password
-			list ($db['pass'], $connection) = explode('@', $connection, 2);
-			// Check if a password is supplied
-			$logindata = explode(':', $db['pass'], 2);
-			$db['pass'] = (count($logindata) > 1) ? $logindata[1] : '';
-			$db['user'] = $logindata[0];
-
-			// Prepare for finding the database
-			$connection = explode('/', $connection);
-
-			// Find the database name
-			$db['database'] = array_pop($connection);
-
-			// Reset connection string
-			$connection = implode('/', $connection);
-
-			// Find the socket
-			if (preg_match('/^unix\([^)]++\)/', $connection)) {
-				// This one is a little hairy: we explode based on the end of
-				// the socket, removing the 'unix(' from the connection string
-				list ($db['socket'], $connection) = explode(')', substr($connection, 5), 2);
-			} elseif (strpos($connection, ':') !== FALSE) {
-				// Fetch the host and port name
-				list ($db['host'], $db['port']) = explode(':', $connection, 2);
-			} else {
-				$db['host'] = $connection;
-			}
-			
-			return $db;
-		} else {
-			return array();
-		}
 	}
 
 	/**
@@ -936,7 +852,6 @@ class Database_Core {
 			} elseif(is_array($direction)) {
 				$field = $value;
 				$field_dir = strtoupper(trim($direction[$key]));
-				echo 'key: '.$key;
 				$field_dir = (in_array($field_dir, $directions)) ? ' '. $field_dir : ' ASC';
 			} else {
 				$field = $value;

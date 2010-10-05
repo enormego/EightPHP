@@ -412,6 +412,86 @@ abstract class Database_Driver {
 	public function has_master() {
 		return NO;
 	}
+	
+	/**
+	 * Parses the connection
+	 * 
+	 * @param	string	Connection Type
+	 * @param	string	Connection String
+	 * @return	array	Connection Info Array
+	 */
+	
+	public static function parse_connection($type, $connection) {
+		$db = array(
+			'type'     => $type,
+			'user'     => FALSE,
+			'pass'     => FALSE,
+			'host'     => FALSE,
+			'port'     => FALSE,
+			'socket'   => FALSE,
+			'database' => FALSE
+		);
+
+		if (strpos($connection, '@') !== FALSE) {
+			$db = self::parse_dsn($type.'://'.$connection);
+		} else {
+			// File connection
+			$connection = explode('/', $connection);
+
+			// Find database file name
+			$db['database'] = array_pop($connection);
+
+			// Find database directory name
+			$db['socket'] = implode('/', $connection).'/';
+		}
+		
+		return $db;
+	}
+	
+	/**
+	 * Converts DSN string to config array
+	 *
+	 * @param	string	DSN String
+	 * @return	array	configuration array
+	 */
+	public static function parse_dsn($dsn_string) {
+		// Get the protocol and arguments
+		list ($db['type'], $connection) = explode('://', $dsn_string, 2);
+
+		if (strpos($connection, '@') !== FALSE) {
+			// Get the username and password
+			list ($db['pass'], $connection) = explode('@', $connection, 2);
+			// Check if a password is supplied
+			$logindata = explode(':', $db['pass'], 2);
+			$db['pass'] = (count($logindata) > 1) ? $logindata[1] : '';
+			$db['user'] = $logindata[0];
+
+			// Prepare for finding the database
+			$connection = explode('/', $connection);
+
+			// Find the database name
+			$db['database'] = array_pop($connection);
+
+			// Reset connection string
+			$connection = implode('/', $connection);
+
+			// Find the socket
+			if (preg_match('/^unix\([^)]++\)/', $connection)) {
+				// This one is a little hairy: we explode based on the end of
+				// the socket, removing the 'unix(' from the connection string
+				list ($db['socket'], $connection) = explode(')', substr($connection, 5), 2);
+			} elseif (strpos($connection, ':') !== FALSE) {
+				// Fetch the host and port name
+				list ($db['host'], $db['port']) = explode(':', $connection, 2);
+			} else {
+				$db['host'] = $connection;
+			}
+
+			return $db;
+		} else {
+			return array();
+		}
+	}
 
 } // End Database Driver Interface
 
