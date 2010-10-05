@@ -7,7 +7,7 @@ Eight is a not a rapidly changing framework.  Unlike other frameworks developer,
 # SVN Mirror
 If you're using SVN to manage your project and would prefer to use svn:externals, we currently mirror Eight on an SVN server for you to checkout:
 
-`svn co svn://eightphp.com/eightphp/trunk eightphp-read-only`
+`svn co http://svn.github.com/enormego/EightPHP.git eightphp-read-only`
 
 # Documentation
 You can view the online documentation of Eight by at [http://enormego.pbworks.com/FrontPage](http://enormego.pbworks.com/FrontPage).
