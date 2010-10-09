@@ -84,15 +84,15 @@ class Auth_Core {
 	 * @return  boolean
 	 */
 	public function logged_in($role = NULL) {
-		if($auto = $this->auto_login()) {
-			return $auto;
-		}
-		
 		$logged_in = $this->driver->logged_in($role);
 		
-		// If they're not logged in...record the page so we can send them there later.
+		// If they're not logged in...try auto_login or just record the page so we can send them there later.
 		if(!$logged_in) {
-			$_SESSION['desired_url'] = Router::$current_uri.Router::$query_string;
+			if($auto = $this->auto_login()) {
+				return $auto;
+			} else {
+				$_SESSION['desired_url'] = Router::$current_uri.Router::$query_string;
+			}
 		}
 		
 		return $logged_in;

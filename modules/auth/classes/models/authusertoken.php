@@ -32,14 +32,14 @@ class Model_AuthUserToken extends Modeler {
 								'user_token_expires'	=>	'',
 							);
 	
-	public function __construct($id = null, $dont_create_token = FALSE) {
+	public function __construct($id = NULL, $create_token = TRUE) {
 		parent::__construct($id);
 		
 		// Current time
 		$this->now = time();
 		
 		// Don't run this stuff if we're only looking for an empty shell
-		if($dont_create_token === FALSE) {
+		if($create_token === TRUE) {
 			
 			// Should we handle the expired ones?
 			if(mt_rand(1, 100) === 1) {

@@ -43,6 +43,7 @@ class Model_AuthUser extends Modeler {
 		} else {
 			$this->primary_key = 'user_id';
 		}
+		
 		return parent::__construct($data);
 	}
 	

@@ -164,14 +164,10 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 		
 		// Save the desired_url if it's there
 		$desired_url = $_SESSION['desired_url'];
-		
-		// Regenerate session_id
-		$this->session->regenerate();
 
 		// Store session data
 		$_SESSION['auth_user'] = $user;
 		$_SESSION['desired_url'] = $desired_url;
-		
 	}
 
 } // End Auth_Driver_Database Class

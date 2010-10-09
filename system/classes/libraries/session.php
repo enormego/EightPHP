@@ -13,7 +13,7 @@
 class Session_Core {
 
 	// Session singleton
-	private static $instance;
+	private static $instance = NULL;
 
 	// Protected key names (cannot be set by the user)
 	protected static $protect = array('session_id', 'user_agent', 'last_activity', 'ip_address', 'total_hits', '_e_flash');
@@ -33,7 +33,9 @@ class Session_Core {
 	 */
 	public static function instance() {
 		// Create the instance if it does not exist
-		empty(self::$instance) and new Session;
+		if(self::$instance === NULL) {
+			self::$instance = new Session;
+		}
 
 		return self::$instance;
 	}
@@ -71,7 +73,7 @@ class Session_Core {
 
 			// Create a new session
 			$this->create();
-
+			
 			// Regenerate session id
 			if (self::$config['regenerate'] > 0 AND ($_SESSION['total_hits'] % self::$config['regenerate']) === 0) {
 				$this->regenerate();
@@ -108,8 +110,9 @@ class Session_Core {
 		$this->destroy();
 
 		// Set the session name after having checked it
-		if ( ! ctype_alnum(self::$config['name']) OR ctype_digit(self::$config['name']))
+		if(!ctype_alnum(self::$config['name']) OR ctype_digit(self::$config['name'])) {
 			throw new Eight_Exception('session.invalid_session_name', self::$config['name']);
+		}
 
 		session_name(self::$config['name']);
 
@@ -185,12 +188,14 @@ class Session_Core {
 			foreach((array) self::$config['validate'] as $valid) {
 				switch($valid) {
 					case 'user_agent':
-						if ($_SESSION[$valid] !== Eight::$user_agent)
+						if($_SESSION[$valid] !== Eight::$user_agent) {
 							return $this->create();
+						}
 					break;
 					case 'ip_address':
-						if ($_SESSION[$valid] !== $this->input->$valid())
+						if($_SESSION[$valid] !== $this->input->$valid()) {
 							return $this->create();
+						}
 					break;
 				}
 			}
