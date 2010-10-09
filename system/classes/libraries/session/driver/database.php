@@ -38,27 +38,22 @@ class Session_Driver_Database_Core implements Session_Driver {
 	protected $session_id;
 	protected $written = FALSE;
 
-	public function __construct()
-	{
+	public function __construct() {
 		// Load configuration
 		$config = Eight::config('session');
 
-		if ( ! empty($config['encryption']))
-		{
+		if(!empty($config['encryption'])) {
 			// Load encryption
 			$this->encrypt = new Encrypt;
 		}
 
-		if (is_array($config['storage']))
-		{
-			if ( ! empty($config['storage']['group']))
-			{
+		if(is_array($config['storage'])) {
+			if(!empty($config['storage']['group'])) {
 				// Set the group name
 				$this->db = $config['storage']['group'];
 			}
 
-			if ( ! empty($config['storage']['table']))
-			{
+			if(!empty($config['storage']['table'])) {
 				// Set the table name
 				$this->table = $config['storage']['table'];
 			}

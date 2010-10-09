@@ -76,6 +76,14 @@ class Modeler_Core extends Model {
 		}
 	}
 	
+	/**
+	 * Handles object serialization for class objects
+	 */
+	public function __sleep() {
+		// Return all class keys minus db, core and obj
+		return array_diff_key(get_object_vars($this), array('db' => NULL, 'core' => NULL, 'obj' => NULL));
+	}
+	
 	public function valid() {
 		if(isset($this->data[$this->primary_key]) && !str::e($this->data[$this->primary_key])) {
 			$this->loaded = TRUE;
