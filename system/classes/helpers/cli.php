@@ -20,7 +20,7 @@ class cli_Core {
 		if(!$cmd = self::launch_cmd()) return FALSE;
 		
 		// Find all the processes with the same args
-		$procs = shell_exec('ps -o pid,args | grep "'.$cmd.'$"');
+		$procs = shell_exec('ps -A -o pid,args | grep "'.$cmd.'$"');
 		$procs = explode("\n", $procs);
 		if(is_array($procs)) {
 			foreach($procs as $k=>$v) {
@@ -40,7 +40,7 @@ class cli_Core {
 		$pid = getmypid();
 
 		// Find the args used to run me
-		$procs = shell_exec('ps -o pid,args | grep ^'.$pid);
+		$procs = shell_exec('ps -A -o pid,args | grep ^'.$pid);
 		$procs = explode("\n", $procs, -1);
 		$current_cmd = explode(' ', $procs[0], 2);
 		if(is_array($current_cmd)) {
