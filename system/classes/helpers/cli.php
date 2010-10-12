@@ -42,7 +42,7 @@ class cli_Core {
 		// Find the args used to run me
 		$procs = shell_exec('ps -A -o pid,args | grep -E "^ +?'.$pid.' "');
 		$procs = explode("\n", $procs, -1);
-		$current_cmd = explode(' ', $procs[0], 2);
+		$current_cmd = explode(' ', trim($procs[0]), 2);
 		if(is_array($current_cmd)) {
 			return $current_cmd[1];
 		} else {
