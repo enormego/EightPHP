@@ -70,17 +70,16 @@ class Model_AuthUserToken extends Modeler {
 		$this->primary_key = 'user_token_id';
 			
 		// Add the user_agent
-		if(empty($this->user_agent)) {
+		if(str::e($this->user_agent)) {
 			$this->user_agent = sha1(Eight::$user_agent);
 		}
 		
 		// Add the created time
-		if(empty($this->created)) {
+		if(str::e($this->created)) {
 			$this->created = time();
 		}
 		
 		self::db()->use_master(YES);
-
 		return parent::save();
 	}
 	
@@ -164,7 +163,7 @@ class Model_AuthUserToken extends Modeler {
 		if($data === FALSE) {
 			return FALSE;
 		} else {
-			$token = new Model_UserToken(NULL, TRUE);
+			$token = new Model_UserToken(NULL, FALSE);
 			$token->set($data);
 			return $token;
 		}
