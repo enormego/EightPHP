@@ -15,16 +15,16 @@ class cli_Core {
 	/**
 	 * Finds out how many of the current script are running
 	 */
-	public static function how_many_of_me() {
+	public static function how_many_of_me($cmd=NULL) {
 		// Get the launch command
-		if(!$cmd = self::launch_cmd()) return FALSE;
+		if(str::e($cmd) && !str::e($cmd = self::launch_cmd())) return FALSE;
 		
 		// Find all the processes with the same args
 		$procs = shell_exec('ps -A -o pid,args | grep "'.$cmd.'$"');
 		$procs = explode("\n", $procs);
 		if(is_array($procs)) {
 			foreach($procs as $k=>$v) {
-				if(empty($v)) unset($procs[$k]);
+				if(str::e($v)) unset($procs[$k]);
 			}
 			return count($procs);
 		} else {
@@ -44,7 +44,7 @@ class cli_Core {
 		$procs = explode("\n", $procs, -1);
 		$current_cmd = explode(' ', trim($procs[0]), 2);
 		if(is_array($current_cmd)) {
-			return $current_cmd[1];
+			return trim($current_cmd[1]);
 		} else {
 			return FALSE;
 		}
