@@ -39,24 +39,20 @@ class Model_AuthUserToken extends Modeler {
 		$this->now = time();
 		
 		// Don't run this stuff if we're only looking for an empty shell
-		if($create_token === TRUE) {
-			
-			// Should we handle the expired ones?
-			if(mt_rand(1, 100) === 1) {
-				// Do garbage collection
-				$this->delete_expired();
-			}
+		if($create_token === TRUE && is_null($id)) {
+			$this->token = $this->create_token();
+		}
 		
-			// Did the token expire?
-			if($this->expires < $this->now) {
-				// This object has expired
-				$this->delete();
-			}
-		
-			// No ID? Create a new token.
-			if(is_null($id)) {
-				$this->token = $this->create_token();
-			}
+		// Should we handle the expired ones?
+		if(mt_rand(1, 100) === 1) {
+			// Do garbage collection
+			$this->delete_expired();
+		}
+	
+		// Did the token expire?
+		if(!is_null($id) && $this->expires < $this->now) {
+			// This object has expired
+			$this->delete();
 		}
 	}
 	

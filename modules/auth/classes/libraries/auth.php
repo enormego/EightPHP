@@ -88,8 +88,8 @@ class Auth_Core {
 		
 		// If they're not logged in...try auto_login or just record the page so we can send them there later.
 		if(!$logged_in) {
-			if($auto = $this->auto_login()) {
-				return $auto;
+			if($this->auto_login()) {
+				return TRUE;
 			} else {
 				$_SESSION['desired_url'] = Router::$current_uri.Router::$query_string;
 			}
