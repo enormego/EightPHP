@@ -20,7 +20,7 @@ class Model_AuthRole extends Modeler {
 	protected $column_prefix = 'role_';
  
 	// Database fields and default values
-	protected $data = array(
+	public $data = array(
 								'role_id'			=>	'',
 								'role_name'			=>	'',
 							);

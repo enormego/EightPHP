@@ -23,7 +23,7 @@ class Model_AuthUserToken extends Modeler {
 	protected $use_master = YES;
 
 	// Database fields and default values
-	protected $data = array(
+	public $data = array(
 								'user_token_id'			=>	'',
 								'user_token_user_id'	=>	'',
 	                        	'user_token_token'		=>	'',
@@ -34,7 +34,7 @@ class Model_AuthUserToken extends Modeler {
 	
 	public function __construct($id = NULL, $create_token = TRUE) {
 		parent::__construct($id);
-		
+
 		// Current time
 		$this->now = time();
 		
@@ -48,9 +48,9 @@ class Model_AuthUserToken extends Modeler {
 			// Do garbage collection
 			$this->delete_expired();
 		}
-	
+
 		// Did the token expire?
-		if(!is_null($id) && $this->expires < $this->now) {
+		if(!str::e($this->id) && $this->expires < $this->now) {
 			// This object has expired
 			$this->delete();
 		}

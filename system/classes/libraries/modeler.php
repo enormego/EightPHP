@@ -81,7 +81,11 @@ class Modeler_Core extends Model {
 	 */
 	public function __sleep() {
 		// Return all class keys minus db, core and obj
-		return array_diff_key(get_object_vars($this), array('db' => NULL, 'core' => NULL, 'obj' => NULL));
+		return array_keys(array_diff_key(get_object_vars($this), array('db' => NULL, 'core' => NULL, 'obj' => NULL)));
+	}
+	
+	public function __wakeup() {
+		$this->db = self::db();
 	}
 	
 	public function valid() {

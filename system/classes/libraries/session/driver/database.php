@@ -106,7 +106,7 @@ class Session_Driver_Database_Core implements Session_Driver {
 		if(!$this->db->link()) {
 			return FALSE;
 		}
-		
+
 		// Only write once...
 		if($this->written) {
 			return true;

@@ -29,12 +29,12 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 	}
 
 	public function logged_in($role) {
-		$status = false;
-		
+		$status = FALSE;
+
 		// Checks if a user is logged in and valid
-		if(!empty($_SESSION['auth_user']) AND is_object($_SESSION['auth_user']) AND ($_SESSION['auth_user'] instanceof Model_AuthUser) AND $_SESSION['auth_user']->id > 0) {
+		if(!empty($_SESSION['auth_user']) && is_object($_SESSION['auth_user']) && ($_SESSION['auth_user'] instanceof Model_AuthUser) && $_SESSION['auth_user']->id > 0) {
 			// Everything is okay so far
-			$status = true;
+			$status = TRUE;
 			
 			if(!empty($role)) {
 				// Check that the user has the given role
@@ -53,7 +53,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 
 		// If the passwords match, perform a login
 		if($user->password === $password) {
-			if($remember === true) {
+			if($remember === TRUE) {
 				// Create a new autologin token
 				$token = new Model_UserToken;
 
@@ -68,11 +68,11 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 
 			// Finish the login
 			$this->complete_login($user);
-			return true;
+			return TRUE;
 		}
 
 		// Login failed
-		return false;
+		return FALSE;
 	}
 
 	public function force_login($user) {
@@ -82,7 +82,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 		}
 
 		// Mark the session as forced, to prevent users from changing account information
-		$_SESSION['auth_forced'] = true;
+		$_SESSION['auth_forced'] = TRUE;
 
 		// Run the standard completion
 		$this->complete_login($user);
@@ -93,7 +93,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 			// Load the token and user
 			$token = new Model_UserToken($token);
 
-			if ($token->id > 0 AND $token->user_id > 0) {
+			if($token->id > 0 && $token->user_id > 0) {
 				if ($token->user_agent === sha1(Eight::$user_agent)) {
 					// Save the token to create a new unique token
 					$token->save();
@@ -106,7 +106,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 					$this->complete_login($user);
 
 					// Automatic login was successful
-					return true;
+					return TRUE;
 				}
 
 				// Token is invalid
@@ -114,14 +114,14 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	public function logout($destroy) {
 		// Delete the autologin cookie if it exists
-		cookie::get('authautologin') and cookie::delete('authautologin');
+		cookie::get('authautologin') && cookie::delete('authautologin');
 
-		if ($destroy === true) {
+		if($destroy === TRUE) {
 			// Destroy the session completely
 			$this->session->destroy();
 		} else {
@@ -161,13 +161,9 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 
 		// Save the user
 		$user->save();
-		
-		// Save the desired_url if it's there
-		$desired_url = $_SESSION['desired_url'];
 
 		// Store session data
 		$_SESSION['auth_user'] = $user;
-		$_SESSION['desired_url'] = $desired_url;
 	}
 
 } // End Auth_Driver_Database Class

@@ -85,7 +85,7 @@ class Auth_Core {
 	 */
 	public function logged_in($role = NULL) {
 		$logged_in = $this->driver->logged_in($role);
-		
+
 		// If they're not logged in...try auto_login or just record the page so we can send them there later.
 		if(!$logged_in) {
 			if($this->auto_login()) {
