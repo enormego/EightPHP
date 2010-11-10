@@ -764,7 +764,7 @@ final class Eight {
 	 */
 	public static function shutdown() {
 		// Close output buffer
-		self::close_buffers(YES, NO);
+		self::close_buffers(TRUE, TRUE);
 		
 		// Run the output event
 		Event::run('system.display', self::$output);
