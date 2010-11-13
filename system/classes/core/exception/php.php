@@ -23,9 +23,9 @@ class Eight_Exception_PHP_Core extends Eight_Exception {
 			// Handle runtime errors
 			set_error_handler(array('Eight_Exception_PHP', 'error_handler'));
 
-			// Handle errors which halt execution
-			Event::add('system.shutdown', array('Eight_Exception_PHP', 'shutdown_handler'));
-
+			// Enable the Kohana shutdown handler, which catches E_FATAL errors.
+			register_shutdown_function(array('Eight_Exception_PHP', 'shutdown_handler'));
+			
 			Eight_Exception_PHP::$enabled = TRUE;
 		}
 	}
@@ -71,6 +71,8 @@ class Eight_Exception_PHP_Core extends Eight_Exception {
 			// Throw an exception
 			throw new Eight_Exception_PHP($code, $error, $file, $line, $context);
 		}
+		
+		return TRUE; // Avoid PHP Handler
 	}
 
 	/**
@@ -80,9 +82,20 @@ class Eight_Exception_PHP_Core extends Eight_Exception {
 	 * @return  void
 	 */
 	public static function shutdown_handler() {
-		if (Eight_Exception_PHP::$enabled AND $error = error_get_last() AND (error_reporting() & $error['type'])) {
+		if(!Eight::$instance) {
+			// Do not execute when not active
+			return;
+		}
+
+		if(Eight::$errors AND $error = error_get_last() AND in_array($error['type'], Eight::$shutdown_errors)) {
+			// Clean the output buffer
+			ob_get_level() && ob_clean();
+
 			// Fake an exception for nice debugging
-			Eight_Exception::handle(new Eight_Exception_PHP($error['type'], $error['message'], $error['file'], $error['line']));
+			Eight_Exception_PHP::handle(new Eight_Exception_PHP(0, $error['message'], $error['file'], $error['line']));
+
+			// Shutdown now to avoid a "death loop"
+			exit(1);
 		}
 	}
 

@@ -130,7 +130,7 @@ class Eight_Exception_Core extends Exception {
 				$template = Eight::$server_api == 'cli' ? '_cli' : '';
 			}
 			
-			if(Eight::$server_api != 'cli') {
+			if(!headers_sent() && Eight::$server_api != 'cli') {
 				header("Content-Type: text/html;charset=utf-8");
 			}
 
@@ -170,21 +170,21 @@ class Eight_Exception_Core extends Exception {
 			}
 
 			// Clean the output buffer if one exists
-			ob_get_level() and ob_clean();
-
+			ob_end_clean();
+			
 			if($template = Eight::find_file('views', $template)) {
 				include $template;
 			}
 		} catch (Exception $e) {
 			// Clean the output buffer if one exists
 			ob_get_level() and ob_clean();
-
+			
 			// Display the exception text
 			echo Eight_Exception::text($e), "\n";
-			
-			// Exit with an error code
-			exit(1);
 		}
+		
+		// Exit with an error code
+		exit(1);
 	}
 
 	/**

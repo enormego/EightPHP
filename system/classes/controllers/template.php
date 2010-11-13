@@ -17,25 +17,26 @@ abstract class Controller_Template_Core extends Controller_Core {
 
 	protected $auto_render = TRUE;
 	protected $html;
-	protected $template = array();
-	protected $auto_compile_js = FALSE;
+	protected $title;
+	protected $view;
 	
-	public $title;
-	private $wrapper;
+	private	$wrapper;
 	private $stylesheets = array();
 	private $jscripts = array();
-	
-	static $data = array();
 
 	/**
 	 * Template loading and setup routine.
 	 */
 	public function __construct() {
 		parent::__construct();
+		
 		if($this->auto_render == YES) {
 			// Render the template along with the system display stuff
 			Event::add_before('system.display', array($this, 'render'), array($this, '_render'));
 		}
+		
+		// Create view
+		$this->view = new View;
 	}
 
 	public function _render($data=array()) {
@@ -59,43 +60,19 @@ abstract class Controller_Template_Core extends Controller_Core {
 		$data['contents'] = $this->html;
 		$data['stylesheets'] = $this->stylesheets;
 		$data['jscripts'] = $this->jscripts;
-		
-		// Merge in data from the controllers
-		$data = array_merge($data, self::$data, $this->template);
-		
-		// Auto-Compile Javascript?
-		if($this->auto_compile_js) {
-			$compiled = TRUE;
-			$compiled_js = '';
-			$compiled_path = DOCROOT.'js/eight_compiled/';
-			$compiled_filename = md5(print_r($data['jscripts'], TRUE));
-			$compiled_fullpath = $compiled_path.$compiled_filename.'.js';
-			if(!file_exists($compiled_fullpath) || (time() - filemtime($compiled_fullpath) > 3600)) {
-				foreach(arr::c($data['jscripts']) as $js) {
-					if(file_exists(DOCROOT.'js/'.$js.'.js')) {
-						$compiled_js .= file_get_contents(DOCROOT.'js/'.$js.'.js')."\n\n";
-					}
-				}
-				try {
-					if(!file_exists($compiled_path)) {
-						mkdir($compiled_path, 0777, TRUE);
-					}
-					file_put_contents($compiled_fullpath, $compiled_js);
-				} catch(Exception $e) {
-					$compiled = FALSE;
-				}
-			}
-			if($compiled) {
-				$data['jscripts'] = array(0 => arr::get(explode('js/', $compiled_path), 1).$compiled_filename);
-			}
-		}
-		
+
 		// Tack on our output to Eight's output buffer
-		Eight::$output .= View::factory($this->wrapper, $data)->render();
+		Eight::$output .= $this->view->set($data)->render();
 	}
 	
 	public function set_wrapper($view) {
+		if($view == $this->wrapper) return FALSE;
+		
+		// Set wrapper filename
 		$this->wrapper = 'wrappers/'.$view;
+		
+		// Set filename on view
+		$this->view->set_filename($this->wrapper);
 	}
 	
 	public function add_stylesheet($name) {

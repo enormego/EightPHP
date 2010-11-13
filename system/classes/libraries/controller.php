@@ -48,22 +48,37 @@ abstract class Controller_Core {
 	 * @param   array   array of view variables
 	 * @return  string
 	 */
-	public function _eight_load_view($eight_view_filename, $eight_input_data) {
-		if($eight_view_filename == '')
-			return;
+	public function _eight_load_view($eight_view_filename, array $eight_view_data) {
+		// Prevent any variable collisions
+		foreach($eight_view_data as $k => $v) {
+			if(isset(View::$_global_data[$k])) {
+				throw new Eight_Exception('View Variable Collision: The variable, '.$k.', is already in-use.');
+			}
+		}
+		
+		// Import the view variables to local namespace
+		extract($eight_view_data, EXTR_SKIP);
 
-		// Buffering on
+		if (View::$_global_data) {
+			// Import the global view variables to local namespace and maintain references
+			extract(View::$_global_data, EXTR_REFS);
+		}
+
+		// Capture the view output
 		ob_start();
 
-		// Import the view variables to local namespace
-		extract($eight_input_data, EXTR_SKIP);
+		try {
+			// Load the view within the current scope
+			include $eight_view_filename;
+		} catch (Exception $e) {
+			// Delete the output buffer
+			ob_end_clean();
 
-		// Views are straight HTML pages with embedded PHP, so importing them
-		// this way insures that $this can be accessed as if the user was in
-		// the controller, which gives the easiest access to libraries in views
-		include $eight_view_filename;
+			// Re-throw the exception
+			throw $e;
+		}
 
-		// Fetch the output and close the buffer
+		// Get the captured output and close the buffer
 		return ob_get_clean();
 	}
 
