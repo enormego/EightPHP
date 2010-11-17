@@ -20,10 +20,11 @@ abstract class Controller_Template_Core extends Controller_Core {
 	protected $title;
 	protected $view;
 	
-	private	$wrapper;
 	private $stylesheets = array();
 	private $jscripts = array();
-
+	
+	public $template = array();
+	
 	/**
 	 * Template loading and setup routine.
 	 */
@@ -34,9 +35,6 @@ abstract class Controller_Template_Core extends Controller_Core {
 			// Render the template along with the system display stuff
 			Event::add_before('system.display', array($this, 'render'), array($this, '_render'));
 		}
-		
-		// Create view
-		$this->view = new View;
 	}
 
 	public function _render($data=array()) {
@@ -60,19 +58,22 @@ abstract class Controller_Template_Core extends Controller_Core {
 		$data['contents'] = $this->html;
 		$data['stylesheets'] = $this->stylesheets;
 		$data['jscripts'] = $this->jscripts;
-
+		
+		// Check for variable conflicts
+		if(count($conflicts = array_intersect_key($data, $this->template)) > 0) {
+			throw new Eight_Exception('The following variable(s) are already in use by the Controller_Template::_render() method and can NOT be used: '.implode(',', array_keys($conflicts)));
+		}
+		
+		// Safely merge data
+		$data = array_merge($data, $this->template);
+		
 		// Tack on our output to Eight's output buffer
-		Eight::$output .= $this->view->set($data)->render();
+		Eight::$output .= View::factory($this->wrapper, $data)->render();
 	}
 	
 	public function set_wrapper($view) {
-		if($view == $this->wrapper) return FALSE;
-		
 		// Set wrapper filename
 		$this->wrapper = 'wrappers/'.$view;
-		
-		// Set filename on view
-		$this->view->set_filename($this->wrapper);
 	}
 	
 	public function add_stylesheet($name) {
@@ -82,11 +83,7 @@ abstract class Controller_Template_Core extends Controller_Core {
 	}
 	
 	public function remove_stylesheet($name) {
-		foreach($this->stylesheets as $index => $sheet) {
-			if($sheet == $name) {
-				unset($this->stylesheets[$index]);
-			}
-		}
+		arr::remove_value($this->stylesheets, $name);
 	}
 	
 	public function add_javascript($name) {
@@ -96,11 +93,7 @@ abstract class Controller_Template_Core extends Controller_Core {
 	}
 	
 	public function remove_javascript($name) {
-		foreach($this->jscripts as $index => $jscript) {
-			if($jscript == $name) {
-				unset($this->jscripts[$index]);
-			}
-		}
+		arr::remove_value($this->jscripts, $name);
 	}
 	
 	public function title() {
