@@ -256,7 +256,7 @@ class Input_Core {
 			$this->ip_address = substr($this->ip_address, $comma + 1);
 		}
 		
-		if(valid::ip($this->ip_address)) {
+		if(!valid::ip($this->ip_address)) {
 			// Use an empty IP
 			$this->ip_address = '0.0.0.0';
 		}
