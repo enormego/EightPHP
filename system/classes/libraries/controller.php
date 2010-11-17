@@ -50,10 +50,8 @@ abstract class Controller_Core {
 	 */
 	public function _eight_load_view($eight_view_filename, array $eight_view_data) {
 		// Prevent any variable collisions
-		foreach($eight_view_data as $k => $v) {
-			if(isset(View::$_global_data[$k])) {
-				throw new Eight_Exception('View Variable Collision: The variable, '.$k.', is already in-use.');
-			}
+		if(count($conflicts = array_intersect_key($eight_view_data, View::$_global_data)) > 0) {
+			throw new Eight_Exception('View Variable Collision: The variable(s), '.implode(',', array_keys($conflicts)).' are already in-use.');
 		}
 		
 		// Import the view variables to local namespace
