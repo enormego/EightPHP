@@ -105,6 +105,23 @@ class arr_Core {
 
 		return $val;
 	}
+	
+	/**
+	 * Searches an array for a value and removes it.
+	 *
+	 * @param	array 	Array to work on (Passed by reference)
+	 * @param	mixed	Value to search for
+	 * @param	bool	Use strict comparing (===)
+	 * @return	mixed	Key that we removed from the array or FALSE if we didn't find the value
+	 */
+	public static function remove_value(array &$array, $value, $strict = FALSE) {
+		if($key = array_search($value, $array, $strict)) {
+			unset($array[$key]);
+			return $key;
+		} else {
+			return FALSE;
+		}
+	}
 
 	
 	/**
@@ -375,66 +392,6 @@ class arr_Core {
         return $arr;
 	}
 	
-	/**
-	 * Converts an associative array of arbitrary depth and dimension into JSON representation.
-	 *
-	 * NOTE: If you pass in a mixed associative and vector array, it will prefix each numerical
-	 * key with "key_". For example array("foo", "bar" => "baz") will be translated into
-	 * {'key_0': 'foo', 'bar': 'baz'} but array("foo", "bar") would be translated into [ 'foo', 'bar' ].
-	 *
-	 * @param $array The array to convert.
-	 * @return mixed The resulting JSON string, or false if the argument was not an array.
-	 * @author Andy Rusterholz
-	 */
-	public static function to_json($arr) {
-	    if( !is_array( $arr ) ){
-	        return "[ ]";
-	    }
-	
-	    if(function_exists('json_encode'))
-			return json_encode($arr);
-		
-	    $parts = array(); 
-	    $is_list = false; 
-
-	    //Find out if the given array is a numerical array 
-	    $keys = array_keys($arr); 
-	    $max_length = count($arr)-1; 
-	    if(($keys[0] == 0) and ($keys[$max_length] == $max_length)) {//See if the first key is 0 and last key is length - 1 
-	        $is_list = true; 
-	        for($i=0; $i<count($keys); $i++) { //See if each key correspondes to its position 
-	            if($i != $keys[$i]) { //A key fails at position check. 
-	                $is_list = false; //It is an associative array. 
-	                break; 
-	            } 
-	        } 
-	    } 
-
-	    foreach($arr as $key=>$value) { 
-	        if(is_array($value)) { //Custom handling for arrays 
-	            if($is_list) $parts[] = array2json($value); /* :RECURSION: */ 
-	            else $parts[] = '"' . $key . '":' . array2json($value); /* :RECURSION: */ 
-	        } else { 
-	            $str = ''; 
-	            if(!$is_list) $str = '"' . $key . '":'; 
-
-	            //Custom handling for multiple data types 
-	            if(is_numeric($value)) $str .= $value; //Numbers 
-	            elseif($value === false) $str .= 'false'; //The booleans 
-	            elseif($value === true) $str .= 'true'; 
-	            else $str .= '"' . addslashes($value) . '"'; //All other things 
-	            // :TODO: Is there any more datatype we should be in the lookout for? (Object?) 
-
-	            $parts[] = $str; 
-	        } 
-	    } 
-	
-	    $json = implode(',',$parts); 
-
-	    if($is_list) return '[' . $json . ']';//Return numerical JSON 
-	    return '{' . $json . '}';//Return associative JSON 
-
-	}
 	
 	/**
 	 * Checks if an array is empty or not. If the passed var is
