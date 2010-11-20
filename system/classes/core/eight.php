@@ -1321,8 +1321,12 @@ final class Eight {
 	 * @return  NULL
 	 */
 	public static function debug($var) {
-		require_once Eight::find_file('vendor', 'dBug');
-		new dBug($var, NULL, TRUE);
+		if(self::$server_api == 'cli') {
+			var_dump($var);
+		} else {
+			require_once Eight::find_file('vendor', 'dBug');
+			new dBug($var, NULL, TRUE);
+		}
 	}
 
 	/**
