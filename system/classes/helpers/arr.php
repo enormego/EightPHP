@@ -115,7 +115,7 @@ class arr_Core {
 	 * @return	mixed	Key that we removed from the array or FALSE if we didn't find the value
 	 */
 	public static function remove_value(array &$array, $value, $strict = FALSE) {
-		if($key = array_search($value, $array, $strict)) {
+		if(($key = array_search($value, $array, $strict)) !== FALSE) {
 			unset($array[$key]);
 			return $key;
 		} else {
