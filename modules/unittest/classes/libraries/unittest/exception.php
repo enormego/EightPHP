@@ -10,7 +10,7 @@
  * @license		http://license.eightphp.com
  */
 
-class UnitTest_Exception_Core extends Exception {
+class UnitTest_Exception_Core extends Eight_Exception {
 
 	protected $debug = nil;
 
@@ -23,7 +23,7 @@ class UnitTest_Exception_Core extends Exception {
 	 */
 	public function __construct($message, $debug = nil) {
 		// Failure message
-		parent::__construct((string) $message);
+		parent::__construct("UnitTest Exception", (string) $message);
 
 		// Extra user-defined debug info
 		$this->debug = $debug;

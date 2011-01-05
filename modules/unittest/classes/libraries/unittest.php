@@ -28,6 +28,9 @@ class UnitTest_Core {
 	 * @return  void
 	 */
 	public function __construct() {
+		// Register autoloader
+		spl_autoload_register(array($this, '__autoload'), false, false);
+		
 		// Merge possible default test path(s) from config with the rest
 		$paths = array_merge(func_get_args(), Eight::config('unittest.paths', NO, NO));
 
@@ -40,51 +43,49 @@ class UnitTest_Core {
 		$this->paths = array_unique($paths);
 
 		// Loop over each given test path
-		foreach($this->paths as $path) {
+		foreach($this->paths as $root_path) {
 			// Validate test path
-			if(!is_dir($path))
-				throw new Eight_Exception('unittest.invalid_test_path', $path);
+			if(!is_dir($root_path))
+				throw new Eight_Exception(__('unittest.invalid_test_path', array($root_path)));
 
 			// Recursively iterate over each file in the test path
 			foreach
 			(
-				new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::KEY_AS_PATHNAME))
+				new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root_path, RecursiveDirectoryIterator::KEY_AS_PATHNAME))
 				as $path => $file
 			) {
 				// Normalize path
 				$path = str_replace('\\', '/', $path);
 
-				// The class name should be the same as the file name
-				$class = 'Test_'.substr($path, strrpos($path, '/') + 1, -(strlen(EXT)));
+				// Build class name based on the file path
+				$class = ltrim(substr($path, strlen($root_path)), '/');
+				$class = 'Test_'.preg_replace("#_([a-z])#e", "'_'.ucfirst('\\1')", ucfirst(str_replace("/", "_", substr($class, 0, strlen($class) - strlen(EXT)))));
 
 				// Skip hidden files
 				if(substr($class, 0, 1) === '.')
 					continue;
 
-				// Check for duplicate test class name
-				if(class_exists($class, NO))
-					throw new Eight_Exception('unittest.duplicate_test_class', $class, $path);
-
-				// Include the test class
-				include_once $path;
-
 				// Check whether the test class has been found and loaded
-				if(!class_exists($class, NO))
-					throw new Eight_Exception('unittest.test_class_not_found', $class, $path);
+				if(!class_exists($class, TRUE))
+					throw new Eight_Exception(__('unittest.test_class_not_found', array($class, $path)));
 
 				// Reverse-engineer Test class
 				$reflector = new ReflectionClass($class);
 
+				// Skip any abstract classes or interfaces
+				if($reflector->isAbstract() || $reflector->isInterface())
+					continue;
+
 				// Test classes must extend UnitTest_Case
 				if(!$reflector->isSubclassOf(new ReflectionClass('UnitTest_Case')))
-					throw new Eight_Exception('unittest.test_class_extends', $class);
+					throw new Eight_Exception(__('unittest.test_class_extends', array($class)));
 
 				// Skip disabled Tests
-				if($reflector->getConstant('DISABLED') === YES)
+				if($reflector->getConstant('DISABLED') === TRUE)
 					continue;
 
 				// Initialize setup and teardown method triggers
-				$setup = $teardown = NO;
+				$setup = $teardown = FALSE;
 
 				// Look for valid setup and teardown methods
 				foreach(array('setup', 'teardown') as $method_name) {
@@ -121,7 +122,7 @@ class UnitTest_Core {
 					try
 					{
 						// Run setup method
-						if($setup === YES) {
+						if($setup === TRUE) {
 							$object->setup();
 						}
 
@@ -129,14 +130,14 @@ class UnitTest_Core {
 						$object->$method_name();
 
 						// Run teardown method
-						if($teardown === YES) {
+						if($teardown === TRUE) {
 							$object->teardown();
 						}
 
 						$this->stats[$class]['total']++;
 
 						// Test passed
-						$this->results[$class][$method_name] = YES;
+						$this->results[$class][$method_name] = TRUE;
 						$this->stats[$class]['passed']++;
 
 					}
@@ -162,6 +163,26 @@ class UnitTest_Core {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Attempts to autoload tests
+	 */
+	public function __autoload($class) {
+		if(!str::starts_with($class, 'test_'))
+			return FALSE;
+		
+		if(class_exists($class, FALSE))
+			return TRUE;
+
+		$filename = str_replace('test/', 'tests/', str_replace('_', '/', strtolower($class)));
+
+		if(!($path = Eight::find_file('classes', $filename, FALSE)))
+			return FALSE;
+			
+		require $path;
+		
+		return TRUE;
 	}
 
 	/**
