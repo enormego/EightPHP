@@ -179,7 +179,7 @@ class UnitTest_Core {
 		$hide_passed = (bool) (($hide_passed !== nil) ? $hide_passed : Eight::config('unittest.hide_passed', NO, NO));
 
 		// Render unittest report
-		return View::factory('unittest', array(
+		return View::factory('eight/unittest', array(
 			'results' => $this->results,
 			'stats' => $this->stats,
 			'hide_passed' => $hide_passed
