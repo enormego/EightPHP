@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package		Modules
  * @subpackage	UnitTest
@@ -8,9 +9,10 @@
  *
  * Default paths to scan for tests.
  */
+
 $config['paths'] = array
 (
-	MODPATH.'unit_test/tests',
+	MODPATH.'unittest/classes/tests',
 );
 
 /**

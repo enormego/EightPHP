@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit_Test controller.
+ * UnitTest controller.
  *
  * @package		Modules
  * @subpackage	UnitTest
@@ -8,13 +8,13 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Controller_Unit_test extends Controller {
+class Controller_Unittest extends Controller_Core {
 
 	const ALLOW_PRODUCTION = NO;
 
 	public function index() {
 		// Run tests and show results!
-		echo new Unit_Test;
+		echo new UnitTest;
 	}
 
 }

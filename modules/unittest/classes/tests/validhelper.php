@@ -8,10 +8,10 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Valid_Helper_Test extends Unit_Test_Case {
+class Test_ValidHelper extends UnitTest_Case {
 
 	// Disable this Test class?
-	const DISABLED = NO;
+	const DISABLED = FALSE;
 
 	public function valid_email_test() {
 		$this
@@ -27,8 +27,8 @@ class Valid_Helper_Test extends Unit_Test_Case {
 
 	public function valid_email_domain_test() {
 		// not implemented on windows platform
-		$var1 = (EIGHT_IS_WIN) ? YES : valid::email_domain('address@gmail.tld');
-		$var2 = (EIGHT_IS_WIN) ? NO : valid::email_domain('address@domain-should_not-exist.tld');
+		$var1 = (EIGHT_IS_WIN) ? TRUE : valid::email_domain('address@gmail.tld');
+		$var2 = (EIGHT_IS_WIN) ? FALSE : valid::email_domain('address@domain-should_not-exist.tld');
 		$this
 			->assert_true_strict($var1)
 			->assert_false_strict($var2);

@@ -8,23 +8,23 @@
  * @copyright	(c) 2009-2010 EightPHP
  * @license		http://license.eightphp.com
  */
-class Example_Test extends Unit_Test_Case {
+class Test_Example extends UnitTest_Case {
 
 	// Disable this Test class?
-	const DISABLED = NO;
+	const DISABLED = FALSE;
 
-	public $setup_has_run = NO;
+	public $setup_has_run = FALSE;
 
 	public function setup() {
-		$this->setup_has_run = YES;
+		$this->setup_has_run = TRUE;
 	}
 
 	public function setup_test() {
 		$this->assert_true_strict($this->setup_has_run);
 	}
 
-	public function YES_NO_test() {
-		$var = YES;
+	public function TRUE_FALSE_test() {
+		$var = TRUE;
 		$this
 			->assert_true($var)
 			->assert_true_strict($var)
@@ -43,8 +43,8 @@ class Example_Test extends Unit_Test_Case {
 
 	public function type_test() {
 		$this
-			->assert_boolean(YES)
-			->assert_not_boolean('YES')
+			->assert_boolean(TRUE)
+			->assert_not_boolean('TRUE')
 			->assert_integer(123)
 			->assert_not_integer('123')
 			->assert_float(1.23)
