@@ -4,7 +4,7 @@
 <?php echo $styles ?>
 </style>
 
-<?
+<?php
 $style='';
 $x = 0 + Eight::config('profiler.offset.x');
 $y = 0 + Eight::config('profiler.offset.y');
@@ -34,7 +34,7 @@ $style = 'style="'.$style.'"';
 <div id="eight-profiler">
 	<div class="eight-profiler-inner">
 		<div id="eight-profiler-tabs">
-		<?
+		<?php
 			foreach($profiles as $profile) {
 				echo "<a href='#'".(!$first_selected ? ' class="eight-profiler-tab-active"' : '')." onclick='return eight_profiler_toggle_tab(this, \"".$profile->table_id()."\")'>".$profile->name()."</a>";
 				if(!$first_selected) {
@@ -47,7 +47,7 @@ $style = 'style="'.$style.'"';
 		</div>
 		<br style="clear:left" /><br />
 		<div id="eight-profiler-tables">
-		<?
+		<?php
 			foreach($profiles as $profile) {
 				$hidden = YES;
 			
