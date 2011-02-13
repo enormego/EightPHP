@@ -15,27 +15,30 @@ class Controller_Welcome extends Controller_Template {
 	const ALLOW_PRODUCTION = NO;
 
 	// Set the name of the template to use
-	public $template = 'eight/template';
+	public $wrapper = 'eight/template';
 
 	public function index() {
-		// In Eight, all views are loaded and treated as objects.
-		$this->template->content = new View('welcome_content');
-
 		// You can assign anything variable to a view by using standard OOP
 		// methods. In my welcome view, the $title variable will be assigned
 		// the value I give it here.
-		$this->template->title = 'Welcome to Eight!';
+		$this->set_title('Welcome to Eight!', TRUE);
+
+		// In Eight, all views are loaded and treated as objects.
+		$view = new View('welcome/content');
 
 		// An array of links to display. Assiging variables to views is completely
 		// asyncronous. Variables can be set in any order, and can be any type
 		// of data, including objects.
-		$this->template->content->links = array
-		(
-			'Home Page'     => 'http://eightphp.com/',
-			'Documentation' => 'http://docs.eightphp.com/',
+		$view->links = array(
+			'Home Page'     => 'http://github.com/enormego/EightPHP/',
+			'Documentation' => 'http://enormego.pbworks.com/FrontPage',
+			'API Docs'      => 'http://docs.eightphp.com/docs/',
 			'Issues'        => 'https://github.com/enormego/EightPHP/issues',
 			'License'       => 'http://license.eightphp.com',
 		);
+		
+		// Append it onto the HTML content stack
+		$this->html .= $view;
 	}
 
 	public function __call($method, $arguments) {
