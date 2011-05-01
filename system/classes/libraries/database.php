@@ -285,6 +285,7 @@ class Database_Core {
 			self::$benchmarks[] = array('query' => $sql, 'time' => $stop - $start, 'rows' => count($result), 'database' => $this->name);
 		}
 		
+		if(!array_key_exists($this->name, self::$query_count)) self::$query_count[$this->name] = 0;
 		self::$query_count[$this->name]++;
 
 		return $result;
