@@ -170,7 +170,7 @@ class Eight_Exception_Core extends Exception {
 			}
 
 			// Clean the output buffer if one exists
-			ob_end_clean();
+			ob_get_level() and ob_end_clean();
 			
 			if($template = Eight::find_file('views', $template)) {
 				include $template;
@@ -526,10 +526,11 @@ class Eight_Exception_Core extends Exception {
 		$string .= Eight_Exception::trace_string_line("");
 
 		$x = 0;
+		$error_id = 0;
 		foreach (Eight_Exception::trace($trace) as $i=>$step) {
 			$msg_line = "#".str_pad($x, 2, "0", STR_PAD_LEFT). "  ";
 			if ($step['file']) {
-				 $source_id = $error_id.'source'.$i;
+				$source_id = $error_id.'source'.$i;
 				$msg_line .= Eight_Exception::debug_path($step['file']).'('.$step['line']."):  ";
 			} else {
 				$msg_line .= "{".__('PHP internal call')."}:  ";

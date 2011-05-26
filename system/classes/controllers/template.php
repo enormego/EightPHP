@@ -24,6 +24,7 @@ abstract class Controller_Template_Core extends Controller_Core {
 	private $jscripts = array();
 	
 	public $template = array();
+	public $wrapper = "eight/template";
 	
 	/**
 	 * Template loading and setup routine.
@@ -71,9 +72,13 @@ abstract class Controller_Template_Core extends Controller_Core {
 		Eight::$output .= View::factory($this->wrapper, $data)->render();
 	}
 	
-	public function set_wrapper($view) {
+	public function set_wrapper($view, $subdir="wrappers") {
+		if($subdir) {
+			$view = $subdir.'/'.$view;
+		}
+
 		// Set wrapper filename
-		$this->wrapper = 'wrappers/'.$view;
+		$this->wrapper = $view;
 	}
 	
 	public function add_stylesheet($name) {
