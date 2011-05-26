@@ -88,14 +88,16 @@ class file_Core {
 				return $mime['mime'];
 		}
 
-		if(function_exists('finfo_open') && ($finfo = finfo_open(FILEINFO_MIME, self::MAGIC_DB)) !== FALSE) {
-			// Use the fileinfo extension
-			$mime  = finfo_file($finfo, $filename);
-			finfo_close($finfo);
+		try {
+			if(function_exists('finfo_open') && ($finfo = finfo_open(FILEINFO_MIME, self::MAGIC_DB)) !== FALSE) {
+				// Use the fileinfo extension
+				$mime  = finfo_file($finfo, $filename);
+				finfo_close($finfo);
 
-			// Return the mime type
-			return $mime;
-		}
+				// Return the mime type
+				return $mime;
+			}
+		} catch(Exception $e) { }
 
 		if(ini_get('mime_magic.magicfile') and function_exists('mime_content_type')) {
 			// Return the mime type using mime_content_type
