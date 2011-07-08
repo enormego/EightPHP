@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="framework_error" style="width:900px;margin:20px auto;">
-<?
+<?php
 // Unique error identifier
 $error_id = uniqid('error');
 ?>
