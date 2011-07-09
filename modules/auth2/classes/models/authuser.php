@@ -57,7 +57,7 @@ class Model_AuthUser_Core extends Modeler {
 	public function set_user_password($value) {
 		// This method is designed for EXPLICIT var setting, not Modeler loads or anything like that.
 		if(!$this->ran_set) {
-			$this->data['user_password'] = Auth::instance()->hash_password($value);
+			$this->data['user_password'] = Auth::instance()->hash($value);
 		} else {
 			$this->data['user_password'] = $value;
 		}
