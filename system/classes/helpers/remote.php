@@ -146,7 +146,7 @@ class remote_Core {
 	 * @return  curl_exec() result
 	 */
 	public static function post($url, $data, $return_headers=NO) {
-		if(!is_array($data)) {
+		if(is_array($data)) {
 			$data = http_build_query($data);
 		}
 		
