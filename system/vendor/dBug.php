@@ -104,11 +104,16 @@ class dBug {
 	}
 	
 	//create the main table header
-	public function makeTableHeader($type,$header,$colspan=2) {
+	public function makeTableHeader($type, $header,$colspan=2) {
 		if(!$this->bInitialized) {
-			$header = $type." ".$this->getVariableName();;
+			if(empty($header)) {
+				$header = $type." ".$this->getVariableName();
+			} else {
+				$header .= " ".$this->getVariableName();
+			}
 			$this->bInitialized = true;
 		}
+		
 		$str_i = ($this->bCollapsed) ? "style=\"font-style:italic\" " : ""; 
 		
 		echo "<table cellspacing=2 cellpadding=3 class=\"dBug_".$type."\">
@@ -204,7 +209,7 @@ class dBug {
 		$var_ser = serialize($var);
 		array_push($this->arrHistory, $var_ser);
 		$classname = get_class($var);
-		$this->makeTableHeader("object", $classname.' Object');
+		$this->makeTableHeader("object", $classname);
 		
 		if(is_object($var)) {
 			$arrObjVars=get_object_vars($var);
@@ -220,6 +225,12 @@ class dBug {
 
 					}
 				}
+				
+				// Check for Eight Instance
+				if($value instanceof Controller) {
+					$value = "[".get_class($value)."]";
+				}
+				
 				if(in_array(gettype($value),$this->arrType))
 					$this->checkType($value);
 				else echo $value;
