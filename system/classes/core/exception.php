@@ -86,7 +86,10 @@ class Eight_Exception_Core extends Exception {
 	 * @param   object  Exception
 	 * @return  string
 	 */
-	public static function text($e) {
+	public static function text($e, $full_args = FALSE) {
+		// Should we use the full argument length or truncate?
+		$arg_char_limit = $full_args ? 2500 : 50;
+		
 		// Clean up the message a bit
 		$message = str_replace(array("<br>", "<br/>", "<br />", "\r\n", "\n", "\r"), '; ', strip_tags($e->getMessage()));
 		
@@ -104,7 +107,7 @@ class Eight_Exception_Core extends Exception {
 		}
 		
 		return sprintf('%s [ %s ]: %s ~ %s [ %d ]'."\n\n".'%s'."\n\n".'%s'."\n",
-			get_class($e), $e->getCode(), $message, Eight_Exception::debug_path($e->getFile()), $e->getLine(), $called, Eight_Exception::trace_string($e->getTrace(), 500));
+			get_class($e), $e->getCode(), $message, Eight_Exception::debug_path($e->getFile()), $e->getLine(), $called, Eight_Exception::trace_string($e->getTrace(), $arg_char_limit));
 	}
 
 	/**
@@ -124,7 +127,7 @@ class Eight_Exception_Core extends Exception {
 			$message = $e->getMessage();
 
 			// Create a text version of the exception
-			$error = Eight_Exception::text($e);
+			$error = Eight_Exception::text($e, TRUE);
 
 			// Add this exception to the log
 			Eight::log('error', $error);
@@ -196,7 +199,7 @@ class Eight_Exception_Core extends Exception {
 			ob_get_level() and ob_clean();
 			
 			// Display the exception text
-			echo Eight_Exception::text($e), "\n";
+			echo Eight_Exception::text($e, TRUE), "\n";
 		}
 		
 		// Exit with an error code
@@ -561,11 +564,11 @@ class Eight_Exception_Core extends Exception {
 					if(is_object($arg)) {
 						$arg_name = get_class($arg);
 					} else if(is_array($arg)) {
-						$arg_name = "Array(".count($arg).")";
+						$arg_name = self::arr_to_str($arg);
 					} else if(is_null($arg)) {
 						$arg_name = "NULL";
 					} else if(is_string($arg)) {
-						$arg_name = $arg;
+						$arg_name = '"'.$arg.'"';
 					} else {
 						$arg_name = strval($arg);
 					}
@@ -584,6 +587,22 @@ class Eight_Exception_Core extends Exception {
 		}
 		
 		return $string;
+	}
+	
+	public static function arr_to_str($arr) {
+		return preg_replace("/array[\s]*\(/", 'array(', preg_replace("/\,[\s]*\)/", ')', preg_replace("/\s+/", " ", str_replace(array("\r\n", "\r", "\n", "\t"), '', var_export(self::obj_to_str($arr), TRUE)))));
+	}
+	
+	public static function obj_to_str($obj) {
+		if(is_array($obj)) {
+			foreach($obj as $k=>$v) {
+				$obj[self::obj_to_str($k)] = self::obj_to_str($v);
+			}
+		} elseif(is_object($obj)) {
+			$obj = '**'.get_class($obj).'**';
+		}
+
+		return $obj;
 	}
 	
 	public static function trace_string_line($str) {
