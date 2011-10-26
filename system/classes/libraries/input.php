@@ -61,42 +61,17 @@ class Input_Core {
 			
 			// magic_quotes_runtime is enabled
 			if(get_magic_quotes_runtime()) {
-				set_magic_quotes_runtime(0);
-				Eight::log('debug', 'Disable magic_quotes_runtime! It is evil and deprecated: http://php.net/magic_quotes');
+				exit('Disable magic_quotes_runtime! It is evil and deprecated: http://php.net/magic_quotes');
 			}
 
 			// magic_quotes_gpc is enabled
 			if(get_magic_quotes_gpc()) {
-				$this->magic_quotes_gpc = YES;
-				Eight::log('debug', 'Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes');
+				exit('Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes');
 			}
 
 			// register_globals is enabled
 			if(ini_get('register_globals')) {
-				if(isset($_REQUEST['GLOBALS'])) {
-					// Prevent GLOBALS override attacks
-					exit('Global variable overload attack.');
-				}
-
-				// Destroy the REQUEST global
-				$_REQUEST = array();
-
-				// These globals are standard and should not be removed
-				$preserve = array('GLOBALS', '_REQUEST', '_GET', '_POST', '_FILES', '_COOKIE', '_SERVER', '_ENV', '_SESSION');
-
-				// This loop has the same effect as disabling register_globals
-				foreach($GLOBALS as $key => $val) {
-					if(!in_array($key, $preserve)) {
-						global $$key;
-						$$key = nil;
-
-						// Unset the global variable
-						unset($GLOBALS[$key], $$key);
-					}
-				}
-
-				// Warn the developer about register globals
-				Eight::log('debug', 'Disable register_globals! It is evil and deprecated: http://php.net/register_globals');
+				exit('Disable register_globals! It is evil and deprecated: http://php.net/register_globals');
 			}
 
 			if(is_array($_GET)) {
@@ -393,7 +368,7 @@ class Input_Core {
 		$chars = PCRE_UNICODE_PROPERTIES ? '\pL' : 'a-zA-Z';
 
 		if(!preg_match('#^['.$chars.'0-9:_.\-\(\)]++$#uD', $str)) {
-			exit('Disallowed key characters in global data.');
+			exit('Disallowed characters in key for global data. Offending key: '.$str);
 		}
 
 		return $str;
@@ -414,11 +389,6 @@ class Input_Core {
 				$new_array[$this->clean_input_keys($key)] = $this->clean_input_data($val);
 			}
 			return $new_array;
-		}
-
-		if($this->magic_quotes_gpc === YES) {
-			// Remove annoying magic quotes
-			$str = stripslashes($str);
 		}
 
 		if($this->use_xss_clean === YES) {
@@ -454,10 +424,10 @@ class Input_Core {
 			if (!str::is_ascii($str)) {
 				// Disable notices
 				$ER = error_reporting(~E_NOTICE);
-				
+
 				// iconv is expensive, so it is only used when needed
 				$str = iconv(Eight::CHARSET, Eight::CHARSET.'//IGNORE', $str);
-
+				
 				// Turn notices back on
 				error_reporting($ER);
 			}
