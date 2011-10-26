@@ -87,8 +87,24 @@ class Eight_Exception_Core extends Exception {
 	 * @return  string
 	 */
 	public static function text($e) {
-		return sprintf('%s [ %s ]: %s ~ %s [ %d ]'."\n\n".'%s'."\n\n",
-			get_class($e), $e->getCode(), strip_tags($e->getMessage()), Eight_Exception::debug_path($e->getFile()), $e->getLine(), Eight_Exception::trace_string($e->getTrace()));
+		// Clean up the message a bit
+		$message = str_replace(array("<br>", "<br/>", "<br />", "\r\n", "\n", "\r"), '; ', strip_tags($e->getMessage()));
+		
+		// How was the request made
+		$called = 'Request:'."\n";
+		$method = strtoupper(request::method());
+		if($method == 'CLI') {
+			$called .= 'CLI - '.cli::launch_cmd();
+		} else {
+			$called .= '['.$method.'] '.request::ip().' - '.request::protocol().'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			if(is_array($_POST) && count($_POST) > 0) {
+				$called .= "\n\nBody:\n";
+				$called .= var_export($_POST, TRUE);
+			}
+		}
+		
+		return sprintf('%s [ %s ]: %s ~ %s [ %d ]'."\n\n".'%s'."\n\n".'%s'."\n",
+			get_class($e), $e->getCode(), $message, Eight_Exception::debug_path($e->getFile()), $e->getLine(), $called, Eight_Exception::trace_string($e->getTrace(), 500));
 	}
 
 	/**
@@ -518,12 +534,11 @@ class Eight_Exception_Core extends Exception {
 	/**
 	 * Returns a stacktrace in the form of a string
 	 */
-	public static function trace_string($trace) {
+	public static function trace_string($trace, $arg_char_limit = 50) {
 		$string = "";
 		
 		// Setup the stack trace
-		$string .= Eight_Exception::trace_string_line("Stack trace:");
-		$string .= Eight_Exception::trace_string_line("");
+		$string .= Eight_Exception::trace_string_line("Stack Trace:");
 
 		$x = 0;
 		$error_id = 0;
@@ -557,7 +572,7 @@ class Eight_Exception_Core extends Exception {
 
 					$arg_name = preg_replace("#\s+#", " ", $arg_name);
 
-					$print_able_args[] = str::limit_chars($arg_name, 50,"");
+					$print_able_args[] = str::limit_chars($arg_name, $arg_char_limit, "");
 				}
 			}
 
