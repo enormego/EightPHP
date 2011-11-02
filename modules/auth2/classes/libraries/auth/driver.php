@@ -27,7 +27,7 @@ interface Auth_Driver {
 	 * @param   mixed    username
 	 * @return  boolean
 	 */
-	public function force_login($username);
+	public function force_login($username, $remember);
 
 	/**
 	 * Logs a user in, based on stored credentials, typically cookies.

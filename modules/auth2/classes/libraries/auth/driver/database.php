@@ -72,16 +72,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 		// If the passwords match, perform a login
 		if (Auth::instance()->verify($password, $user->password) === TRUE) {
 			if ($remember === TRUE) {
-				// Create a new autologin token
-				$token = new Model_UserToken;
-
-				// Set token data
-				$token->user_id = $user->id;
-				$token->expires = time() + $this->config['lifetime'];
-				$token->save();
-
-				// Set the auto login cookie
-				cookie::set($this->config['auto_login_cookie'], $token->token, $this->config['lifetime']);
+				$this->_remember_user($user);
 			}
 
 			// Finish the login
@@ -101,12 +92,16 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 	 * @param	string		Username
 	 * @return	void
 	 */
-	public function force_login($user) {
+	public function force_login($user, $remember) {
 		if (!is_object($user)) {
 			// Load the user
 			$user = new Model_User($user);
 		}
-
+		
+		if ($remember === TRUE) {
+			$this->_remember_user($user);
+		}
+		
 		// Mark the session as forced, to prevent users from changing account information
 		$this->session->set('auth_forced', TRUE);
 		
@@ -132,20 +127,12 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 					
 					// Delete old token
 					$token->delete();
-					
-					// Create a new token
-					$token = new Model_UserToken;
-
-					// Set token data
-					$token->user_id = $user_id;
-					$token->expires = time() + $this->config['lifetime'];
-					$token->save();
-					
-					// Set the new token
-					cookie::set($this->config['auto_login_cookie'], $token->token, $token->expires - time());
 
 					// Create a new user
 					$user = new Model_User($token->user_id);
+					
+					// Remember User
+					$this->_remember_user($user);
 					
 					// Complete the login
 					$this->complete_login($user);
@@ -230,6 +217,24 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 
 		// Store session data
 		$this->session->set($this->config['session_key'], $user);
+	}
+	
+	/**
+	 * Stores a cookie to remember the specified user
+	 */
+	private function _remember_user(Model_User $user) {
+		// Create a new autologin token
+		$token = new Model_UserToken;
+
+		// Set token data
+		$token->user_id = $user->id;
+		$token->expires = time() + $this->config['lifetime'];
+		$token->save();
+
+		// Set the auto login cookie
+		cookie::set($this->config['auto_login_cookie'], $token->token, $this->config['lifetime']);
+		
+		return $token;
 	}
 
 } // End Auth_Driver_Database Class
