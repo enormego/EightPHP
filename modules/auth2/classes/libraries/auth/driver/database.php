@@ -129,7 +129,7 @@ class Auth_Driver_Database_Core implements Auth_Driver {
 					$token->delete();
 
 					// Create a new user
-					$user = new Model_User($token->user_id);
+					$user = new Model_User($user_id);
 					
 					// Remember User
 					$this->_remember_user($user);
