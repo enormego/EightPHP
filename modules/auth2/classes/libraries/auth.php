@@ -140,8 +140,8 @@ class Auth_Core {
 	 * @param   mixed    username
 	 * @return  boolean
 	 */
-	public function force_login($username) {
-		return $this->driver->force_login($username);
+	public function force_login($username, $remember) {
+		return $this->driver->force_login($username, $remember);
 	}
 
 	/**
