@@ -173,6 +173,7 @@ class Modeler_Core extends Model {
 		if($this->valid()) {
 			return count($this->db->update($this->table_name, $this->data, array($this->primary_key => $this->data[$this->primary_key])));
 		} else {
+			unset($this->data[$this->primary_key]);
 			$insert_id = $this->db->insert($this->table_name, $this->data)->insert_id();
 			$this->data[$this->primary_key] = $insert_id;
 			return $insert_id;

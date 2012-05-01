@@ -44,7 +44,7 @@ class Database_Driver_Pgsql extends Database_Driver {
 		// Make the connection and select the database
 		if ($this->link = $connect($connection_string)) {
 			if ($charset = $this->db_config['character_set']) {
-				echo $this->set_charset($charset);
+				$this->set_charset($charset);
 			}
 
 			// Clear password after successful connect
@@ -379,7 +379,7 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 			}
 		}
 
-		while ($row = $fetch($this->result, $type)) {
+		while ($row = $fetch($this->result, NULL, $type)) {
 			$rows[] = $row;
 		}
 
