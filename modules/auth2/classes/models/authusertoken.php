@@ -24,12 +24,12 @@ class Model_AuthUserToken_Core extends Modeler {
 
 	// Database fields and default values
 	public $data = array(
-								'user_token_id'			=>	'',
-								'user_token_user_id'	=>	'',
+								'user_token_id'			=>	0,
+								'user_token_user_id'	=>	0,
 	                        	'user_token_token'		=>	'',
 								'user_token_user_agent'	=>	'',
-	                        	'user_token_created'	=>	'',
-								'user_token_expires'	=>	'',
+	                        	'user_token_created'	=>	0,
+								'user_token_expires'	=>	0,
 							);
 	
 	public function __construct($id = NULL, $create_token = TRUE) {
@@ -131,14 +131,7 @@ class Model_AuthUserToken_Core extends Modeler {
 			return FALSE;
 		}
 		
-		$data = self::db()->use_master(TRUE)->where('user_token_token', $token)->get('user_tokens')->row_array();
-		if($data === FALSE) {
-			return FALSE;
-		} else {
-			$token = new Model_UserToken(NULL, TRUE);
-			$token->set($data);
-			return $token;
-		}
+		return self::db()->use_master(TRUE)->where('user_token_token', $token)->get('user_tokens')->result(TRUE, 'Model_UserToken')->current();
 	}
 		
 	/**
