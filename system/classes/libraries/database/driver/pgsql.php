@@ -72,7 +72,12 @@ class Database_Driver_Pgsql extends Database_Driver {
 
 			return self::$query_cache[$hash];
 		}
-
+		
+		// Tack on some SQL to get an insert id back
+		if(preg_match('#\b(?:INSERT|REPLACE|UPDATE|DELETE)\b#i', $sql)) {
+			$sql .= " RETURNING id";
+		}
+		
 		return new Database_Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
 	}
 
@@ -187,7 +192,6 @@ class Database_Driver_Pgsql extends Database_Driver {
 
 	public function escape_str($str) {
 		is_resource($this->link) or $this->connect();
-
 		return pg_escape_string($this->link, $str);
 	}
 
@@ -309,21 +313,19 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 	 */
 	public function __construct($result, $link, $object = TRUE, $sql) {
 		$this->result = $result;
-
+		
 		// If the query is a resource, it was a SELECT, SHOW, DESCRIBE, EXPLAIN query
-		if (is_resource($result)) {
-			$this->current_row = 0;
-			$this->total_rows  = pg_num_rows($this->result);
-			$this->fetch_type = ($object === TRUE) ? 'pg_fetch_object' : 'pg_fetch_array';
-		} elseif (is_bool($result)) {
-			if ($result == FALSE) {
-				// SQL error
-				throw new Database_Exception('database.error', pg_last_error().' - '.$sql);
+		if(is_resource($result)) {
+			if(preg_match('#\b(?:INSERT|REPLACE|UPDATE|DELETE)\b#i', $sql)) {
+				$this->insert_id  = $this->get_insert_id($this->result);
+				$this->total_rows = pg_affected_rows($this->result);
 			} else {
-				// Its an DELETE, INSERT, REPLACE, or UPDATE query
-				$this->insert_id  = $this->get_insert_id($link);
-				$this->total_rows = pg_affected_rows($link);
+				$this->current_row = 0;
+				$this->total_rows  = pg_num_rows($this->result);
+				$this->fetch_type = ($object === TRUE) ? 'pg_fetch_object' : 'pg_fetch_array';
 			}
+		} else {
+			throw new Database_Exception('database.error', pg_last_error().' - '.$sql);
 		}
 
 		// Set result type
@@ -352,7 +354,7 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 		} else {
 			$this->return_type = $type;
 		}
-
+		
 		return $this;
 	}
 
@@ -395,13 +397,12 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 	}
 	// End Interface
 
-	private function get_insert_id($link) {
-		$query = 'SELECT LASTVAL() as insert_id';
-
-		$result = pg_query($link, $query);
-		$insert_id = pg_fetch_array($result, NULL, PGSQL_ASSOC);
-
-		return $insert_id['insert_id'];
+	private function get_insert_id($result) {
+		if($row = pg_fetch_row($result, 0, PGSQL_ASSOC)) {
+			return $row['id'];
+		} else {
+			return FALSE;
+		}
 	}
 
 	// Interface: Countable

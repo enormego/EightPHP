@@ -390,11 +390,11 @@ class date_Core {
 	public static function unix2mysql($time=0, $type='datetime') {
 		$time == 0 && $time = time();
 		if($type == 'date') {
-			return date('Y-m-d', $time);
+			return gmdate('Y-m-d', $time);
 		} else if($type == 'time') {
-			return date('H:i:s', $time);
+			return gmdate('H:i:s', $time);
 		} else {
-			return date('Y-m-d H:i:s', $time);
+			return gmdate('Y-m-d H:i:s', $time);
 		}
 	}
 
