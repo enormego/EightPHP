@@ -370,7 +370,7 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 				// NOTE - The class set by $type must be defined before fetching the result,
 				$type = class_exists($type, TRUE) ? $type : 'stdClass';
 			} else {
-				$fetch = 'pg_fetch_array';
+				$fetch = 'pg_fetch_assoc';
 			}
 		} else {
 			// Use the default config values
