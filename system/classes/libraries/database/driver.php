@@ -28,7 +28,7 @@ abstract class Database_Driver {
 	 * @param  bool $as_master
 	 * @return Database_Result
 	 */
-	abstract public function query($sql, $active_link = NULL, $as_master = NO);
+	abstract public function query($sql, $active_link = NULL, $as_master = FALSE);
 
 	/**
 	 * Builds a DELETE query.

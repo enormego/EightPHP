@@ -56,7 +56,7 @@ class Database_Driver_Pgsql extends Database_Driver {
 		return FALSE;
 	}
 
-	public function query($sql, $active_link = NULL, $as_master = NO) {
+	public function query($sql, $active_link = NULL, $as_master = FALSE) {
 		if(!$active_link || !is_resource($active_link)) {
 			$active_link = $this->link;
 		}
@@ -75,7 +75,7 @@ class Database_Driver_Pgsql extends Database_Driver {
 		
 		// Tack on some SQL to get an insert id back
 		if(preg_match('#\b(?:INSERT|REPLACE|UPDATE|DELETE)\b#i', $sql)) {
-			$sql .= " RETURNING id";
+			$sql .= " RETURNING *";
 		}
 		
 		return new Database_Pgsql_Result(pg_query($active_link, $sql), $active_link, $this->db_config['object'], $sql);
@@ -398,8 +398,8 @@ class Database_Pgsql_Result implements Database_Result, ArrayAccess, Iterator, C
 	// End Interface
 
 	private function get_insert_id($result) {
-		if($row = pg_fetch_row($result, 0, PGSQL_ASSOC)) {
-			return $row['id'];
+		if($row = pg_fetch_row($result)) {
+			return $row[0];
 		} else {
 			return FALSE;
 		}

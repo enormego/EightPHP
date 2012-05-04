@@ -14,6 +14,9 @@ class Database_Core {
 	// Global benchmark
 	public static $benchmarks = array();
 	
+	// DB Type
+	public $type;
+	
 	// Database history
 	private static $dbs;
 	
@@ -152,6 +155,7 @@ class Database_Core {
 		}
 
 		// Initialize the driver
+		$this->type = $db['type'];
 		$this->driver = new $driver($this->config);
 
 		// Validate the driver
@@ -274,7 +278,7 @@ class Database_Core {
 		}
 
 		// Fetch the result
-		$result = $this->driver->query($this->last_query = $sql, NULL, $this->use_master);
+		$result = $this->driver->query($this->last_query = $sql, NULL, $this->use_master, $this->increment_id);
 		$this->use_master = NO;
 
 		// Stop the benchmark
