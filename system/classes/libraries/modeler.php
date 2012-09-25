@@ -171,7 +171,9 @@ class Modeler_Core extends Model {
 		// Do an update or insert?
 		$this->db->use_master($this->use_master);
 		if($this->valid()) {
-			return count($this->db->update($this->table_name, $this->data, array($this->primary_key => $this->data[$this->primary_key])));
+			$data = $this->data;
+			unset($data[$this->primary_key]);
+			return count($this->db->update($this->table_name, $data, array($this->primary_key => $this->data[$this->primary_key])));
 		} else {
 			unset($this->data[$this->primary_key]);
 			$insert_id = $this->db->insert($this->table_name, $this->data)->insert_id();
