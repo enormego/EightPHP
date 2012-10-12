@@ -20,6 +20,16 @@ abstract class Cache_Driver {
 	abstract public function get($keys, $single = NO);
 
 	/**
+	 * Increment cache items by a step value
+	 */
+	abstract public function increment($keys, $step = 1);
+	
+	/**
+	 * Decrement cache items by a step value
+	 */
+	abstract public function decrement($keys, $step = 1);
+
+	/**
 	 * Get cache items by tag 
 	 */
 	abstract public function get_tag($tags);

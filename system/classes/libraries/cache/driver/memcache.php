@@ -77,6 +77,14 @@ class Cache_Driver_Memcache extends Cache_Driver {
 			return ($items === NO) ? array() : $items;
 		}
 	}
+	
+	public function increment() {
+		throw new Cache_Exception('Memcache driver does not support increment.');
+	}
+	
+	public function decrement() {
+		throw new Cache_Exception('Memcache driver does not support decrement.');
+	}
 
 	/**
 	 * Get cache items by tag

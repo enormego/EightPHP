@@ -53,6 +53,14 @@ class Cache_Driver_Xcache extends Cache_Driver {
 			return ($items === NO) ? array() : $items;
 		}
 	}
+	
+	public function increment() {
+		throw new Cache_Exception('XCache driver does not support increment.');
+	}
+	
+	public function decrement() {
+		throw new Cache_Exception('XCache driver does not support decrement.');
+	}
 
 	/**
 	 * Get cache items by tag

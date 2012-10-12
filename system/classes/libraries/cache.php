@@ -125,7 +125,41 @@ class Cache_Core {
 		
 		return $this->driver->get($keys, $single);
 	}
-
+	
+	/**
+	 * Increment some keys by a specified value.
+	 */
+	public function increment($keys, $step = 1) {
+		if($step <= 0) {
+			throw new Cache_Exception('Step value must be greater than 0.');
+		}
+		
+		!is_array($keys) && $keys = array($keys);
+		
+		if($this->config['prefix'] !== NULL) {
+			$keys = $this->add_prefix($keys, FALSE);
+		}
+		
+		return $this->driver->increment($keys, $step);
+	}
+	
+	/**
+	 * Decrement some keys by a specified value.
+	 */
+	public function decrement($keys, $step = 1) {
+		if($step <= 0) {
+			throw new Cache_Exception('Step value must be greater than 0.');
+		}
+		
+		!is_array($keys) && $keys = array($keys);
+		
+		if($this->config['prefix'] !== NULL) {
+			$keys = $this->add_prefix($keys, FALSE);
+		}
+		
+		return $this->driver->decrement($keys, $step);
+	}
+	
 	/**
 	 * Get cache items by tags
 	 */

@@ -27,7 +27,9 @@
 $config['default'] = array
 (
 	'driver'   => 'file',
-	'params'   => APPPATH.'cache',
+	'params'   => array(
+	    'directory' => Eight::config('core.internal_cache_path'),
+	),
 	'lifetime' => 1800,
 	'requests' => 1000
 );

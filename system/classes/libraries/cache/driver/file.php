@@ -143,6 +143,14 @@ class Cache_Driver_File extends Cache_Driver {
 		}
 	}
 
+	public function increment() {
+		throw new Cache_Exception('File driver does not support increment.');
+	}
+	
+	public function decrement() {
+		throw new Cache_Exception('File driver does not support decrement.');
+	}
+	
 	/**
 	 * Get cache items by tag
 	 */
