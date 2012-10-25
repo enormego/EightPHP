@@ -78,7 +78,7 @@ class Cache_Driver_Couchbase extends Cache_Driver {
 	
 	public function increment($keys, $step = 1) {
 		foreach($keys as $key) {
-			if(!$this->backend->increment($key, $step)) {
+			if(!$this->backend->increment($key, $step, TRUE)) {
 				return FALSE;
 			}
 		}
@@ -88,7 +88,7 @@ class Cache_Driver_Couchbase extends Cache_Driver {
 	
 	public function decrement($keys, $step = 1) {
 		foreach($keys as $key) {
-			if(!$this->backend->decrement($key, $step)) {
+			if(!$this->backend->decrement($key, $step, TRUE)) {
 				return FALSE;
 			}
 		}
